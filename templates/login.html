@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}EMSI Portal - Login{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #1A3E72;  /* Deep Honoris blue */
+        --secondary-color: #E31837;  /* EMSI accent red */
+        --accent-color: #FFC72C;    /* Gold accent */
+        --light-gray: #F8F9FA;
+        --dark-gray: #2D3748;
+        --white: #FFFFFF;
+    }
+
+    body {
+        background-color: var(--light-gray);
+        min-height: 100vh;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .login-container {
+        display: flex;
+        width: 90%;
+        max-width: 1200px;
+        margin: 2rem auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .left-panel {
+        flex: 1;
+        background: linear-gradient(135deg, var(--primary-color), #2A5298);
+        color: var(--white);
+        padding: 60px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+    }
+
+    .logo-container {
+        background-color: var(--white);
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .university-logo {
+        width: 100%;
+        height: auto;
+        max-width: 300px;
+    }
+
+    .welcome-text h1 {
+        font-size: 2.3rem;
+        margin-bottom: 15px;
+        font-weight: 600;
+        color: var(--white);
+    }
+
+    .welcome-text p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        opacity: 0.9;
+        margin-bottom: 30px;
+        color: rgba(255,255,255,0.9);
+    }
+
+    .features {
+        margin-top: 40px;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .feature-icon {
+        background-color: rgba(255, 255, 255, 0.2);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        color: var(--white);
+    }
+
+    .right-panel {
+        flex: 1;
+        background-color: var(--white);
+        padding: 60px 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .login-form h2 {
+        color: var(--primary-color);
+        font-size: 2rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .login-form p {
+        color: var(--dark-gray);
+        margin-bottom: 30px;
+        opacity: 0.8;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--dark-gray);
+        font-weight: 500;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .form-group input:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(26, 62, 114, 0.1);
+    }
+
+    .remember-forgot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .remember-me {
+        display: flex;
+        align-items: center;
+    }
+
+    .remember-me input {
+        margin-right: 8px;
+    }
+
+    .forgot-password a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+
+    .forgot-password a:hover {
+        color: var(--secondary-color);
+    }
+
+    .login-button {
+        width: 100%;
+        padding: 15px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .login-button:hover {
+        background-color: #12294D;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .admin-notice {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: var(--dark-gray);
+    }
+
+    .admin-notice a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .honoris-badge {
+        position: absolute;
+        bottom: 30px;
+        left: 40px;
+        color: rgba(255,255,255,0.7);
+        font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+        .login-container {
+            flex-direction: column;
+            margin: 0 auto;
+            box-shadow: none;
+            border-radius: 0;
+            width: 100%;
+        }
+
+        .left-panel {
+            display: none;
+        }
+
+        .right-panel {
+            padding: 40px 30px;
+            min-height: 100vh;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="left-panel">
+        <div class="logo-container">
+            <img src="{% static 'images/university-logo.png' %}" alt="EMSI Logo" class="university-logo">
+        </div>
+
+        <div class="welcome-text">
+            <h1>Bienvenue sur le Portail EMSI</h1>
+            <p>Accédez à vos dossiers académiques, supports de cours et services universitaires via notre portail sécurisé.</p>
+        </div>
+
+        <div class="features">
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-book"></i></div>
+                <span>Inscription aux cours et supports pédagogiques</span>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                <span>Notes et dossiers académiques</span>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-bullhorn"></i></div>
+                <span>Annonces universitaires</span>
+            </div>
+        </div>
+
+        <div class="honoris-badge">
+            Membre de Honoris United Universities
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="login-form">
+            <h2>Connexion</h2>
+            <p>Utilisez vos identifiants EMSI pour accéder au portail</p>
+
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Identifiant EMSI</label>
+                    <input type="text" id="username" name="username" placeholder="exemple : 123456 ou nom.prenom" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+                </div>
+
+                <div class="remember-forgot">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Se souvenir de moi</label>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="">Mot de passe oublié ?</a>
+                    </div>
+                </div>
+
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    Identifiant ou mot de passe incorrect. Veuillez réessayer.
+                </div>
+                {% endif %}
+
+                <button type="submit" class="login-button">Se connecter</button>
+            </form>
+
+            <div class="admin-notice">
+                Les comptes sont gérés par l'administration. Contactez le <a href="mailto:support-it@emsi.ma">support technique</a> pour tout problème d'accès.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
