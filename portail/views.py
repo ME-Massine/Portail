@@ -5,23 +5,43 @@ from django.contrib import messages
 
 # Create your views here.
 def login_view(request):
+    form = None
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+
+        if not username or not password:
+            messages.error(request, 'Both username and password are required.')
+            return render(request, 'login.html')
+
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)
-            user_group = request.user.groups.first()
-            if user_group:
-                if user_group.name == 'prof':
-                    return redirect('prof:dashboard')
-                if user_group.name == 'etudiant':
-                    return redirect('etudiant:dashboard')
-                if user_group.name == 'admin':
-                    return redirect('admin:dashboard')
+            if user.is_active:
+                login(request, user)
 
+                user_group = request.user.groups.first()
+
+                if user_group:
+                    if user_group.name == 'professeur':
+                        return redirect('prof:dashboard')
+                    elif user_group.name == 'etudiant':
+                        return redirect('etudiant:dashboard')
+                    elif user_group.name == 'admin':
+                        return redirect('admin:dashboard')
+                    else:
+                        messages.warning(request, 'Your account has no assigned role. Please contact support.')
+                        return render(request, 'login.html')
+                else:
+                    messages.warning(request, 'Your account is not assigned to any role. Please contact support.')
+                    return render(request, 'login.html')
+            else:
+                # Account is inactive
+                messages.error(request, 'Your account is inactive. Please contact support.')
+                return render(request, 'login.html')
         else:
+            # Authentication failed
             messages.error(request, 'Invalid username or password.')
+            return render(request, 'login.html')
 
     return render(request, 'login.html')

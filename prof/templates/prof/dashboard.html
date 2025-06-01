@@ -1,10 +1,417 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Professor Dashboard{% endblock %}
+
+{% block user_type %}Professor Portal{% endblock %}
+
+{% block sidebar_nav %}
+    <a class="nav-link active" href="">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+    </a>
+    <a class="nav-link" href="">
+        <i class="fas fa-book-open"></i> My Courses
+    </a>
+    <a class="nav-link" href="">
+        <i class="fas fa-user-graduate"></i> Students
+    </a>
+    <a class="nav-link" href="">
+        <i class="fas fa-clipboard-list"></i> Grades
+    </a>
+    <a class="nav-link" href="">
+        <i class="fas fa-calendar-check"></i> Attendance
+    </a>
+    <a class="nav-link" href="">
+        <i class="fas fa-microscope"></i> Research
+    </a>
+    <a class="nav-link" href="">
+        <i class="fas fa-bullhorn"></i> Announcements
+    </a>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+        --card-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        --card-hover-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+    .welcome-card {
+        background: var(--primary-gradient);
+        color: white;
+        border-radius: 15px;
+        border: none;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .welcome-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    }
+
+    .stat-card {
+        transition: all 0.3s ease;
+        border-radius: 12px;
+        border: none;
+        box-shadow: var(--card-shadow);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--card-hover-shadow);
+    }
+
+    .stat-card .icon-wrapper {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .calendar-day {
+        border-radius: 10px;
+        transition: all 0.2s ease;
+    }
+
+    .calendar-day:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.05);
+    }
+
+    .calendar-day.today {
+        background-color: #e3f2fd;
+        font-weight: bold;
+    }
+
+    .task-item {
+        border-left: 4px solid transparent;
+        transition: all 0.2s ease;
+    }
+
+    .task-item:hover {
+        background-color: #f8f9fa;
+        border-left-color: var(--secondary-color);
+    }
+
+    .progress-thin {
+        height: 6px;
+    }
+
+    .avatar-sm {
+        width: 35px;
+        height: 35px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Welcome Card -->
+    <div class="card welcome-card mb-4">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="mb-3">Welcome back, Dr. {{ request.user.last_name }}</h2>
+                    <p class="mb-0">You have 3 classes today with 127 total students across your courses</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="bg-white rounded-pill d-inline-block px-4 py-2">
+                        <h4 class="mb-0 text-dark">{% now "F j, Y" %}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Active Courses</h6>
+                            <h3 class="mb-0">4</h3>
+                        </div>
+                        <div class="icon-wrapper bg-primary bg-opacity-10">
+                            <i class="fas fa-book text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-success">+1 from last term</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Students</h6>
+                            <h3 class="mb-0">127</h3>
+                        </div>
+                        <div class="icon-wrapper bg-success bg-opacity-10">
+                            <i class="fas fa-user-graduate text-success"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="progress progress-thin">
+                            <div class="progress-bar bg-success" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Pending Grading</h6>
+                            <h3 class="mb-0">8</h3>
+                        </div>
+                        <div class="icon-wrapper bg-warning bg-opacity-10">
+                            <i class="fas fa-clipboard-check text-warning"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-warning">2 overdue</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Research Projects</h6>
+                            <h3 class="mb-0">3</h3>
+                        </div>
+                        <div class="icon-wrapper bg-info bg-opacity-10">
+                            <i class="fas fa-microscope text-info"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-info">1 awaiting approval</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Today's Schedule -->
+        <div class="col-lg-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-header bg-white border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Today's Schedule</h5>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item border-0 px-0 py-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary bg-opacity-10 rounded p-2 me-3">
+                                    <i class="fas fa-chalkboard-teacher text-primary"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">CS 101 Lecture</h6>
+                                        <small class="text-muted">9:00 - 10:30 AM</small>
+                                    </div>
+                                    <p class="mb-0 small text-muted">Introduction to Algorithms - Room 205</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item border-0 px-0 py-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-success bg-opacity-10 rounded p-2 me-3">
+                                    <i class="fas fa-users text-success"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">Office Hours</h6>
+                                        <small class="text-muted">2:00 - 4:00 PM</small>
+                                    </div>
+                                    <p class="mb-0 small text-muted">Faculty Building 312 (or Zoom)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item border-0 px-0 py-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-info bg-opacity-10 rounded p-2 me-3">
+                                    <i class="fas fa-users text-info"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">Department Meeting</h6>
+                                        <small class="text-muted">4:30 - 6:00 PM</small>
+                                    </div>
+                                    <p class="mb-0 small text-muted">Conference Room - Budget Discussion</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Deadlines -->
+        <div class="col-lg-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-header bg-white border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Upcoming Deadlines</h5>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>Assignment</th>
+                                    <th>Due</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="task-item">
+                                    <td>CS 101</td>
+                                    <td>Project Proposal</td>
+                                    <td>Tomorrow</td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                </tr>
+                                <tr class="task-item">
+                                    <td>CS 301</td>
+                                    <td>Lab Report 3</td>
+                                    <td>Oct 15</td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                </tr>
+                                <tr class="task-item">
+                                    <td>CS 405</td>
+                                    <td>Midterm Grades</td>
+                                    <td>Oct 18</td>
+                                    <td><span class="badge bg-info">In Progress</span></td>
+                                </tr>
+                                <tr class="task-item">
+                                    <td>CS 202</td>
+                                    <td>Quiz Grading</td>
+                                    <td>Oct 20</td>
+                                    <td><span class="badge bg-secondary">Not Started</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Announcements -->
+        <div class="col-lg-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Recent Announcements</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item border-0 px-0 py-3">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <img src="https://via.placeholder.com/50" alt="Dean" class="avatar-sm rounded-circle">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">Midterm Exam Schedule</h6>
+                                        <small class="text-muted">2 days ago</small>
+                                    </div>
+                                    <p class="mb-0 small text-muted">The midterm exams will be held from October 15-20. Please check the schedule...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item border-0 px-0 py-3">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <img src="https://via.placeholder.com/50" alt="Research" class="avatar-sm rounded-circle">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">Research Grant Opportunity</h6>
+                                        <small class="text-muted">5 days ago</small>
+                                    </div>
+                                    <p class="mb-0 small text-muted">Applications are now open for the annual research grant. Deadline is November 1st...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-lg-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-primary w-100 py-3 d-flex flex-column align-items-center">
+                                <i class="fas fa-upload mb-2"></i>
+                                <span>Upload Materials</span>
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-success w-100 py-3 d-flex flex-column align-items-center">
+                                <i class="fas fa-edit mb-2"></i>
+                                <span>Record Grades</span>
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-info w-100 py-3 d-flex flex-column align-items-center">
+                                <i class="fas fa-calendar-plus mb-2"></i>
+                                <span>Schedule Class</span>
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-warning w-100 py-3 d-flex flex-column align-items-center">
+                                <i class="fas fa-bullhorn mb-2"></i>
+                                <span>Post Announcement</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Initialize any JavaScript components here
+    document.addEventListener('DOMContentLoaded', function() {
+        // You can add interactive elements here
+    });
+</script>
+{% endblock %}
+{% endblock %}

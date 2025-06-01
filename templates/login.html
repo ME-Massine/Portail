@@ -1,309 +1,318 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}EMSI Portal - Login{% endblock %}
-
-{% block extra_css %}
-<style>
-    :root {
-        --primary-color: #1A3E72;  /* Deep Honoris blue */
-        --secondary-color: #E31837;  /* EMSI accent red */
-        --accent-color: #FFC72C;    /* Gold accent */
-        --light-gray: #F8F9FA;
-        --dark-gray: #2D3748;
-        --white: #FFFFFF;
-    }
-
-    body {
-        background-color: var(--light-gray);
-        min-height: 100vh;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .login-container {
-        display: flex;
-        width: 90%;
-        max-width: 1200px;
-        margin: 2rem auto;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        border-radius: 15px;
-        overflow: hidden;
-        border: 1px solid rgba(0,0,0,0.1);
-    }
-
-    .left-panel {
-        flex: 1;
-        background: linear-gradient(135deg, var(--primary-color), #2A5298);
-        color: var(--white);
-        padding: 60px 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        position: relative;
-    }
-
-    .logo-container {
-        background-color: var(--white);
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 40px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    .university-logo {
-        width: 100%;
-        height: auto;
-        max-width: 300px;
-    }
-
-    .welcome-text h1 {
-        font-size: 2.3rem;
-        margin-bottom: 15px;
-        font-weight: 600;
-        color: var(--white);
-    }
-
-    .welcome-text p {
-        font-size: 1.1rem;
-        line-height: 1.6;
-        opacity: 0.9;
-        margin-bottom: 30px;
-        color: rgba(255,255,255,0.9);
-    }
-
-    .features {
-        margin-top: 40px;
-    }
-
-    .feature-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .feature-icon {
-        background-color: rgba(255, 255, 255, 0.2);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 15px;
-        color: var(--white);
-    }
-
-    .right-panel {
-        flex: 1;
-        background-color: var(--white);
-        padding: 60px 50px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .login-form h2 {
-        color: var(--primary-color);
-        font-size: 2rem;
-        margin-bottom: 10px;
-        font-weight: 600;
-    }
-
-    .login-form p {
-        color: var(--dark-gray);
-        margin-bottom: 30px;
-        opacity: 0.8;
-    }
-
-    .form-group {
-        margin-bottom: 25px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--dark-gray);
-        font-weight: 500;
-    }
-
-    .form-group input {
-        width: 100%;
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: all 0.3s;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .form-group input:focus {
-        border-color: var(--primary-color);
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(26, 62, 114, 0.1);
-    }
-
-    .remember-forgot {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-    }
-
-    .remember-me {
-        display: flex;
-        align-items: center;
-    }
-
-    .remember-me input {
-        margin-right: 8px;
-    }
-
-    .forgot-password a {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-size: 0.9rem;
-        font-weight: 500;
-        transition: color 0.3s;
-    }
-
-    .forgot-password a:hover {
-        color: var(--secondary-color);
-    }
-
-    .login-button {
-        width: 100%;
-        padding: 15px;
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .login-button:hover {
-        background-color: #12294D;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    .admin-notice {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 0.9rem;
-        color: var(--dark-gray);
-    }
-
-    .admin-notice a {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 500;
-    }
-
-    .honoris-badge {
-        position: absolute;
-        bottom: 30px;
-        left: 40px;
-        color: rgba(255,255,255,0.7);
-        font-size: 0.8rem;
-    }
-
-    @media (max-width: 768px) {
-        .login-container {
-            flex-direction: column;
-            margin: 0 auto;
-            box-shadow: none;
-            border-radius: 0;
-            width: 100%;
-        }
-
-        .left-panel {
-            display: none;
-        }
-
-        .right-panel {
-            padding: 40px 30px;
-            min-height: 100vh;
-        }
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-<div class="login-container">
-    <div class="left-panel">
-        <div class="logo-container">
-            <img src="{% static 'images/university-logo.png' %}" alt="EMSI Logo" class="university-logo">
-        </div>
+    <style>
 
-        <div class="welcome-text">
-            <h1>Bienvenue sur le Portail EMSI</h1>
-            <p>Accédez à vos dossiers académiques, supports de cours et services universitaires via notre portail sécurisé.</p>
-        </div>
+        /* Base Styles */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-gray: #ecf0f1;
+            --dark-gray: #7f8c8d;
+            --white: #ffffff;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
 
-        <div class="features">
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-book"></i></div>
-                <span>Inscription aux cours et supports pédagogiques</span>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Login Container */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        /* Login Card */
+        .login-card {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        /* Login Header */
+        .login-header {
+            margin-bottom: 30px;
+        }
+
+        .login-header .logo {
+            height: 80px;
+            margin-bottom: 15px;
+        }
+
+        .login-header h1 {
+            color: var(--primary-color);
+            margin: 10px 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .login-header p {
+            color: var(--dark-gray);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Form Styles */
+        .login-form {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+
+
+        /* Input Field */
+        .form-control {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: none;
+            background-color: transparent;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            color: var(--dark-gray);
+            cursor: pointer;
+        }
+
+        /* Form Options */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-check-input {
+            margin-right: 8px;
+        }
+
+        .forgot-password {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .forgot-password:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        /* Login Button */
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .btn-login:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Icons */
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            color: var(--dark-gray);
+            pointer-events: none; /* Makes clicks pass through to input */
+        }
+
+        /* Input Container */
+        .input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .input-icon, .password-toggle {
+            transition: color 0.3s;
+        }
+
+        .input-container:focus-within .input-icon {
+            color: var(--secondary-color);
+        }
+
+
+        .register-prompt a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .register-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .login-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+
+        .footer-links {
+            margin-top: 10px;
+        }
+
+        .footer-links a {
+            color: var(--dark-gray);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 576px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+
+            .login-header .logo {
+                height: 60px;
+            }
+        }
+    </style>
+    <div class="login-container">
+        <div class="login-card">
+            <!-- University Logo and Header -->
+            <div class="login-header">
+                <img src="{% static 'images/university-logo.png' %}" alt="University Logo" class="logo">
+                <h1>University Portal</h1>
+                <p>Access your academic resources and services</p>
             </div>
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
-                <span>Notes et dossiers académiques</span>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-bullhorn"></i></div>
-                <span>Annonces universitaires</span>
-            </div>
-        </div>
 
-        <div class="honoris-badge">
-            Membre de Honoris United Universities
-        </div>
-    </div>
-
-    <div class="right-panel">
-        <div class="login-form">
-            <h2>Connexion</h2>
-            <p>Utilisez vos identifiants EMSI pour accéder au portail</p>
-
-            <form method="post" action="">
+            <!-- Login Form -->
+            <form method="post" class="login-form">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="username">Identifiant EMSI</label>
-                    <input type="text" id="username" name="username" placeholder="exemple : 123456 ou nom.prenom" required>
-                </div>
 
-                <div class="form-group">
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
-                </div>
-
-                <div class="remember-forgot">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">Se souvenir de moi</label>
-                    </div>
-                    <div class="forgot-password">
-                        <a href="">Mot de passe oublié ?</a>
-                    </div>
-                </div>
-
+                <!-- Display form errors if any -->
                 {% if form.errors %}
-                <div class="alert alert-danger">
-                    Identifiant ou mot de passe incorrect. Veuillez réessayer.
-                </div>
+                    <div class="alert alert-danger">
+                        Invalid username or password. Please try again.
+                    </div>
                 {% endif %}
 
-                <button type="submit" class="login-button">Se connecter</button>
-            </form>
+                <!-- Username Field -->
+                <div class="form-group">
+                    <label for="id_username">University ID</label>
+                    <div class="input-container">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" name="username" id="id_username"
+                               class="form-control" placeholder="e.g. 2023-12345" required>
+                    </div>
+                </div>
 
-            <div class="admin-notice">
-                Les comptes sont gérés par l'administration. Contactez le <a href="mailto:support-it@emsi.ma">support technique</a> pour tout problème d'accès.
-            </div>
+                <div class="form-group">
+                    <label for="id_password">Password</label>
+                    <div class="input-container">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" name="password" id="id_password"
+                               class="form-control" placeholder="Enter your password" required>
+                        <i class="fas fa-eye password-toggle" onclick="togglePassword()"></i>
+                    </div>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="form-options">
+                    <div class="form-check">
+                        <input type="checkbox" id="remember" class="form-check-input">
+                        <label for="remember" class="form-check-label">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary btn-login">Login</button>
+
+
+            </form>
         </div>
+
+
     </div>
-</div>
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('id_password');
+            const toggleIcon = document.querySelector('.password-toggle');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
 {% endblock %}
