@@ -20,15 +20,13 @@ def login_view(request):
             if user.is_active:
                 login(request, user)
 
-                user_group = request.user.groups.first()
-
-                if user_group:
-                    if user_group.name == 'professeur':
+                if user.role is not None:
+                    if user.role == 'professeur':
                         return redirect('prof:dashboard')
-                    elif user_group.name == 'etudiant':
+                    elif user.role == 'etudiant':
                         return redirect('etudiant:dashboard')
-                    elif user_group.name == 'admin':
-                        return redirect('admin:dashboard')
+                    elif user.role == 'administrateur':
+                        return redirect('school_admin:dashboard')
                     else:
                         messages.warning(request, 'Your account has no assigned role. Please contact support.')
                         return render(request, 'login.html')
