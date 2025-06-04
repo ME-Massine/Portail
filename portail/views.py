@@ -10,11 +10,11 @@ def login_view(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        if not username or not password:
-            messages.error(request, 'Both username and password are required.')
-            return render(request, 'login.html')
+        print("username: ", username, "password: ", password)
 
         user = authenticate(request, username=username, password=password)
+
+        print(user)
 
         if user is not None:
             if user.is_active:

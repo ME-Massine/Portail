@@ -1,630 +1,498 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load dashboard_tags %}
+
+
+{% block nav %}
+    {% include "sidebar.html" %}
+{% endblock %}
+
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Bord Étudiant</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --accent: #f72585;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --success: #4cc9f0;
-            --warning: #f8961e;
-            --danger: #ef233c;
-            --sidebar-width: 280px;
-            --header-height: 70px;
-            --card-radius: 12px;
-            --transition: all 0.3s ease;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f7ff;
-            color: var(--dark);
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            width: var(--sidebar-width);
-            background: linear-gradient(to bottom, var(--primary), var(--secondary));
-            color: white;
-            height: 100vh;
-            position: fixed;
-            padding: 20px 0;
-            transition: var(--transition);
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        .university-brand {
-            display: flex;
-            align-items: center;
-            padding: 0 20px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 25px;
-        }
-
-        .university-brand img {
-            height: 40px;
-            margin-right: 10px;
-        }
-
-        .university-brand h2 {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            padding: 0 20px 25px;
-        }
-
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--accent), #f72585);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 600;
-            margin-right: 15px;
-        }
-
-        .user-info h3 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .user-info p {
-            font-size: 13px;
-            opacity: 0.8;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 0 15px;
-        }
-
-        .menu-item {
-            margin-bottom: 5px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .menu-item a {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            color: rgba(255,255,255,0.9);
-            text-decoration: none;
-            transition: var(--transition);
-            font-size: 15px;
-        }
-
-        .menu-item a:hover, .menu-item.active a {
-            background: rgba(255,255,255,0.15);
-            color: white;
-        }
-
-        .menu-item i {
-            width: 30px;
-            font-size: 18px;
-            margin-right: 10px;
-        }
-
-        /* Main Content Styles */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            transition: var(--transition);
-        }
-
-        /* Header Styles */
-        .header {
-            height: var(--header-height);
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .page-title h1 {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-        }
-
-        .search-box {
-            position: relative;
-            margin-right: 20px;
-        }
-
-        .search-box input {
-            padding: 10px 15px 10px 40px;
-            border: 1px solid #ddd;
-            border-radius: 30px;
-            width: 250px;
-            font-size: 14px;
-            transition: var(--transition);
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #777;
-        }
-
-        .notification-bell, .logout-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--light);
-            margin-left: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .notification-bell:hover, .logout-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -3px;
-            right: -3px;
-            background: var(--accent);
-            color: white;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Dashboard Content */
-        .dashboard-content {
-            padding: 30px;
-        }
-
-        .welcome-banner {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-radius: var(--card-radius);
-            padding: 30px;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .welcome-banner::before {
-            content: "";
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 50%;
-        }
-
-        .welcome-banner h2 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .welcome-banner p {
-            max-width: 600px;
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: var(--card-radius);
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-
-        .stat-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: var(--primary);
-        }
-
-        .stat-card i {
-            font-size: 32px;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-
-        .stat-card h3 {
-            font-size: 28px;
-            margin-bottom: 5px;
-            color: var(--dark);
-        }
-
-        .stat-card p {
-            color: #777;
-            font-size: 14px;
-        }
-
-        .dashboard-row {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        @media (max-width: 992px) {
-            .dashboard-row {
-                grid-template-columns: 1fr;
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tableau de Bord Étudiant</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --primary: #4361ee;
+                --secondary: #3f37c9;
+                --accent: #f72585;
+                --light: #f8f9fa;
+                --dark: #212529;
+                --success: #4cc9f0;
+                --warning: #f8961e;
+                --danger: #ef233c;
+                --sidebar-width: 280px;
+                --header-height: 70px;
+                --card-radius: 12px;
+                --transition: all 0.3s ease;
             }
-        }
 
-        .panel {
-            background: white;
-            border-radius: var(--card-radius);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-
-        .panel-header {
-            padding: 20px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .panel-header h3 {
-            font-size: 18px;
-            color: var(--dark);
-        }
-
-        .panel-header a {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .panel-body {
-            padding: 20px;
-        }
-
-        /* Today's Classes */
-        .class-schedule {
-            list-style: none;
-        }
-
-        .schedule-item {
-            display: flex;
-            padding: 15px 0;
-            border-bottom: 1px solid #f5f5f5;
-            transition: var(--transition);
-        }
-
-        .schedule-item:hover {
-            background: rgba(67, 97, 238, 0.03);
-        }
-
-        .schedule-item:last-child {
-            border: none;
-        }
-
-        .class-time {
-            width: 80px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .class-info {
-            flex: 1;
-        }
-
-        .class-info h4 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .class-info p {
-            font-size: 13px;
-            color: #777;
-        }
-
-        .class-room {
-            display: flex;
-            align-items: center;
-            color: var(--primary);
-            font-size: 13px;
-        }
-
-        .class-room i {
-            margin-right: 5px;
-        }
-
-        /* Grades Panel */
-        .grades-list {
-            list-style: none;
-        }
-
-        .grade-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f5f5f5;
-        }
-
-        .grade-item:last-child {
-            border: none;
-        }
-
-        .grade-value {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            margin-right: 15px;
-        }
-
-        .grade-value.A {
-            background: rgba(76, 201, 240, 0.1);
-            color: var(--success);
-            border: 2px solid var(--success);
-        }
-
-        .grade-value.B {
-            background: rgba(248, 150, 30, 0.1);
-            color: var(--warning);
-            border: 2px solid var(--warning);
-        }
-
-        .grade-value.C {
-            background: rgba(239, 35, 60, 0.1);
-            color: var(--danger);
-            border: 2px solid var(--danger);
-        }
-
-        .grade-info {
-            flex: 1;
-        }
-
-        .grade-info h4 {
-            font-size: 15px;
-            margin-bottom: 3px;
-        }
-
-        .grade-info p {
-            font-size: 12px;
-            color: #777;
-        }
-
-        /* Assignments Panel */
-        .assignments-list {
-            list-style: none;
-        }
-
-        .assignment-item {
-            padding: 15px 0;
-            border-bottom: 1px solid #f5f5f5;
-        }
-
-        .assignment-item:last-child {
-            border: none;
-        }
-
-        .assignment-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .assignment-title {
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .assignment-due {
-            font-size: 12px;
-            color: #777;
-        }
-
-        .assignment-due.urgent {
-            color: var(--danger);
-            font-weight: 500;
-        }
-
-        .assignment-progress {
-            height: 6px;
-            background: #eee;
-            border-radius: 3px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 3px;
-            transition: width 0.5s ease;
-        }
-
-        .assignment-footer {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #777;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                z-index: 100;
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                background-color: #f5f7ff;
+                color: var(--dark);
+                display: flex;
+                min-height: 100vh;
+            }
+
+
+            .university-brand img {
+                height: 40px;
+                margin-right: 10px;
+            }
+
+            .university-brand h2 {
+                font-size: 18px;
+                font-weight: 600;
+            }
+
+
+
+            .user-info h3 {
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+
+            .user-info p {
+                font-size: 13px;
+                opacity: 0.8;
+            }
+
+            .menu-item a {
+                display: flex;
+                align-items: center;
+                padding: 12px 15px;
+                color: rgba(255, 255, 255, 0.9);
+                text-decoration: none;
+                transition: var(--transition);
+                font-size: 15px;
+            }
+
+            .menu-item a:hover, .menu-item.active a {
+                background: rgba(255, 255, 255, 0.15);
+                color: white;
+            }
+
+            .menu-item i {
+                width: 30px;
+                font-size: 18px;
+                margin-right: 10px;
+            }
+
+            /* Main Content Styles */
             .main-content {
-                margin-left: 0;
+                flex: 1;
+                margin-left: var(--sidebar-width);
+                transition: var(--transition);
             }
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            .header {
-                padding: 0 20px;
-            }
-            .search-box input {
-                width: 180px;
-            }
-        }
 
-        @media (max-width: 576px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
+            /* Header Styles */
+            .header {
+                height: var(--header-height);
+                background: white;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 30px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+                position: sticky;
+                top: 0;
+                z-index: 10;
             }
-            .search-box {
-                display: none;
-            }
-            .welcome-banner h2 {
+
+            .page-title h1 {
                 font-size: 24px;
+                font-weight: 600;
+                color: var(--primary);
             }
-        }
-    </style>
-</head>
-<body>
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="university-brand">
-            <img src="{% static 'images/university-logo.png' %}" alt="University Logo">
-            <h2>Université Portal</h2>
-        </div>
-        
-        <div class="user-profile">
-            <div class="user-avatar">{{ request.user.first_name|first }}{{ request.user.last_name|first }}</div>
-            <div class="user-info">
-                <h3>{{ request.user.first_name }} {{ request.user.last_name }}</h3>
-                <p>Étudiant en Informatique</p>
-            </div>
-        </div>
-        
-        <ul class="sidebar-menu">
-            <li class="menu-item active">
-                <a href="#">
-                    <i class="fas fa-home"></i>
-                    Tableau de Bord
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#">
-                    <i class="fas fa-book-open"></i>
-                    Mes Cours
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#">
-                    <i class="fas fa-calendar-alt"></i>
-                    Emploi du Temps
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#">
-                    <i class="fas fa-tasks"></i>
-                    Devoirs
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#">
-                    <i class="fas fa-chart-bar"></i>
-                    Notes
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#">
-                    <i class="fas fa-comments"></i>
-                    Messages
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#">
-                    <i class="fas fa-file-alt"></i>
-                    Ressources
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#">
-                    <i class="fas fa-cog"></i>
-                    Paramètres
-                </a>
-            </li>
-        </ul>
-    </aside>
+
+            .header-actions {
+                display: flex;
+                align-items: center;
+            }
+
+            .search-box {
+                position: relative;
+                margin-right: 20px;
+            }
+
+            .search-box input {
+                padding: 10px 15px 10px 40px;
+                border: 1px solid #ddd;
+                border-radius: 30px;
+                width: 250px;
+                font-size: 14px;
+                transition: var(--transition);
+            }
+
+            .search-box input:focus {
+                outline: none;
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            }
+
+            .search-box i {
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #777;
+            }
+
+            .notification-bell, .logout-btn {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: var(--light);
+                margin-left: 12px;
+                cursor: pointer;
+                transition: var(--transition);
+                position: relative;
+            }
+
+            .notification-bell:hover, .logout-btn:hover {
+                background: var(--primary);
+                color: white;
+            }
+
+            .notification-badge {
+                position: absolute;
+                top: -3px;
+                right: -3px;
+                background: var(--accent);
+                color: white;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                font-size: 11px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Dashboard Content */
+            .dashboard-content {
+                padding: 30px;
+            }
+
+            .welcome-banner {
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                color: white;
+                border-radius: var(--card-radius);
+                padding: 30px;
+                margin-bottom: 30px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .welcome-banner::before {
+                content: "";
+                position: absolute;
+                top: -50px;
+                right: -50px;
+                width: 200px;
+                height: 200px;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 50%;
+            }
+
+            .welcome-banner h2 {
+                font-size: 28px;
+                margin-bottom: 10px;
+                position: relative;
+                z-index: 1;
+            }
+
+            .welcome-banner p {
+                max-width: 600px;
+                opacity: 0.9;
+                position: relative;
+                z-index: 1;
+            }
+
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+
+            .stat-card {
+                background: white;
+                border-radius: var(--card-radius);
+                padding: 25px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+                transition: var(--transition);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .stat-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .stat-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 5px;
+                height: 100%;
+                background: var(--primary);
+            }
+
+            .stat-card i {
+                font-size: 32px;
+                margin-bottom: 15px;
+                color: var(--primary);
+            }
+
+            .stat-card h3 {
+                font-size: 28px;
+                margin-bottom: 5px;
+                color: var(--dark);
+            }
+
+            .stat-card p {
+                color: #777;
+                font-size: 14px;
+            }
+
+            .dashboard-row {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 30px;
+                margin-bottom: 30px;
+            }
+
+            @media (max-width: 992px) {
+                .dashboard-row {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .panel {
+                background: white;
+                border-radius: var(--card-radius);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+                overflow: hidden;
+            }
+
+            .panel-header {
+                padding: 20px;
+                border-bottom: 1px solid #eee;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .panel-header h3 {
+                font-size: 18px;
+                color: var(--dark);
+            }
+
+            .panel-header a {
+                color: var(--primary);
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .panel-body {
+                padding: 20px;
+            }
+
+            /* Today's Classes */
+            .class-schedule {
+                list-style: none;
+            }
+
+            .schedule-item {
+                display: flex;
+                padding: 15px 0;
+                border-bottom: 1px solid #f5f5f5;
+                transition: var(--transition);
+            }
+
+            .schedule-item:hover {
+                background: rgba(67, 97, 238, 0.03);
+            }
+
+            .schedule-item:last-child {
+                border: none;
+            }
+
+            .class-time {
+                width: 80px;
+                font-weight: 500;
+                color: var(--dark);
+            }
+
+            .class-info {
+                flex: 1;
+            }
+
+            .class-info h4 {
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+
+            .class-info p {
+                font-size: 13px;
+                color: #777;
+            }
+
+            .class-room {
+                display: flex;
+                align-items: center;
+                color: var(--primary);
+                font-size: 13px;
+            }
+
+            .class-room i {
+                margin-right: 5px;
+            }
+
+            /* Grades Panel */
+            .grades-list {
+                list-style: none;
+            }
+
+            .grade-item {
+                display: flex;
+                align-items: center;
+                padding: 12px 0;
+                border-bottom: 1px solid #f5f5f5;
+            }
+
+            .grade-item:last-child {
+                border: none;
+            }
+
+            .grade-info {
+                flex: 1;
+            }
+
+            .grade-info h4 {
+                font-size: 15px;
+                margin-bottom: 3px;
+            }
+
+            .grade-info p {
+                font-size: 12px;
+                color: #777;
+            }
+
+            /* Assignments Panel */
+            .assignments-list {
+                list-style: none;
+            }
+
+            .assignment-item {
+                padding: 15px 0;
+                border-bottom: 1px solid #f5f5f5;
+            }
+
+            .assignment-item:last-child {
+                border: none;
+            }
+
+            .assignment-header {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 8px;
+            }
+
+            .assignment-title {
+                font-weight: 500;
+                color: var(--dark);
+            }
+
+            .assignment-due {
+                font-size: 12px;
+                color: #777;
+            }
+
+            .assignment-due.urgent {
+                color: var(--danger);
+                font-weight: 500;
+            }
+
+            .assignment-progress {
+                height: 6px;
+                background: #eee;
+                border-radius: 3px;
+                margin: 10px 0;
+                overflow: hidden;
+            }
+
+            .progress-bar {
+                height: 100%;
+                background: var(--primary);
+                border-radius: 3px;
+                transition: width 0.5s ease;
+            }
+
+            .assignment-footer {
+                display: flex;
+                justify-content: space-between;
+                font-size: 12px;
+                color: #777;
+            }
+
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                    z-index: 100;
+                }
+
+                .main-content {
+                    margin-left: 0;
+                }
+
+                .header {
+                    padding: 0 20px;
+                }
+
+                .search-box input {
+                    width: 180px;
+                }
+            }
+
+            @media (max-width: 576px) {
+                .stats-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .search-box {
+                    display: none;
+                }
+
+                .welcome-banner h2 {
+                    font-size: 24px;
+                }
+            }
+        </style>
+    </head>
+    <body>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -633,18 +501,18 @@
             <div class="page-title">
                 <h1>Tableau de Bord Étudiant</h1>
             </div>
-            
+
             <div class="header-actions">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Rechercher...">
                 </div>
-                
+
                 <div class="notification-bell">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+                    <span class="notification-badge">{{ unread_messages }}</span>
                 </div>
-                
+
                 <div class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i>
                 </div>
@@ -656,32 +524,39 @@
             <!-- Welcome Banner -->
             <div class="welcome-banner">
                 <h2>Bienvenue, {{ request.user.first_name }} !</h2>
-                <p>Vous avez 2 cours aujourd'hui et 3 devoirs à rendre. Restez organisé et profitez de votre journée.</p>
+                <p>
+                    Vous avez {{ todays_classes|length }} cours aujourd'hui et
+                    {{ pending_assignments|length }} devoirs à rendre.
+                </p>
             </div>
 
             <!-- Stats Cards -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <i class="fas fa-book"></i>
-                    <h3>5</h3>
+                    <h3>{{ courses|length }}</h3>
                     <p>Cours Actifs</p>
                 </div>
-                
+
                 <div class="stat-card">
                     <i class="fas fa-check-circle"></i>
-                    <h3>78%</h3>
+                    <h3>{{ attendance_stats.attendance_rate|floatformat }}%</h3>
                     <p>Taux de Présence</p>
                 </div>
-                
+
                 <div class="stat-card">
                     <i class="fas fa-star"></i>
-                    <h3>14.5</h3>
+                    {% if average_grade %}
+                        <h3>{{ average_grade|floatformat }}</h3>
+                    {% else %}
+                        <h3>--</h3>
+                    {% endif %}
                     <p>Moyenne Générale</p>
                 </div>
-                
+
                 <div class="stat-card">
                     <i class="fas fa-tasks"></i>
-                    <h3>3</h3>
+                    <h3>{{ pending_assignments|length }}</h3>
                     <p>Devoirs en Cours</p>
                 </div>
             </div>
@@ -691,141 +566,119 @@
                 <!-- Left Column -->
                 <div class="left-column">
                     <!-- Today's Schedule -->
-                    <div class="panel">
+                    <div class="panel mb-4">
                         <div class="panel-header">
                             <h3>Vos Cours Aujourd'hui</h3>
-                            <a href="#">Voir Tout</a>
+                            <a href="{% url 'etudiant:schedule' %}">Voir Tout</a>
                         </div>
                         <div class="panel-body">
-                            <ul class="class-schedule">
-                                <li class="schedule-item">
-                                    <div class="class-time">09:00</div>
-                                    <div class="class-info">
-                                        <h4>Algorithmes Avancés</h4>
-                                        <p>CS-405 | Informatique</p>
-                                    </div>
-                                    <div class="class-room">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        Bâtiment A, Salle 304
-                                    </div>
-                                </li>
-                                <li class="schedule-item">
-                                    <div class="class-time">14:00</div>
-                                    <div class="class-info">
-                                        <h4>Base de Données</h4>
-                                        <p>CS-301 | Informatique</p>
-                                    </div>
-                                    <div class="class-room">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        Bâtiment B, Salle 112
-                                    </div>
-                                </li>
-                            </ul>
+                            {% if todays_classes %}
+                                <ul class="class-schedule">
+                                    {% for class in todays_classes %}
+                                        <li class="schedule-item">
+                                            <div class="class-time">{{ class.heure_debut|time:"H:i" }}</div>
+                                            <div class="class-info">
+                                                <h4>{{ class.matiere.nom }}</h4>
+                                                <p>{{ class.matiere.code }} | {{ class.matiere.department }}</p>
+                                            </div>
+                                            <div class="class-room">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                {{ class.salle }}
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">Aucun cours aujourd'hui</p>
+                            {% endif %}
                         </div>
                     </div>
-                    
+
                     <!-- Recent Grades -->
                     <div class="panel">
                         <div class="panel-header">
                             <h3>Vos Dernières Notes</h3>
-                            <a href="#">Voir Toutes</a>
+                            <a href="{% url 'etudiant:grades' %}">Voir Toutes</a>
                         </div>
                         <div class="panel-body">
-                            <ul class="grades-list">
-                                <li class="grade-item">
-                                    <div class="grade-value A">16</div>
-                                    <div class="grade-info">
-                                        <h4>Algorithmes Avancés</h4>
-                                        <p>Projet Final | 15 Déc 2023</p>
-                                    </div>
-                                </li>
-                                <li class="grade-item">
-                                    <div class="grade-value B">12</div>
-                                    <div class="grade-info">
-                                        <h4>Base de Données</h4>
-                                        <p>Examen Partiel | 5 Déc 2023</p>
-                                    </div>
-                                </li>
-                                <li class="grade-item">
-                                    <div class="grade-value A">15</div>
-                                    <div class="grade-info">
-                                        <h4>Systèmes d'Exploitation</h4>
-                                        <p>TP 3 | 28 Nov 2023</p>
-                                    </div>
-                                </li>
-                            </ul>
+                            {% if recent_grades %}
+                                <ul class="grades-list">
+                                    {% for grade in recent_grades %}
+                                        <li class="grade-item">
+                                            <div class="grade-value
+                                        {% if grade.valeur >= 16 %}A
+                                        {% elif grade.valeur >= 12 %}B
+                                        {% else %}C
+                                        {% endif %}">
+                                                {{ grade.valeur }}
+                                            </div>
+                                            <div class="grade-info">
+                                                <h4>{{ grade.matiere.nom }}</h4>
+                                                <p>{{ grade.assignment_title|default:"Test" }}
+                                                    | {{ grade.date_attribution|date:"d M Y" }}</p>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">Aucune note disponible</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Right Column -->
                 <div class="right-column">
                     <!-- Upcoming Assignments -->
-                    <div class="panel">
+                    <div class="panel mb-3">
                         <div class="panel-header">
                             <h3>Devoirs à Rendre</h3>
-                            <a href="#">Voir Tous</a>
+                            <a href="{% url 'etudiant:assignments' %}">Voir Tous</a>
                         </div>
                         <div class="panel-body">
-                            <ul class="assignments-list">
-                                <li class="assignment-item">
-                                    <div class="assignment-header">
-                                        <div class="assignment-title">Projet IA</div>
-                                        <div class="assignment-due urgent">Dû demain</div>
-                                    </div>
-                                    <div class="assignment-progress">
-                                        <div class="progress-bar" style="width: 75%"></div>
-                                    </div>
-                                    <div class="assignment-footer">
-                                        <span>Intelligence Artificielle</span>
-                                        <span>75% complété</span>
-                                    </div>
-                                </li>
-                                <li class="assignment-item">
-                                    <div class="assignment-header">
-                                        <div class="assignment-title">Rapport BD</div>
-                                        <div class="assignment-due">Dû dans 5 jours</div>
-                                    </div>
-                                    <div class="assignment-progress">
-                                        <div class="progress-bar" style="width: 30%"></div>
-                                    </div>
-                                    <div class="assignment-footer">
-                                        <span>Base de Données</span>
-                                        <span>30% complété</span>
-                                    </div>
-                                </li>
-                                <li class="assignment-item">
-                                    <div class="assignment-header">
-                                        <div class="assignment-title">Exercices Algèbre</div>
-                                        <div class="assignment-due">Dû dans 7 jours</div>
-                                    </div>
-                                    <div class="assignment-progress">
-                                        <div class="progress-bar" style="width: 90%"></div>
-                                    </div>
-                                    <div class="assignment-footer">
-                                        <span>Mathématiques</span>
-                                        <span>90% complété</span>
-                                    </div>
-                                </li>
-                            </ul>
+                            {% if pending_assignments %}
+                                <ul class="assignments-list">
+                                    {% for assignment in pending_assignments %}
+                                        <li class="assignment-item">
+                                            <div class="assignment-header">
+                                                <div class="assignment-title">{{ assignment.title }}</div>
+                                                <div class="assignment-due">
+                                                    {% if forloop.counter == 1 %}Dû demain
+                                                    {% elif forloop.counter == 2 %}Dû dans 5 jours
+                                                    {% else %}Dû dans 7 jours{% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="assignment-progress">
+                                                <div class="progress-bar" style="width: 0%"></div>
+                                            </div>
+                                            <div class="assignment-footer">
+                                                <span>{{ assignment.matiere.nom }}</span>
+                                                <span>Non commencé</span>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">Aucun devoir en attente</p>
+                            {% endif %}
                         </div>
                     </div>
-                    
+
                     <!-- Quick Actions -->
                     <div class="panel">
                         <div class="panel-header">
                             <h3>Actions Rapides</h3>
                         </div>
                         <div class="panel-body">
-                            <button class="action-btn">
+                            <a href="{% url 'etudiant:submit_assignment' %}" class="action-btn">
                                 <i class="fas fa-upload"></i> Soumettre un Devoir
-                            </button>
-                            <button class="action-btn">
+                            </a>
+                            <a href="{% url 'etudiant:add_event' %}" class="action-btn">
                                 <i class="fas fa-calendar-plus"></i> Ajouter un Événement
-                            </button>
-                            <button class="action-btn">
+                            </a>
+                            <a href="#" class="action-btn">
                                 <i class="fas fa-question-circle"></i> Demander de l'Aide
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -838,30 +691,48 @@
         function toggleSidebar() {
             document.querySelector('.sidebar').classList.toggle('active');
         }
-        
+
         // Notification badge interaction
-        document.querySelector('.notification-bell').addEventListener('click', function() {
+        document.querySelector('.notification-bell').addEventListener('click', function () {
             const badge = this.querySelector('.notification-badge');
             if (badge) {
                 badge.style.display = 'none';
             }
             alert('Vous avez 3 nouvelles notifications');
         });
-        
+
         // Logout button
-        document.querySelector('.logout-btn').addEventListener('click', function() {
+        document.querySelector('.logout-btn').addEventListener('click', function () {
             if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
                 window.location.href = "{% url 'core:logout' %}";
             }
         });
-        
+
         // Make schedule items clickable
         document.querySelectorAll('.schedule-item').forEach(item => {
-            item.addEventListener('click', function() {
+            item.addEventListener('click', function () {
+                const courseId = this.dataset.courseId;
+                // You could fetch additional details via AJAX here
                 alert('Détails du cours: ' + this.querySelector('h4').textContent);
             });
         });
-        
+
+        function updateNotificationCount() {
+            fetch('/api/unread-messages-count/')
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.querySelector('.notification-badge');
+                    if (data.count > 0) {
+                        badge.textContent = data.count;
+                        badge.style.display = 'flex';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                });
+        }
+
+        setInterval(updateNotificationCount, 60000);
+
         // Simulate loading animation for progress bars
         document.querySelectorAll('.progress-bar').forEach(bar => {
             const targetWidth = bar.style.width;
@@ -871,6 +742,6 @@
             }, 300);
         });
     </script>
-</body>
-</html>
+    </body>
+    </html>
 {% endblock %}
