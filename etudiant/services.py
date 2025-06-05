@@ -6,9 +6,6 @@ from prof.models import Note
 
 
 def get_student_dashboard_data(student):
-    today = timezone.now().date()
-    weekday = today.strftime('%a').upper()[:3]  # Get weekday abbreviation (LUN, MAR, etc.)
-
     # Get all courses the student is enrolled in
     courses = Matiere.objects.filter(
         inscription__etudiant=student
@@ -19,11 +16,26 @@ def get_student_dashboard_data(student):
         etudiant=student
     ).aggregate(avg_grade=Avg('valeur'))['avg_grade'] or 0
 
-    # Get today's schedule
+    # Get current weekday in your format (3-letter uppercase)
+    today = timezone.now()
+    # French weekday mapping
+    weekday_map = {
+        'MON': 'LUN',
+        'TUE': 'MAR',
+        'WED': 'MER',
+        'THU': 'JEU',
+        'FRI': 'VEN',
+        'SAT': 'SAM'
+    }
+
+    weekday = weekday_map[today.strftime('%a').upper()]
+
+    # Alternative approach - get courses first, then schedules
+    student_course_ids = student.inscriptions.values_list('matiere_id', flat=True)
     todays_classes = EmploiDuTemps.objects.filter(
-        matiere__inscription__etudiant=student,
+        matiere_id__in=student_course_ids,
         jour=weekday
-    ).order_by('heure_debut').select_related('matiere')
+    ).order_by('heure_debut')
 
     # Get pending assignments (submissions not yet made)
     pending_assignments = []

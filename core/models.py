@@ -9,12 +9,19 @@ class Utilisateur(AbstractUser):
         ('professeur', 'Professeur'),
         ('etudiant', 'Étudiant'),
     )
+    FILLIERE_CHOICES = (
+        ('Informatique', 'Informatique'),
+        ('Finance', 'Finance'),
+        ('Industruelle', 'Industruelle'),
+    )
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     date_naissance = models.DateField(null=True, blank=True)
     telephone = models.CharField(max_length=20, blank=True)
     adresse = models.TextField(blank=True)
     date_inscription = models.DateTimeField(auto_now_add=True)
+    filliere=models.CharField(max_length=20,choices=FILLIERE_CHOICES,blank=True)
+
 
     class Meta:
         verbose_name = "Utilisateur"
