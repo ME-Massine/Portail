@@ -1,100 +1,186 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load dashboard_tags %}
 
-{% block nav %}
-{% endblock %}
-
-{% block content %}
+{% block extra_css %}
     <style>
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            width: 100%;
+        }
 
+        .page-title h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #e0e3e7;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-card i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+            color: var(--dark-color);
+        }
+
+        .stat-card p {
+            color: #64748b;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Charts Section */
         .charts-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            width: 100%;
         }
 
         .chart-container {
             background: white;
-            border-radius: var(--card-radius);
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            height: 400px;
         }
 
         .chart-container h4 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: var(--primary);
+            color: var(--dark-color);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
         }
 
-        @media (max-width: 768px) {
-            .charts-row {
-                grid-template-columns: 1fr;
-            }
+        /* Grades Table */
+        .grades-table-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow-x: auto;
+            width: 100%;
         }
 
-        canvas {
-            max-height: 300px;
-            width: 100% !important;
-        }
-
-        .chart-container {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        /* Grades Table Styles */
         .grades-table {
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
+            border-collapse: separate;
+            border-spacing: 0;
         }
 
         .grades-table th {
-            background-color: #f8f9fa;
-            padding: 12px 15px;
-            text-align: left;
+            background-color: #f8fafc;
+            padding: 1rem;
             font-weight: 600;
-            color: #2c3e50;
-            border-bottom: 2px solid #e0e3e7;
+            color: var(--dark-color);
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
         }
 
         .grades-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e0e3e7;
-            vertical-align: middle;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
         }
 
         .grade-row:hover {
-            background-color: #f5f7ff;
+            background-color: #f8fafc;
         }
 
         .grade-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            text-align: center;
-            line-height: 40px;
             font-weight: 600;
+            font-size: 0.9rem;
         }
 
-        .grade-badge.A {
+        .grade-badge[data-grade="A"] {
             background-color: rgba(76, 201, 240, 0.1);
-            color: #4cc9f0;
-            border: 2px solid #4cc9f0;
+            color: var(--success-color);
+            border: 2px solid var(--success-color);
         }
 
-        .grade-badge.B {
+        .grade-badge[data-grade="B"] {
             background-color: rgba(248, 150, 30, 0.1);
-            color: #f8961e;
-            border: 2px solid #f8961e;
+            color: var(--warning-color);
+            border: 2px solid var(--warning-color);
         }
 
-        .grade-badge.C {
+        .grade-badge[data-grade="C"] {
             background-color: rgba(239, 35, 60, 0.1);
-            color: #ef233c;
-            border: 2px solid #ef233c;
+            color: var(--danger-color);
+            border: 2px solid var(--danger-color);
         }
 
         .subject-info {
@@ -103,14 +189,16 @@
         }
 
         .subject-code {
-            font-size: 12px;
-            color: #7f8c8d;
+            font-size: 0.8rem;
+            color: #64748b;
         }
 
         .subject-name {
             font-weight: 500;
+            color: var(--dark-color);
         }
 
+        /* Comment Tooltip */
         .comment-tooltip {
             position: relative;
             display: inline-block;
@@ -132,6 +220,7 @@
             transform: translateX(-50%);
             opacity: 0;
             transition: opacity 0.3s;
+            font-size: 12px;
         }
 
         .comment-tooltip:hover .tooltip-text {
@@ -139,301 +228,222 @@
             opacity: 1;
         }
 
-        /* Grade Distribution Styles */
-        .grade-distribution {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e3e7;
-        }
-
-        .distribution-bars {
-            margin-top: 15px;
-        }
-
-        .distribution-bar {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .bar-label {
-            width: 80px;
-            font-weight: 500;
-        }
-
-        .bar-container {
-            flex-grow: 1;
-            height: 20px;
-            background-color: #ecf0f1;
-            border-radius: 10px;
-            margin: 0 10px;
-            overflow: hidden;
-        }
-
-        .bar-fill {
-            height: 100%;
-            background-color: #4361ee;
-            transition: width 1s ease;
-        }
-
-        .bar-count {
-            width: 40px;
-            text-align: right;
-        }
-
-        /* Responsive Styles */
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .table-responsive {
-                overflow-x: auto;
+            .header {
+                flex-direction: column;
+                align-items: stretch;
             }
 
-            .grades-table {
-                min-width: 600px;
+            .header-actions {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+
+            .grades-table-container {
+                padding: 1rem;
+            }
+
+            .chart-container {
+                height: 300px;
             }
         }
     </style>
+{% endblock %}
 
-    <div class="main-content">
-        <header class="header">
-            <div class="page-title">
-                <h1>Toutes Mes Notes</h1>
-            </div>
-        </header>
+{% block content %}
+    <!-- Header -->
+    <header class="header">
+        <div class="page-title">
+            <h1>Toutes Mes Notes</h1>
+        </div>
 
-        <div class="dashboard-content">
-            <!-- Stats Summary -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <i class="fas fa-star"></i>
-                    <h3>{{ average_grade|default:"--" }}</h3>
-                    <p>Moyenne Générale</p>
-                </div>
-
-                <div class="stat-card">
-                    <i class="fas fa-trophy"></i>
-                    <h3>{{ best_grade.valeur|default:"--" }}</h3>
-                    <p>Meilleure Note ({{ best_grade.matiere.nom|default:"" }})</p>
-                </div>
-
-                <div class="stat-card">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>{{ worst_grade.valeur|default:"--" }}</h3>
-                    <p>Plus basse Note ({{ worst_grade.matiere.nom|default:"" }})</p>
-                </div>
-
-                <div class="stat-card">
-                    <i class="fas fa-clipboard-list"></i>
-                    <h3>{{ total_grades }}</h3>
-                    <p>Notes au Total</p>
-                </div>
+        <div class="header-actions">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="grade-search" placeholder="Rechercher une matière...">
             </div>
 
-            <!-- Grades Table -->
-            <div class="panel">
-                <div class="panel-header">
-                    <h3>Détail des Notes</h3>
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="grade-search" placeholder="Rechercher une matière...">
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="grades-table">
-                            <thead>
-                            <tr>
-                                <th>Matière</th>
-                                <th>Note</th>
-                                <th>Type</th>
-                                <th>Date</th>
-                                <th>Commentaire</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for grade in grades %}
-                                <tr class="grade-row">
-                                    <td>
-                                        <div class="subject-info">
-                                            <span class="subject-code">{{ grade.matiere.code }}</span>
-                                            <span class="subject-name">{{ grade.matiere.nom }}</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                    <span class="grade-badge {% if grade.valeur >= 16 %}A{% elif grade.valeur >= 12 %}B{% else %}C{% endif %}">
-                                        {{ grade.valeur }}
-                                    </span>
-                                    </td>
-                                    <td>{{ grade.assignment_title|default:"Examen" }}</td>
-                                    <td>{{ grade.date_attribution|date:"d/m/Y" }}</td>
-                                    <td class="comment-cell">
-                                        {% if grade.commentaire %}
-                                            <div class="comment-tooltip">
-                                                <i class="fas fa-comment"></i>
-                                                <span class="tooltip-text">{{ grade.commentaire }}</span>
-                                            </div>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="5" class="no-grades">Aucune note disponible</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Charts Section -->
-                    <div class="charts-row">
-                        <!-- Grade Distribution Chart -->
-                        <div class="chart-container">
-                            <h4>Répartition des Notes</h4>
-                            <canvas id="gradeDistributionChart"></canvas>
-                        </div>
-
-                        <!-- Grade Trend Chart -->
-                        <div class="chart-container">
-                            <h4>Évolution Mensuelle</h4>
-                            <canvas id="gradeTrendChart"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Grade Distribution Chart (optional) -->
-                    <div class="grade-distribution">
-                        <h4>Répartition des Notes</h4>
-                        <div class="distribution-bars">
-                            {% for range in grade_ranges %}
-                                <div class="distribution-bar">
-                                    <div class="bar-label">{{ range.label }}</div>
-                                    <div class="bar-container">
-                                        <div class="bar-fill" style="width: {{ range.percentage }}%"></div>
-                                    </div>
-                                    <div class="bar-count">{{ range.count }}</div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">{{ unread_messages }}</span>
             </div>
+        </div>
+    </header>
+
+    <!-- Stats Summary -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="fas fa-star"></i>
+            <h3>{{ average_grade|default:"--" }}</h3>
+            <p>Moyenne Générale</p>
+        </div>
+
+        <div class="stat-card">
+            <i class="fas fa-trophy"></i>
+            <h3>{{ best_grade.valeur|default:"--" }}</h3>
+            <p>Meilleure Note ({{ best_grade.matiere.nom|default:"" }})</p>
+        </div>
+
+        <div class="stat-card">
+            <i class="fas fa-chart-line"></i>
+            <h3>{{ worst_grade.valeur|default:"--" }}</h3>
+            <p>Plus basse Note ({{ worst_grade.matiere.nom|default:"" }})</p>
+        </div>
+
+        <div class="stat-card">
+            <i class="fas fa-clipboard-list"></i>
+            <h3>{{ total_grades }}</h3>
+            <p>Notes au Total</p>
         </div>
     </div>
 
+    <!-- Charts Section -->
+    <div class="charts-row">
+        <div class="chart-container">
+            <h4>Évolution des Notes</h4>
+            <canvas id="gradesEvolutionChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h4>Distribution des Notes</h4>
+            <canvas id="gradesDistributionChart"></canvas>
+        </div>
+    </div>
 
+    <!-- Grades Table -->
+    <div class="grades-table-container">
+        <table class="grades-table">
+            <thead>
+            <tr>
+                <th>Matière</th>
+                <th>Note</th>
+                <th>Date</th>
+                <th>Commentaire</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for grade in grades %}
+                <tr class="grade-row">
+                    <td>
+                        <div class="subject-info">
+                            <span class="subject-name">{{ grade.matiere.nom }}</span>
+                            <span class="subject-code">{{ grade.matiere.code }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="grade-badge"
+                             data-grade="{% if grade.valeur >= 16 %}A{% elif grade.valeur >= 12 %}B{% else %}C{% endif %}">
+                            {{ grade.valeur }}
+                        </div>
+                    </td>
+                    <td>{{ grade.date|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if grade.commentaire %}
+                            <div class="comment-tooltip">
+                                <i class="fas fa-comment"></i>
+                                <span class="tooltip-text">{{ grade.commentaire }}</span>
+                            </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
 
+{% block extra_js %}
     <script>
+        // Initialize charts when the page loads
         document.addEventListener('DOMContentLoaded', function () {
-            // Grade Distribution Chart
-            const distributionCtx = document.getElementById('gradeDistributionChart').getContext('2d');
-            new Chart(distributionCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['16-20', '12-15', '8-11', '0-7'],
-                    datasets: [{
-                        data: [
-                            {{ grade_distribution.16_20 }},  <!-- Using underscore -->
-                            {{ grade_distribution.12_15 }},
-                            {{ grade_distribution.8_11 }},
-                            {{ grade_distribution.0_7 }}
-                        ],
-                        backgroundColor: [
-                            '#4cc9f0',  // Blue for 16-20
-                            '#4361ee',  // Purple for 12-15
-                            '#f8961e',  // Orange for 8-11
-                            '#ef233c'   // Red for 0-7
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    return `${context.label}: ${context.raw} notes`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Grade Trend Chart
-            const trendCtx = document.getElementById('gradeTrendChart').getContext('2d');
-            new Chart(trendCtx, {
+            // Grades Evolution Chart
+            const evolutionCtx = document.getElementById('gradesEvolutionChart').getContext('2d');
+            new Chart(evolutionCtx, {
                 type: 'line',
                 data: {
-                    labels: [
-                        {% for month in monthly_trends %}
-                            "{{ month.month|date:'M Y' }}"{% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                    ],
+                    labels: {{ dates|safe }},
                     datasets: [{
-                        label: 'Moyenne Mensuelle',
-                        data: [
-                            {% for month in monthly_trends %}
-                                {{ month.avg_grade|floatformat:2 }}{% if not forloop.last %},{% endif %}
-                            {% endfor %}
-                        ],
-                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        label: 'Notes',
+                        data: {{ values|safe }},
                         borderColor: '#4361ee',
-                        borderWidth: 2,
-                        tension: 0.3,
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        tension: 0.4,
                         fill: true
                     }]
                 },
                 options: {
                     responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            min: 0,
-                            max: 20,
-                            ticks: {
-                                stepSize: 2
-                            }
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
                         }
                     },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 20
+                        }
+                    }
+                }
+            });
+
+            // Grades Distribution Chart
+            const distributionCtx = document.getElementById('gradesDistributionChart').getContext('2d');
+            new Chart(distributionCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['A', 'B', 'C'],
+                    datasets: [{
+                        data: {{ distribution|safe }},
+                        backgroundColor: [
+                            'rgba(76, 201, 240, 0.8)',
+                            'rgba(248, 150, 30, 0.8)',
+                            'rgba(239, 35, 60, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    return `Moyenne: ${context.raw}/20`;
-                                }
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
                             }
                         }
                     }
                 }
             });
         });
+
         // Search functionality
-        document.getElementById('grade-search').addEventListener('input', function () {
-            const searchTerm = this.value.toLowerCase();
+        document.getElementById('grade-search').addEventListener('input', function (e) {
+            const searchTerm = e.target.value.toLowerCase();
             const rows = document.querySelectorAll('.grade-row');
 
             rows.forEach(row => {
                 const subjectName = row.querySelector('.subject-name').textContent.toLowerCase();
-                if (subjectName.includes(searchTerm)) {
+                const subjectCode = row.querySelector('.subject-code').textContent.toLowerCase();
+
+                if (subjectName.includes(searchTerm) || subjectCode.includes(searchTerm)) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
                 }
-            });
-        });
-
-        // Animate grade distribution bars on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            const bars = document.querySelectorAll('.bar-fill');
-            bars.forEach(bar => {
-                const targetWidth = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = targetWidth;
-                }, 100);
             });
         });
     </script>

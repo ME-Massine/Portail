@@ -121,7 +121,6 @@
     }
 
 
-
     .page-title h1 {
         font-size: 24px;
         font-weight: 600;
@@ -168,7 +167,6 @@
     }
 
 
-
     .stat-card i {
         font-size: 32px;
         margin-bottom: 15px;
@@ -199,7 +197,6 @@
     }
 
 
-
     .class-info h4 {
         font-size: 16px;
         margin-bottom: 5px;
@@ -214,7 +211,6 @@
     .class-room i {
         margin-right: 5px;
     }
-
 
 
     .grade-info h4 {
@@ -234,7 +230,6 @@
             transform: translateX(-100%);
             z-index: 100;
         }
-
 
 
         .sidebar.active {
@@ -262,58 +257,57 @@
         <div class="user-avatar">{{ request.user.first_name|first }}{{ request.user.last_name|first }}</div>
         <div class="user-info">
             <h3>{{ request.user.first_name }} {{ request.user.last_name }}</h3>
-            <p>Étudiant en Informatique</p>
+            <p>Étudiant en {{ request.user.filliere }}</p>
         </div>
     </div>
 
-    <ul class="sidebar-menu">
-        <li class="menu-item active">
-            <a href="#">
-                <i class="fas fa-home"></i>
-                Tableau de Bord
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="#">
-                <i class="fas fa-book-open"></i>
-                Mes Cours
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="#">
-                <i class="fas fa-calendar-alt"></i>
-                Emploi du Temps
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="#">
-                <i class="fas fa-tasks"></i>
-                Devoirs
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="#">
-                <i class="fas fa-chart-bar"></i>
-                Notes
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="#">
-                <i class="fas fa-comments"></i>
-                Messages
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="#">
-                <i class="fas fa-file-alt"></i>
-                Ressources
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="#">
-                <i class="fas fa-cog"></i>
-                Paramètres
-            </a>
-        </li>
+    <li class="menu-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+        <a href="{% url 'etudiant:dashboard' %}">
+            <i class="fas fa-home"></i>
+            Tableau de Bord
+        </a>
+    </li>
+    <li class="menu-item">
+        <a href="#">
+            <i class="fas fa-book-open"></i>
+            Mes Cours
+        </a>
+    </li>
+    <li class="menu-item">
+        <a href="#">
+            <i class="fas fa-calendar-alt"></i>
+            Emploi du Temps
+        </a>
+    </li>
+    <li class="menu-item">
+        <a href="#">
+            <i class="fas fa-tasks"></i>
+            Devoirs
+        </a>
+    </li>
+    <li class="menu-item {% if request.resolver_match.url_name == 'notes' %}active{% endif %}">
+        <a href="{% url 'etudiant:notes' %}">
+            <i class="fas fa-chart-bar"></i>
+            Notes
+        </a>
+    </li>
+    <li class="menu-item">
+        <a href="#">
+            <i class="fas fa-comments"></i>
+            Messages
+        </a>
+    </li>
+    <li class="menu-item">
+        <a href="#">
+            <i class="fas fa-file-alt"></i>
+            Ressources
+        </a>
+    </li>
+    <li class="menu-item">
+        <a href="#">
+            <i class="fas fa-cog"></i>
+            Paramètres
+        </a>
+    </li>
     </ul>
 </aside>
