@@ -319,48 +319,68 @@
 
     <!-- Grades Table -->
     <div class="grades-table-container">
-        <table class="grades-table">
-            <thead>
-            <tr>
-                <th>Matière</th>
-                <th>Note</th>
-                <th>Date</th>
-                <th>Commentaire</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for grade in grades %}
-                <tr class="grade-row">
-                    <td>
-                        <div class="subject-info">
-                            <span class="subject-name">{{ grade.matiere.nom }}</span>
-                            <span class="subject-code">{{ grade.matiere.code }}</span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="grade-badge"
-                             data-grade="{% if grade.valeur >= 16 %}A{% elif grade.valeur >= 12 %}B{% else %}C{% endif %}">
-                            {{ grade.valeur }}
-                        </div>
-                    </td>
-                    <td>{{ grade.date|date:"d/m/Y" }}</td>
-                    <td>
-                        {% if grade.commentaire %}
-                            <div class="comment-tooltip">
-                                <i class="fas fa-comment"></i>
-                                <span class="tooltip-text">{{ grade.commentaire }}</span>
-                            </div>
-                        {% endif %}
-                    </td>
+        {% if grades %}
+            <table class="grades-table">
+                <thead>
+                <tr>
+                    <th>Matière</th>
+                    <th>Note</th>
+                    <th>Date</th>
+                    <th>Commentaire</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for grade in grades %}
+                    <tr class="grade-row">
+                        <td>
+                            <div class="subject-info">
+                                <span class="subject-name">{{ grade.matiere.nom }}</span>
+                                <span class="subject-code">{{ grade.matiere.code }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="grade-badge"
+                                 data-grade="{% if grade.valeur >= 16 %}A{% elif grade.valeur >= 12 %}B{% else %}C{% endif %}">
+                                {{ grade.valeur }}
+                            </div>
+                        </td>
+                        <td>{{ grade.date|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if grade.commentaire %}
+                                <div class="comment-tooltip">
+                                    <i class="fas fa-comment"></i>
+                                    <span class="tooltip-text">{{ grade.commentaire }}</span>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="text-center text-muted py-4">
+                <i class="fas fa-info-circle fa-2x mb-2"></i>
+                <p>Aucune note n'a encore été enregistrée.</p>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 
 {% block extra_js %}
     <script>
+        const labels = {{ dates|default:"[]"|safe }};
+        const values = {{ values|default:"[]"|safe }};
+        const distributionData = {{ distribution|default:"[]"|safe }};
+
+
+
+        document.getElementById('grade-search').addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            document.querySelectorAll('.grade-row').forEach(row => {
+                const subject = row.querySelector('.subject-name').textContent.toLowerCase();
+                row.style.display = subject.includes(query) ? '' : 'none';
+            });
+        });
         // Initialize charts when the page loads
         document.addEventListener('DOMContentLoaded', function () {
             // Grades Evolution Chart

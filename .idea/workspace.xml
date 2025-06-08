@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Improve student dashboard with grades features and styling&#10;&#10;Refactored `get_student_dashboard_data` to use a proper weekday mapping for schedule retrieval. Introduced a new `notes_view` to manage student grade details with distribution and trends. Updated templates, URLs, and added styling for grades and dashboard UI, including new filtering and Chart.js integration.">
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/portail.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/portail.iml" afterDir="false" />
+    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Refactor dashboard template and import jQuery dependency.&#10;&#10;Moved inline CSS for the dashboard template into a separate block for cleaner structure and maintainability. Added `jquery-3.5.1.slim` as a library dependency in the project configuration.">
+      <change afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/cours.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/notes.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/notes.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etudiant/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/etudiant/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sidebar.html" afterDir="false" />
@@ -130,7 +129,7 @@
       <workItem from="1748904532845" duration="9386000" />
       <workItem from="1748983941781" duration="7969000" />
       <workItem from="1749033290266" duration="14931000" />
-      <workItem from="1749305328345" duration="3607000" />
+      <workItem from="1749305328345" duration="6049000" />
     </task>
     <task id="LOCAL-00001" summary="setting app apps for each actor">
       <option name="closed" value="true" />
@@ -196,7 +195,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749166919930</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Refactor dashboard template and import jQuery dependency.&#10;&#10;Moved inline CSS for the dashboard template into a separate block for cleaner structure and maintainability. Added `jquery-3.5.1.slim` as a library dependency in the project configuration.">
+      <option name="closed" value="true" />
+      <created>1749312063923</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1749312063923</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -222,6 +229,7 @@
     <MESSAGE value="Add features for student dashboard and database migrations.&#10;&#10;Introduced `get_student_dashboard_data` service to aggregate dashboard data like schedule, grades, attendance, and assignments. Created initial migrations for professor models including `Note` and `LectureMaterial` for improved functionality. Updated URLs, templates, and added custom template tags for dynamic dashboard UI and features." />
     <MESSAGE value="Refactor student dashboard data retrieval logic&#10;&#10;Revised logic in `get_student_dashboard_data` by simplifying weekday calculations and improving query efficiency. Introduced mapping for French weekday abbreviations and optimized course-related database queries. Added debug logs to enhance traceability during development." />
     <MESSAGE value="Improve student dashboard with grades features and styling&#10;&#10;Refactored `get_student_dashboard_data` to use a proper weekday mapping for schedule retrieval. Introduced a new `notes_view` to manage student grade details with distribution and trends. Updated templates, URLs, and added styling for grades and dashboard UI, including new filtering and Chart.js integration." />
-    <option name="LAST_COMMIT_MESSAGE" value="Improve student dashboard with grades features and styling&#10;&#10;Refactored `get_student_dashboard_data` to use a proper weekday mapping for schedule retrieval. Introduced a new `notes_view` to manage student grade details with distribution and trends. Updated templates, URLs, and added styling for grades and dashboard UI, including new filtering and Chart.js integration." />
+    <MESSAGE value="Refactor dashboard template and import jQuery dependency.&#10;&#10;Moved inline CSS for the dashboard template into a separate block for cleaner structure and maintainability. Added `jquery-3.5.1.slim` as a library dependency in the project configuration." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor dashboard template and import jQuery dependency.&#10;&#10;Moved inline CSS for the dashboard template into a separate block for cleaner structure and maintainability. Added `jquery-3.5.1.slim` as a library dependency in the project configuration." />
   </component>
 </project>

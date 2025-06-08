@@ -7,7 +7,9 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 import json
 
-from prof.models import Note
+from .models import AssignmentSubmission
+from core.models import Matiere, Inscription
+from prof.models import Note, LectureMaterial
 from .services import get_student_dashboard_data
 
 
@@ -17,8 +19,64 @@ def dashboard(request):
     context = get_student_dashboard_data(request.user)
     return render(request, 'etudiant/dashboard.html', context)
 
+
 def schedule_view(request):
     pass
+
+
+def cours_view(request):
+    user = request.user
+
+    # Get all course inscriptions for the logged-in student
+    inscriptions = Inscription.objects.filter(etudiant=user).select_related('matiere')
+    matieres = [inscription.matiere for inscription in inscriptions]
+
+    # Fetch lecture material and assignment counts per subject
+    course_data = []
+    for matiere in matieres:
+        profs = matiere.professeurs.all()
+        materials_count = LectureMaterial.objects.filter(matiere=matiere, is_visible=True).count()
+        submissions_count = AssignmentSubmission.objects.filter(
+            inscription__etudiant=user, inscription__matiere=matiere
+        ).count()
+
+        course_data.append({
+            'matiere': matiere,
+            'professeurs': profs,
+            'materials_count': materials_count,
+            'submissions_count': submissions_count,
+            'inscription_date': inscriptions.get(matiere=matiere).date_inscription,
+        })
+
+    # Basic stats
+    total_courses = len(course_data)
+    total_materials = sum(item['materials_count'] for item in course_data)
+    total_submissions = sum(item['submissions_count'] for item in course_data)
+
+    # Distribution of course enrollment over past 6 months
+    six_months_ago = timezone.now() - timedelta(days=180)
+    monthly_distribution = (
+        Inscription.objects.filter(etudiant=user, date_inscription__gte=six_months_ago)
+        .annotate(month=TruncMonth('date_inscription'))
+        .values('month')
+        .annotate(count=Count('id'))
+        .order_by('month')
+    )
+
+    chart_dates = [entry['month'].strftime('%b %Y') for entry in monthly_distribution]
+    chart_values = [entry['count'] for entry in monthly_distribution]
+
+    context = {
+        'course_data': course_data,
+        'total_courses': total_courses,
+        'total_materials': total_materials,
+        'total_submissions': total_submissions,
+        'chart_dates': json.dumps(chart_dates),
+        'chart_values': json.dumps(chart_values),
+    }
+
+    return render(request, "etudiant/cours.html", context)
+
 
 def notes_view(request):
     grades = Note.objects.filter(
@@ -63,11 +121,14 @@ def notes_view(request):
     }
     return render(request, "etudiant/notes.html", context)
 
+
 def assignments_view(request):
     pass
 
+
 def submit_assignment(request):
     pass
+
 
 def add_event(request):
     pass

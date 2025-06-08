@@ -267,8 +267,8 @@
             Tableau de Bord
         </a>
     </li>
-    <li class="menu-item">
-        <a href="#">
+    <li class="menu-item {% if request.resolver_match.url_name == 'courses' %}active{% endif %}">
+        <a href="{% url 'etudiant:courses' %}">
             <i class="fas fa-book-open"></i>
             Mes Cours
         </a>

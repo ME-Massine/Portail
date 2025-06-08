@@ -3,6 +3,7 @@ from etudiant import views
 
 urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('courses/', views.cours_view, name='courses'),
     path('schedule/', views.schedule_view, name='schedule'),
     path('Notes/', views.notes_view, name='notes'),
     path('assignments/', views.assignments_view, name='assignments'),
