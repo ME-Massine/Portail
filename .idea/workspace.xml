@@ -4,19 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Improve student dashboard with grades features and styling&#10;&#10;Refactored `get_student_dashboard_data` to use a proper weekday mapping for schedule retrieval. Introduced a new `notes_view` to manage student grade details with distribution and trends. Updated templates, URLs, and added styling for grades and dashboard UI, including new filtering and Chart.js integration.">
-      <change afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/voir_materiaux.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/portail.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/portail.iml" afterDir="false" />
+    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Refactor scheduling, add materials view, and improve UI&#10;&#10;Renamed schedule view and URLs, introduced materials view, and refined course and notes templates. Updated styles for better usability and added search functionality for materials and grades.">
+      <change afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/devoirs.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/emploi.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/etudiant/templatetags/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/etudiant/templatetags/dict_extras.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/services.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/cours.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/cours.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/notes.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/notes.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/etudiant/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/etudiant/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portail/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/portail/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portail/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/portail/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sidebar.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -202,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749166919930</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Refactor scheduling, add materials view, and improve UI&#10;&#10;Renamed schedule view and URLs, introduced materials view, and refined course and notes templates. Updated styles for better usability and added search functionality for materials and grades.">
+      <option name="closed" value="true" />
+      <created>1749408624753</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1749408624753</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,7 +216,15 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ID_WIDTH">
+                <map>
+                  <entry key="Table.Default.Author.ColumnIdWidth" value="91" />
+                  <entry key="Table.Default.Date.ColumnIdWidth" value="146" />
+                  <entry key="Table.GitHub.CommitStatus.ColumnIdWidth" value="32" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -228,6 +239,8 @@
     <MESSAGE value="Add features for student dashboard and database migrations.&#10;&#10;Introduced `get_student_dashboard_data` service to aggregate dashboard data like schedule, grades, attendance, and assignments. Created initial migrations for professor models including `Note` and `LectureMaterial` for improved functionality. Updated URLs, templates, and added custom template tags for dynamic dashboard UI and features." />
     <MESSAGE value="Refactor student dashboard data retrieval logic&#10;&#10;Revised logic in `get_student_dashboard_data` by simplifying weekday calculations and improving query efficiency. Introduced mapping for French weekday abbreviations and optimized course-related database queries. Added debug logs to enhance traceability during development." />
     <MESSAGE value="Improve student dashboard with grades features and styling&#10;&#10;Refactored `get_student_dashboard_data` to use a proper weekday mapping for schedule retrieval. Introduced a new `notes_view` to manage student grade details with distribution and trends. Updated templates, URLs, and added styling for grades and dashboard UI, including new filtering and Chart.js integration." />
-    <option name="LAST_COMMIT_MESSAGE" value="Improve student dashboard with grades features and styling&#10;&#10;Refactored `get_student_dashboard_data` to use a proper weekday mapping for schedule retrieval. Introduced a new `notes_view` to manage student grade details with distribution and trends. Updated templates, URLs, and added styling for grades and dashboard UI, including new filtering and Chart.js integration." />
+    <MESSAGE value="Add &quot;filliere&quot; field to Utilisateur and UI/UX enhancements&#10;&#10;Added a new &quot;filliere&quot; field to the Utilisateur model via migration. Improved student views, including new paths, a materials view, and updated dashboard/course templates with enhanced UI/UX features. Fixed minor logic and layout issues in templates and JavaScript." />
+    <MESSAGE value="Refactor scheduling, add materials view, and improve UI&#10;&#10;Renamed schedule view and URLs, introduced materials view, and refined course and notes templates. Updated styles for better usability and added search functionality for materials and grades." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor scheduling, add materials view, and improve UI&#10;&#10;Renamed schedule view and URLs, introduced materials view, and refined course and notes templates. Updated styles for better usability and added search functionality for materials and grades." />
   </component>
 </project>

@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
@@ -8,7 +9,7 @@ from django.utils import timezone
 import json
 
 from .models import AssignmentSubmission
-from core.models import Matiere, Inscription
+from core.models import Matiere, Inscription, EmploiDuTemps
 from prof.models import Note, LectureMaterial
 from .services import get_student_dashboard_data
 
@@ -21,7 +22,33 @@ def dashboard(request):
 
 
 def emploi_du_temps(request):
-    pass
+    # Get all schedule entries ordered by day and start time
+    entries = EmploiDuTemps.objects.select_related('matiere').all().order_by('jour', 'heure_debut')
+
+    # Build timetable as nested dict: timetable[jour][heure_debut] = entry
+    timetable = defaultdict(dict)
+    for entry in entries:
+        heure_str = entry.heure_debut.strftime("%H:%M")
+        timetable[entry.jour][heure_str] = entry
+
+    # Flatten timetable to keys like "LUN,08:00" for easy access in template
+    flat_timetable = {}
+    for jour, day_slots in timetable.items():
+        for heure, slot in day_slots.items():
+            key = f"{jour},{heure}"
+            flat_timetable[key] = slot
+
+    # Prepare list of days and time slots to display (you can adjust hours as needed)
+    jours = ['LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM']
+    heures = [f"{h:02d}:00" for h in range(8, 19)]  # 8:00 to 18:00 for example
+
+    context = {
+        'flat_timetable': flat_timetable,
+        'jours': jours,
+        'heures': heures,
+    }
+    return render(request, 'etudiant/emploi.html', context)
+
 
 @login_required(login_url='login_view')
 def cours_view(request):
@@ -145,8 +172,8 @@ def voir_materiaux(request):
     return render(request, 'etudiant/voir_materiaux.html', context)
 
 
-def assignments_view(request):
-    pass
+def devoirs_view(request):
+    return render(request, 'etudiant/devoirs.html')
 
 
 def submit_assignment(request):
