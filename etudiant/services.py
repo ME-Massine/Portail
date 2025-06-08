@@ -25,7 +25,8 @@ def get_student_dashboard_data(student):
         'WED': 'MER',
         'THU': 'JEU',
         'FRI': 'VEN',
-        'SAT': 'SAM'
+        'SAT': 'SAM',
+        'SUN':'DIM'
     }
 
     weekday = weekday_map[today.strftime('%a').upper()]

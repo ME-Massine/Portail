@@ -20,10 +20,10 @@ def dashboard(request):
     return render(request, 'etudiant/dashboard.html', context)
 
 
-def schedule_view(request):
+def emploi_du_temps(request):
     pass
 
-
+@login_required(login_url='login_view')
 def cours_view(request):
     user = request.user
 
@@ -40,12 +40,13 @@ def cours_view(request):
             inscription__etudiant=user, inscription__matiere=matiere
         ).count()
 
+        inscriptions_by_matiere = {inscription.matiere: inscription for inscription in inscriptions}
         course_data.append({
             'matiere': matiere,
             'professeurs': profs,
             'materials_count': materials_count,
             'submissions_count': submissions_count,
-            'inscription_date': inscriptions.get(matiere=matiere).date_inscription,
+            'inscription_date': inscriptions_by_matiere[matiere].date_inscription
         })
 
     # Basic stats
@@ -120,6 +121,28 @@ def notes_view(request):
         'distribution': json.dumps(distribution),
     }
     return render(request, "etudiant/notes.html", context)
+
+
+def voir_materiaux(request):
+    # Get all courses with their visible materials prefetched
+    matieres = Matiere.objects.all().order_by('nom').prefetch_related(
+        'lecturematerial_set'  # reverse relation from LectureMaterial to Matiere
+    )
+
+    # For each course, filter only visible materials
+    # You can do filtering in template or prepare dict here
+    matieres_with_materials = []
+    for matiere in matieres:
+        visible_materials = matiere.lecturematerial_set.filter(is_visible=True)
+        matieres_with_materials.append({
+            'matiere': matiere,
+            'materials': visible_materials
+        })
+
+    context = {
+        'matieres_with_materials': matieres_with_materials
+    }
+    return render(request, 'etudiant/voir_materiaux.html', context)
 
 
 def assignments_view(request):

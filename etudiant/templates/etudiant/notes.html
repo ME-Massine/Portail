@@ -271,10 +271,7 @@
                 <input type="text" id="grade-search" placeholder="Rechercher une matière...">
             </div>
 
-            <div class="notification-bell">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">{{ unread_messages }}</span>
-            </div>
+
         </div>
     </header>
 
@@ -372,8 +369,7 @@
         const values = {{ values|default:"[]"|safe }};
         const distributionData = {{ distribution|default:"[]"|safe }};
 
-
-
+        // Search filter for subjects
         document.getElementById('grade-search').addEventListener('input', function () {
             const query = this.value.toLowerCase();
             document.querySelectorAll('.grade-row').forEach(row => {
@@ -381,17 +377,18 @@
                 row.style.display = subject.includes(query) ? '' : 'none';
             });
         });
-        // Initialize charts when the page loads
+
+        // Initialize charts on page load
         document.addEventListener('DOMContentLoaded', function () {
-            // Grades Evolution Chart
+            // Evolution Chart
             const evolutionCtx = document.getElementById('gradesEvolutionChart').getContext('2d');
             new Chart(evolutionCtx, {
                 type: 'line',
                 data: {
-                    labels: {{ dates|safe }},
+                    labels: labels,
                     datasets: [{
                         label: 'Notes',
-                        data: {{ values|safe }},
+                        data: values,
                         borderColor: '#4361ee',
                         backgroundColor: 'rgba(67, 97, 238, 0.1)',
                         tension: 0.4,
@@ -401,49 +398,57 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: 20
+                            max: 20,
+                            ticks: {
+                                stepSize: 2
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
                         }
                     }
                 }
             });
 
-            // Grades Distribution Chart
+            // Distribution Chart
             const distributionCtx = document.getElementById('gradesDistributionChart').getContext('2d');
             new Chart(distributionCtx, {
                 type: 'bar',
                 data: {
-                    labels: ['A', 'B', 'C'],
+                    labels: ['A (16-20)', 'B (12-15.9)', 'C (<12)'],
                     datasets: [{
-                        data: {{ distribution|safe }},
-                        backgroundColor: [
-                            'rgba(76, 201, 240, 0.8)',
-                            'rgba(248, 150, 30, 0.8)',
-                            'rgba(239, 35, 60, 0.8)'
-                        ]
+                        label: 'Nombre de notes',
+                        data: distributionData,
+                        backgroundColor: ['#4cc9f0', '#f8961e', '#ef233c'],
+                        borderRadius: 6,
+                        barThickness: 40
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
+                            stepSize: 1
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
                         }
                     }
                 }

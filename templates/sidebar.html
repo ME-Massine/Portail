@@ -297,10 +297,10 @@
             Messages
         </a>
     </li>
-    <li class="menu-item">
-        <a href="#">
+    <li class="menu-item {% if request.resolver_match.url_name == 'voir_materiaux' %}active{% endif %}">
+        <a href="{% url 'etudiant:voir_materiaux' %}">
             <i class="fas fa-file-alt"></i>
-            Ressources
+            Matériaux de Cours
         </a>
     </li>
     <li class="menu-item">

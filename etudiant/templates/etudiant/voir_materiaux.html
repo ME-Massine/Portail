@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dashboard_tags %}
+
+{% block extra_css %}
+    <style>
+        /* Course Materials Specific Styles */
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .course-header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #e0e3e7;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .course-card-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .course-code {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .course-content {
+            padding: 1.5rem;
+        }
+
+        .materials-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .materials-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .materials-list li:last-child {
+            border-bottom: none;
+        }
+
+        .materials-list li:hover {
+            background-color: #f8fafc;
+        }
+
+        .materials-list a {
+            color: var(--dark-color);
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .materials-list a:hover {
+            color: var(--primary-color);
+        }
+
+        .materials-list a i {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .materials-list small {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+        }
+
+        .empty-state i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .course-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="main-content">
+        <!-- Header -->
+        <header class="course-header">
+            <h1>Matériaux de Cours</h1>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="material-search" placeholder="Rechercher un matériel...">
+            </div>
+        </header>
+
+        {% if matieres_with_materials %}
+            <div class="course-grid">
+                {% for item in matieres_with_materials %}
+                    <div class="course-card">
+                        <div class="course-card-header">
+                            <div class="course-title">{{ item.matiere.nom }}</div>
+                            <div class="course-code">{{ item.matiere.code }}</div>
+                        </div>
+                        <div class="course-content">
+                            {% if item.materials %}
+                                <ul class="materials-list">
+                                    {% for material in item.materials %}
+                                        <li>
+                                            <a href="{{ material.file.url }}" download>
+                                                <i class="fas fa-file-{% if material.file.url|lower|slice:'-4:' == '.pdf' %}pdf{% elif material.file.url|lower|slice:'-5:' == '.docx' %}word{% elif material.file.url|lower|slice:'-4:' == '.ppt' or material.file.url|lower|slice:'-5:' == '.pptx' %}powerpoint{% elif material.file.url|lower|slice:'-4:' == '.xls' or material.file.url|lower|slice:'-5:' == '.xlsx' %}excel{% else %}alt{% endif %}"></i>
+                                                {{ material.title }}
+                                            </a>
+                                            <small>{{ material.upload_date|date:"d M Y" }}</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <div class="empty-state">
+                                    <i class="fas fa-folder-open"></i>
+                                    <p>Aucun matériel disponible pour ce cours</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-book-open"></i>
+                <p>Aucun cours trouvé</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Material search functionality
+            const searchInput = document.getElementById('material-search');
+
+            searchInput.addEventListener('input', function () {
+                const filter = this.value.toLowerCase();
+                const cards = document.querySelectorAll('.course-card');
+
+                cards.forEach(card => {
+                    const title = card.querySelector('.course-title').textContent.toLowerCase();
+                    const code = card.querySelector('.course-code').textContent.toLowerCase();
+                    const materials = card.querySelectorAll('.materials-list li');
+
+                    let hasVisibleMaterial = false;
+
+                    // First check if course title/code matches
+                    if (title.includes(filter) || code.includes(filter)) {
+                        card.style.display = '';
+                        // Show all materials if course matches
+                        materials.forEach(li => li.style.display = '');
+                        return;
+                    }
+
+                    // Otherwise check individual materials
+                    materials.forEach(li => {
+                        const text = li.textContent.toLowerCase();
+                        if (text.includes(filter)) {
+                            li.style.display = '';
+                            hasVisibleMaterial = true;
+                        } else {
+                            li.style.display = 'none';
+                        }
+                    });
+
+                    // Show card if has visible materials or no filter
+                    card.style.display = hasVisibleMaterial || filter === '' ? '' : 'none';
+                });
+            });
+        });
+    </script>
+{% endblock %}
