@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Ajouter un Matériel pour {{ matiere.nom }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.title.label_tag }} {{ form.title }}
+        </div>
+        <div class="mb-3">
+            {{ form.file.label_tag }} {{ form.file }}
+        </div>
+        <div class="form-check mb-3">
+            {{ form.is_visible }} {{ form.is_visible.label_tag }}
+        </div>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a href="{% url 'prof:matiere' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

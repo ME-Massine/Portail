@@ -583,35 +583,27 @@
                         <a href="#">Voir l'Emploi du Temps</a>
                     </div>
                     <div class="panel-body">
-                        <ul class="class-schedule">
-                            <li class="schedule-item">
-                                <div class="class-time">09:00</div>
-                                <div class="class-info">
-                                    <h4>Algorithmes Avancés</h4>
-                                    <p>Master 1 Informatique - Groupe A</p>
-                                </div>
-                                <div class="class-room">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Bâtiment C, Salle 205
-                                </div>
-                            </li>
-                            <li class="schedule-item">
-                                <div class="class-time">14:00</div>
-                                <div class="class-info">
-                                    <h4>Architecture des Systèmes</h4>
-                                    <p>Licence 3 Informatique</p>
-                                </div>
-                                <div class="class-room">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Bâtiment A, Amphi 3
-                                </div>
-                            </li>
-                        </ul>
+                        {% for cr in cours %}
+                            <ul class="class-schedule">
+                                <li class="schedule-item">
+                                    <div class="class-time">{{ cr.heure_debut }}</div>
+                                    <div class="class-info">
+                                        <h4></h4>
+                                        <p>{{ cr.matiere.nom }}</p>
+                                    </div>
+                                    <div class="class-room">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        {{ cr.salle}}
+                                    </div>
+                                </li>
+                            </ul>
+                        {% endfor %}
+
                     </div>
                 </div>
 
                 <!-- Recent Submissions -->
-                <div class="panel grading-panel">
+                <div class="panel grading-panel mt-3">
                     <div class="panel-header">
                         <h3>Travaux Récemment Soumis</h3>
                         <a href="#">Voir Tous</a>

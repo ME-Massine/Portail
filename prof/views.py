@@ -1,11 +1,12 @@
 from datetime import timedelta, datetime
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
-from core.models import EmploiDuTemps, Inscription
+from core.models import EmploiDuTemps, Inscription, Matiere
 from etudiant.models import AssignmentSubmission
+from prof.forms import LectureMaterialForm
 
 
 # Create your views here.
@@ -39,8 +40,6 @@ def dashboard(request):
         matiere__id__in=matiere
     ).values('etudiant').distinct().count()
 
-    matiere_ids = cours.values_list('matiere__id', flat=True).distinct()
-
     # Get inscriptions in these matieres
     prof_matieres = profInfo.matieres_enseignees.all()
 
@@ -57,8 +56,8 @@ def dashboard(request):
     prof_courses = EmploiDuTemps.objects.filter(matiere__professeurs=profInfo)
 
     total_duration = timedelta()
-    for cours in prof_courses:
-        duration = datetime.combine(timezone.now(), cours.heure_fin) - datetime.combine(timezone.now(),cours.heure_debut)
+    for course in prof_courses:
+        duration = datetime.combine(timezone.now(), course.heure_fin) - datetime.combine(timezone.now(),course.heure_debut)
         total_duration += duration
 
     total_seconds = total_duration.total_seconds()
@@ -71,4 +70,29 @@ def dashboard(request):
                                                    'nb_etudiants':nb_etudiants,
                                                    'nb_submissions':nb_submissions,
                                                    'nb_matieres':nb_matieres,
-                                                   'total_hours_formatted':total_hours_formatted})
+                                                   'total_hours_formatted':total_hours_formatted,
+                                                   'cours':cours})
+
+
+def matiere(request):
+    matieres_enseignees = request.user.matieres_enseignees.all()
+
+    return render(request, 'prof/matiere.html', {'matieres_enseignees':matieres_enseignees})
+
+
+
+@login_required
+def ajouter_materiel(request, matiere_id):
+    matiere = get_object_or_404(Matiere, id=matiere_id, professeurs=request.user)
+
+    if request.method == 'POST':
+        form = LectureMaterialForm(request.POST, request.FILES)
+        if form.is_valid():
+            material = form.save(commit=False)
+            material.matiere = matiere
+            material.save()
+            return redirect('prof:matiere')  # Replace with your actual URL name
+    else:
+        form = LectureMaterialForm()
+
+    return render(request, 'prof/ajouter_materiel.html', {'form': form, 'matiere': matiere})

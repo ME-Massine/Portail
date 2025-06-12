@@ -269,27 +269,27 @@
     {% if request.user.role == "professeur" %}
         <ul class="sidebar-menu">
             <li class="menu-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-                <a href="{% url 'etudiant:dashboard' %}">
+                <a href="{% url 'prof:dashboard' %}">
                     <i class="fas fa-home"></i> Tableau de Bord
                 </a>
             </li>
             <li class="menu-item {% if request.resolver_match.url_name == 'courses' %}active{% endif %}">
-                <a href="{% url 'etudiant:courses' %}">
+                <a href="{% url 'prof:matiere' %}">
                     <i class="fas fa-book-open"></i> Mes Matières
                 </a>
             </li>
             <li class="menu-item">
-                <a href="{% url 'etudiant:emploi' %}">
+                <a href="#">
                     <i class="fas fa-calendar-alt"></i> Emploi du Temps
                 </a>
             </li>
             <li class="menu-item">
-                <a href="{% url 'etudiant:devoirs' %}">
+                <a href="#">
                     <i class="fas fa-tasks"></i> Évaluations
                 </a>
             </li>
             <li class="menu-item {% if request.resolver_match.url_name == 'notes' %}active{% endif %}">
-                <a href="{% url 'etudiant:notes' %}">
+                <a href="#">
                     <i class="fas fa-chart-bar"></i> Étudiants
                 </a>
             </li>
@@ -299,7 +299,7 @@
                 </a>
             </li>
             <li class="menu-item {% if request.resolver_match.url_name == 'voir_materiaux' %}active{% endif %}">
-                <a href="{% url 'etudiant:voir_materiaux' %}">
+                <a href="#">
                     <i class="fas fa-file-alt"></i> Matériaux de Cours
                 </a>
             </li>
