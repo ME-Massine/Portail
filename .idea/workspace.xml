@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Refactor scheduling, add materials view, and improve UI&#10;&#10;Renamed schedule view and URLs, introduced materials view, and refined course and notes templates. Updated styles for better usability and added search functionality for materials and grades.">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/portail.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/portail.iml" afterDir="false" />
+    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Update project files for Python 3.13 and streamline templates&#10;&#10;Upgraded SDK and environment settings to Python 3.13. Simplified and optimized dashboard templates and sidebar structure for better readability and maintainability. Adjusted minor design inconsistencies and improved configuration for GitHub integration.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prof/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sidebar.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,12 +35,12 @@
     &quot;assignee&quot;: &quot;ME-Massine&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ME-Massine/Portail.git",
-    "accountId": "61dbb79a-2d14-49cc-bf63-61f659208117"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ME-Massine/Portail.git&quot;,
+    &quot;accountId&quot;: &quot;61dbb79a-2d14-49cc-bf63-61f659208117&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -54,28 +52,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Django Server.portail.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Django Server.portail.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Administrateur\PycharmProjects\portail\static\images" />
@@ -130,7 +128,11 @@
       <workItem from="1748983941781" duration="7969000" />
       <workItem from="1749033290266" duration="14931000" />
       <workItem from="1749305328345" duration="3607000" />
-      <workItem from="1749422910076" duration="1397000" />
+      <workItem from="1749422910076" duration="1552000" />
+      <workItem from="1749425278042" duration="2480000" />
+      <workItem from="1749590727084" duration="1229000" />
+      <workItem from="1749657866519" duration="47000" />
+      <workItem from="1749754412764" duration="1720000" />
     </task>
     <task id="LOCAL-00001" summary="setting app apps for each actor">
       <option name="closed" value="true" />
@@ -204,7 +206,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749408624753</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Update project files for Python 3.13 and streamline templates&#10;&#10;Upgraded SDK and environment settings to Python 3.13. Simplified and optimized dashboard templates and sidebar structure for better readability and maintainability. Adjusted minor design inconsistencies and improved configuration for GitHub integration.">
+      <option name="closed" value="true" />
+      <created>1749424391315</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1749424391315</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,6 +250,8 @@
     <MESSAGE value="Improve student dashboard with grades features and styling&#10;&#10;Refactored `get_student_dashboard_data` to use a proper weekday mapping for schedule retrieval. Introduced a new `notes_view` to manage student grade details with distribution and trends. Updated templates, URLs, and added styling for grades and dashboard UI, including new filtering and Chart.js integration." />
     <MESSAGE value="Add &quot;filliere&quot; field to Utilisateur and UI/UX enhancements&#10;&#10;Added a new &quot;filliere&quot; field to the Utilisateur model via migration. Improved student views, including new paths, a materials view, and updated dashboard/course templates with enhanced UI/UX features. Fixed minor logic and layout issues in templates and JavaScript." />
     <MESSAGE value="Refactor scheduling, add materials view, and improve UI&#10;&#10;Renamed schedule view and URLs, introduced materials view, and refined course and notes templates. Updated styles for better usability and added search functionality for materials and grades." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor scheduling, add materials view, and improve UI&#10;&#10;Renamed schedule view and URLs, introduced materials view, and refined course and notes templates. Updated styles for better usability and added search functionality for materials and grades." />
+    <MESSAGE value="Add timetable and assignments views with enhanced UI&#10;&#10;Implemented a dynamic timetable view with nested days and hours using `EmploiDuTemps`. Added a new assignments view (`devoirs`) and updated URL structure accordingly. Introduced custom template tags for dictionary lookups and optimized templates with responsive layouts and refined styles." />
+    <MESSAGE value="Update project files for Python 3.13 and streamline templates&#10;&#10;Upgraded SDK and environment settings to Python 3.13. Simplified and optimized dashboard templates and sidebar structure for better readability and maintainability. Adjusted minor design inconsistencies and improved configuration for GitHub integration." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update project files for Python 3.13 and streamline templates&#10;&#10;Upgraded SDK and environment settings to Python 3.13. Simplified and optimized dashboard templates and sidebar structure for better readability and maintainability. Adjusted minor design inconsistencies and improved configuration for GitHub integration." />
   </component>
 </project>

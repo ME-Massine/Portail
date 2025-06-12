@@ -541,21 +541,21 @@
     <div class="dashboard-content">
         <!-- Welcome Banner -->
         <div class="welcome-banner">
-            <h2>Bienvenue, Dr. {{ request.user.last_name }}</h2>
-            <p>Vous avez 2 cours aujourd'hui avec 45 étudiants. 3 travaux à corriger sont en attente.</p>
+            <h2>Bienvenue, Dr. {{ profInfo.last_name }}</h2>
+            <p>Vous avez {{ nb_cours }} cours aujourd'hui avec {{ nb_etudiants }} étudiants. {{ nb_submissions }} travaux à corriger sont en attente.</p>
         </div>
 
         <!-- Stats Cards -->
         <div class="stats-grid">
             <div class="stat-card">
                 <i class="fas fa-book-open"></i>
-                <h3>4</h3>
+                <h3>{{ nb_matieres }}</h3>
                 <p>Matières Enseignées</p>
             </div>
 
             <div class="stat-card">
                 <i class="fas fa-user-graduate"></i>
-                <h3>87</h3>
+                <h3>{{ nb_etudiants }}</h3>
                 <p>Étudiants</p>
             </div>
 
