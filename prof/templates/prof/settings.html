@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #4361ee;
+        --secondary: #3f37c9;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --gray: #6c757d;
+        --card-radius: 12px;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Disable scrollbars */
+        background-color: var(--light);
+    }
+
+    .settings-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .settings-header {
+        text-align: center;
+        flex-shrink: 0;
+        margin-bottom: 20px;
+    }
+
+    .settings-header h1 {
+        font-size: 28px;
+        color: var(--dark);
+        margin-bottom: 10px;
+    }
+
+    .profile-card {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: white;
+        border-radius: var(--card-radius);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e0e0e0;
+        padding: 20px;
+        min-height: 0; /* important for child to shrink */
+        overflow: hidden;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #f0f0f0;
+        margin-bottom: 20px;
+    }
+
+    .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 30px;
+        border: 3px solid #f0f0f0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-info h2 {
+        margin: 0;
+        color: var(--dark);
+        font-size: 24px;
+    }
+
+    .profile-info p {
+        margin: 5px 0 0;
+        color: var(--gray);
+        font-size: 16px;
+    }
+
+    .profile-details {
+        flex: 1;
+        overflow: auto;
+        min-height: 0;
+    }
+
+    .detail-row {
+        display: flex;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .detail-label {
+        width: 150px;
+        font-weight: 500;
+        color: var(--dark);
+    }
+
+    .detail-value {
+        flex: 1;
+        color: var(--gray);
+    }
+
+    .detail-value a {
+        color: var(--primary);
+        text-decoration: none;
+    }
+
+    .detail-value a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .avatar {
+            margin-right: 0;
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            flex-direction: column;
+        }
+
+        .detail-label {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .settings-container {
+            padding: 15px;
+        }
+
+        .profile-card {
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="settings-container">
+    <div class="settings-header">
+        <h1><i class="fas fa-user-cog"></i> Mon Profil</h1>
+        <p>Vos informations personnelles</p>
+    </div>
+
+    <div class="profile-card">
+        <div class="profile-header">
+            <img src="{% static 'images/default-avatar.png' %}" alt="Avatar" class="avatar">
+            <div class="profile-info">
+                <h2>{{ request.user.get_full_name }}</h2>
+                <p>Professeur</p>
+            </div>
+        </div>
+
+        <div class="profile-details">
+            <div class="detail-row">
+                <div class="detail-label">Email</div>
+                <div class="detail-value">
+                    <a href="mailto:{{ request.user.email }}">{{ request.user.email }}</a>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Téléphone</div>
+                <div class="detail-value">{{ request.user.telephone|default:"Non renseigné" }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Date de naissance</div>
+                <div class="detail-value">{{ request.user.date_naissance|date:"d/m/Y"|default:"Non renseigné" }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Adresse</div>
+                <div class="detail-value">{{ request.user.adresse|default:"Non renseigné" }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Filière</div>
+                <div class="detail-value">{{ request.user.get_filliere_display|default:"Non renseigné" }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Date d'inscription</div>
+                <div class="detail-value">{{ request.user.date_inscription|date:"d/m/Y" }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

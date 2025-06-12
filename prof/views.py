@@ -96,3 +96,7 @@ def ajouter_materiel(request, matiere_id):
         form = LectureMaterialForm()
 
     return render(request, 'prof/ajouter_materiel.html', {'form': form, 'matiere': matiere})
+
+
+def settings(request):
+    return render(request, 'prof/settings.html')

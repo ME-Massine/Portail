@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Update professor dashboard and sidebar for role-based features&#10;&#10;Enhanced the professor dashboard to display dynamic stats such as courses taught, students, submissions, and total teaching hours. Updated the sidebar to show role-specific details for professors and students, improving clarity and user experience. Simplified view logic and integrated live data into dashboard templates for better maintainability.">
-      <change afterPath="$PROJECT_DIR$/prof/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prof/templates/prof/ajouter_materiel.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prof/templates/prof/matiere.html" afterDir="false" />
+    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Add &quot;Mes Matières&quot; view and functionality to manage materials&#10;&#10;Introduced a &quot;Mes Matières&quot; page for professors to view and manage their assigned courses. Added functionality to upload and manage course materials via the &quot;Ajouter Matériel&quot; feature. Updated URLs, templates, views, and forms for seamless integration of the new feature into the platform.">
+      <change afterPath="$PROJECT_DIR$/prof/templates/prof/settings.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prof/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prof/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sidebar.html" afterDir="false" />
@@ -136,7 +133,7 @@
       <workItem from="1749425278042" duration="2480000" />
       <workItem from="1749590727084" duration="1229000" />
       <workItem from="1749657866519" duration="47000" />
-      <workItem from="1749754412764" duration="7915000" />
+      <workItem from="1749754412764" duration="12106000" />
     </task>
     <task id="LOCAL-00001" summary="setting app apps for each actor">
       <option name="closed" value="true" />
@@ -234,7 +231,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749757512475</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Add &quot;Mes Matières&quot; view and functionality to manage materials&#10;&#10;Introduced a &quot;Mes Matières&quot; page for professors to view and manage their assigned courses. Added functionality to upload and manage course materials via the &quot;Ajouter Matériel&quot; feature. Updated URLs, templates, views, and forms for seamless integration of the new feature into the platform.">
+      <option name="closed" value="true" />
+      <created>1749763469846</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1749763469846</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -274,6 +279,7 @@
     <MESSAGE value="Update project files for Python 3.13 and streamline templates&#10;&#10;Upgraded SDK and environment settings to Python 3.13. Simplified and optimized dashboard templates and sidebar structure for better readability and maintainability. Adjusted minor design inconsistencies and improved configuration for GitHub integration." />
     <MESSAGE value="Update professor dashboard and sidebar for role-based features&#10;&#10;Enhanced the professor dashboard to display dynamic stats such as courses, students, and submissions. Updated the sidebar with role-based menu options for professors and students, improving UI/UX and maintainability." />
     <MESSAGE value="Update professor dashboard and sidebar for role-based features&#10;&#10;Enhanced the professor dashboard to display dynamic stats such as courses taught, students, submissions, and total teaching hours. Updated the sidebar to show role-specific details for professors and students, improving clarity and user experience. Simplified view logic and integrated live data into dashboard templates for better maintainability." />
-    <option name="LAST_COMMIT_MESSAGE" value="Update professor dashboard and sidebar for role-based features&#10;&#10;Enhanced the professor dashboard to display dynamic stats such as courses taught, students, submissions, and total teaching hours. Updated the sidebar to show role-specific details for professors and students, improving clarity and user experience. Simplified view logic and integrated live data into dashboard templates for better maintainability." />
+    <MESSAGE value="Add &quot;Mes Matières&quot; view and functionality to manage materials&#10;&#10;Introduced a &quot;Mes Matières&quot; page for professors to view and manage their assigned courses. Added functionality to upload and manage course materials via the &quot;Ajouter Matériel&quot; feature. Updated URLs, templates, views, and forms for seamless integration of the new feature into the platform." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add &quot;Mes Matières&quot; view and functionality to manage materials&#10;&#10;Introduced a &quot;Mes Matières&quot; page for professors to view and manage their assigned courses. Added functionality to upload and manage course materials via the &quot;Ajouter Matériel&quot; feature. Updated URLs, templates, views, and forms for seamless integration of the new feature into the platform." />
   </component>
 </project>
