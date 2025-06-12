@@ -1,3 +1,5 @@
+from datetime import timedelta, datetime
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils import timezone
@@ -40,17 +42,33 @@ def dashboard(request):
     matiere_ids = cours.values_list('matiere__id', flat=True).distinct()
 
     # Get inscriptions in these matieres
-    inscriptions = Inscription.objects.filter(matiere__id__in=matiere_ids)
+    prof_matieres = profInfo.matieres_enseignees.all()
 
-    # Count submissions linked to those inscriptions
+    # Get inscriptions for those subjects
+    inscriptions = Inscription.objects.filter(matiere__in=prof_matieres)
+
+    # Count all submissions related to those inscriptions
     nb_submissions = AssignmentSubmission.objects.filter(inscription__in=inscriptions).count()
+
+    nb_matieres = profInfo.matieres_enseignees.count()
+
+
 
     prof_courses = EmploiDuTemps.objects.filter(matiere__professeurs=profInfo)
 
-    nb_matieres = prof_courses.count()
+    total_duration = timedelta()
+    for cours in prof_courses:
+        duration = datetime.combine(timezone.now(), cours.heure_fin) - datetime.combine(timezone.now(),cours.heure_debut)
+        total_duration += duration
+
+    total_seconds = total_duration.total_seconds()
+    hours = int(total_seconds // 3600)
+    minutes = int((total_seconds % 3600) // 60)
+    total_hours_formatted = f"{hours}h{minutes}min"
 
     return render(request, 'prof/dashboard.html', {'profInfo':profInfo ,
                                                    'nb_cours':nb_cours,
                                                    'nb_etudiants':nb_etudiants,
                                                    'nb_submissions':nb_submissions,
-                                                   'nb_matieres':nb_matieres})
+                                                   'nb_matieres':nb_matieres,
+                                                   'total_hours_formatted':total_hours_formatted})

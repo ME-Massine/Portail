@@ -257,7 +257,12 @@
         <div class="user-avatar">{{ request.user.first_name|first }}{{ request.user.last_name|first }}</div>
         <div class="user-info">
             <h3>{{ request.user.first_name }} {{ request.user.last_name }}</h3>
-            <p>Étudiant en {{ request.user.filliere }}</p>
+            {% if request.user.role == "professeur" %}
+                <p>Prof en {{ request.user.filliere }}</p>
+            {% endif %}
+            {% if request.user.role == "etudiant" %}
+                <p>Étudiant en {{ request.user.filliere }}</p>
+            {% endif %}
         </div>
     </div>
 

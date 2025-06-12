@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Update project files for Python 3.13 and streamline templates&#10;&#10;Upgraded SDK and environment settings to Python 3.13. Simplified and optimized dashboard templates and sidebar structure for better readability and maintainability. Adjusted minor design inconsistencies and improved configuration for GitHub integration.">
+    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Update professor dashboard and sidebar for role-based features&#10;&#10;Enhanced the professor dashboard to display dynamic stats such as courses, students, and submissions. Updated the sidebar with role-based menu options for professors and students, improving UI/UX and maintainability.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prof/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/views.py" afterDir="false" />
@@ -132,7 +132,7 @@
       <workItem from="1749425278042" duration="2480000" />
       <workItem from="1749590727084" duration="1229000" />
       <workItem from="1749657866519" duration="47000" />
-      <workItem from="1749754412764" duration="1720000" />
+      <workItem from="1749754412764" duration="3043000" />
     </task>
     <task id="LOCAL-00001" summary="setting app apps for each actor">
       <option name="closed" value="true" />
@@ -214,7 +214,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749424391315</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Update professor dashboard and sidebar for role-based features&#10;&#10;Enhanced the professor dashboard to display dynamic stats such as courses, students, and submissions. Updated the sidebar with role-based menu options for professors and students, improving UI/UX and maintainability.">
+      <option name="closed" value="true" />
+      <created>1749756219637</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1749756219637</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,6 +260,7 @@
     <MESSAGE value="Refactor scheduling, add materials view, and improve UI&#10;&#10;Renamed schedule view and URLs, introduced materials view, and refined course and notes templates. Updated styles for better usability and added search functionality for materials and grades." />
     <MESSAGE value="Add timetable and assignments views with enhanced UI&#10;&#10;Implemented a dynamic timetable view with nested days and hours using `EmploiDuTemps`. Added a new assignments view (`devoirs`) and updated URL structure accordingly. Introduced custom template tags for dictionary lookups and optimized templates with responsive layouts and refined styles." />
     <MESSAGE value="Update project files for Python 3.13 and streamline templates&#10;&#10;Upgraded SDK and environment settings to Python 3.13. Simplified and optimized dashboard templates and sidebar structure for better readability and maintainability. Adjusted minor design inconsistencies and improved configuration for GitHub integration." />
-    <option name="LAST_COMMIT_MESSAGE" value="Update project files for Python 3.13 and streamline templates&#10;&#10;Upgraded SDK and environment settings to Python 3.13. Simplified and optimized dashboard templates and sidebar structure for better readability and maintainability. Adjusted minor design inconsistencies and improved configuration for GitHub integration." />
+    <MESSAGE value="Update professor dashboard and sidebar for role-based features&#10;&#10;Enhanced the professor dashboard to display dynamic stats such as courses, students, and submissions. Updated the sidebar with role-based menu options for professors and students, improving UI/UX and maintainability." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update professor dashboard and sidebar for role-based features&#10;&#10;Enhanced the professor dashboard to display dynamic stats such as courses, students, and submissions. Updated the sidebar with role-based menu options for professors and students, improving UI/UX and maintainability." />
   </component>
 </project>
