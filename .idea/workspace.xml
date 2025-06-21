@@ -5,19 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Add logout button and improve course and assignment UI&#10;&#10;Added a logout button to the course header for better UX. Removed &quot;Sunday&quot; from the weekday mapping. Improved styling and structure for course and assignment templates, including better responsive design, updated CSS classes, and enhanced layout formatting.">
-      <change afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/password_change.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/password_change_done.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/settings.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/portail.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/portail.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/services.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/devoirs.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/devoirs.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prof/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prof/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sidebar.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -62,30 +52,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Django Server.portail.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/Users/Administrateur/PycharmProjects/portail/static/images",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.inline.completion",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Django Server.portail.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrateur/PycharmProjects/portail/static/images&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.inline.completion&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Administrateur\PycharmProjects\portail\static\images" />
