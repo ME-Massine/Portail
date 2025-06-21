@@ -660,9 +660,11 @@
                                         <div class="assignment-header">
                                             <div class="assignment-title">{{ assignment.title }}</div>
                                             <div class="assignment-due">
-                                                {% if forloop.counter == 1 %}Dû demain
-                                                {% elif forloop.counter == 2 %}Dû dans 5 jours
-                                                {% else %}Dû dans 7 jours{% endif %}
+                                                {% if assignment.due_date %}
+                                                    Dû le {{ assignment.due_date|date:"d M Y" }}
+                                                {% else %}
+                                                    Date non spécifiée
+                                                {% endif %}
                                             </div>
                                         </div>
                                         <div class="assignment-progress">
@@ -672,6 +674,9 @@
                                             <span>{{ assignment.matiere.nom }}</span>
                                             <span>Non commencé</span>
                                         </div>
+                                        {% if assignment.description %}
+                                            <div class="assignment-description" style="font-size:0.95em;color:#666;margin-top:0.5em;">{{ assignment.description }}</div>
+                                        {% endif %}
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -687,10 +692,10 @@
                         <h3>Actions Rapides</h3>
                     </div>
                     <div class="panel-body">
-                        <a href="{% url 'etudiant:submit_assignment' %}" class="action-btn">
+                        <a href="#" class="action-btn">
                             <i class="fas fa-upload"></i> Soumettre un Devoir
                         </a>
-                        <a href="{% url 'etudiant:add_event' %}" class="action-btn">
+                        <a href="#" class="action-btn">
                             <i class="fas fa-calendar-plus"></i> Ajouter un Événement
                         </a>
                         <a href="#" class="action-btn">

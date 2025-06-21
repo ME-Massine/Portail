@@ -2,9 +2,12 @@ from collections import defaultdict
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Avg, Count
 from django.db.models.functions import TruncMonth
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.utils import timezone
 import json
 
@@ -12,6 +15,7 @@ from .models import AssignmentSubmission
 from core.models import Matiere, Inscription, EmploiDuTemps
 from prof.models import Note, LectureMaterial
 from .services import get_student_dashboard_data
+from .forms import AssignmentSubmissionForm
 
 
 # Create your views here.
@@ -173,12 +177,38 @@ def voir_materiaux(request):
 
 
 def devoirs_view(request):
-    return render(request, 'etudiant/devoirs.html')
+    form = None
+    if request.method == 'POST':
+        form = AssignmentSubmissionForm(request.POST, request.FILES, user=request.user)
+        if form.is_valid():
+            assignment = form.cleaned_data['assignment']
+            inscription = request.user.inscriptions.filter(matiere=assignment.matiere).first()
+            # Prevent duplicate submission
+            already_submitted = AssignmentSubmission.objects.filter(
+                assignment=assignment,
+                inscription=inscription
+            ).exists()
+            if already_submitted:
+                form.add_error('assignment', "Vous avez déjà soumis ce devoir.")
+            else:
+                submission = form.save(commit=False)
+                submission.inscription = inscription
+                submission.save()
+                return redirect('etudiant:devoirs')
+    else:
+        form = AssignmentSubmissionForm(user=request.user)
+
+    # Get all submissions by the student
+    submissions = AssignmentSubmission.objects.filter(inscription__etudiant=request.user).select_related('assignment', 'assignment__matiere').order_by('-submitted_at')
+
+    return render(request, 'etudiant/devoirs.html', {'form': form, 'submissions': submissions})
 
 
-def submit_assignment(request):
-    pass
+def settings(request):
+    return render(request, 'etudiant/settings.html')
 
 
-def add_event(request):
-    pass
+class CustomPasswordChangeView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'etudiant/password_change.html'
+    success_url = reverse_lazy('etudiant:password_change_done')  # Note the namespace
+    success_message = "Votre mot de passe a été changé avec succès"

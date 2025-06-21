@@ -1,0 +1,315 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <style>
+        .profile-container {
+            max-width: 100%;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .page-title h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .profile-card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            background: white;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .profile-avatar-container {
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid white;
+            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(67, 97, 238, 0.25);
+        }
+
+        .profile-avatar-edit {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+
+        .profile-avatar-edit:hover {
+            background: var(--secondary-color);
+            transform: scale(1.1);
+        }
+
+        .profile-text h2 {
+            font-size: 1.75rem;
+            margin: 0 0 0.5rem;
+            color: var(--dark-color);
+            font-weight: 700;
+        }
+
+        .profile-text p {
+            color: rgba(0, 0, 0, 0.6);
+            margin: 0 0 1.5rem;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(63, 55, 201, 0.1));
+            color: var(--primary-color);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(67, 97, 238, 0.2);
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .detail-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-label i {
+            color: var(--primary-color);
+            width: 20px;
+            text-align: center;
+        }
+
+        .detail-value {
+            padding: 1rem 1.25rem;
+            background-color: rgba(67, 97, 238, 0.03);
+            border-radius: var(--border-radius);
+            color: rgba(0, 0, 0, 0.8);
+            border-left: 3px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .detail-value:hover {
+            background-color: rgba(67, 97, 238, 0.08);
+            transform: translateX(5px);
+        }
+
+        .detail-value a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-value a:hover {
+            text-decoration: underline;
+            color: var(--secondary-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-edit {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(67, 97, 238, 0.05);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .profile-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card {
+                padding: 1.5rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-edit, .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="main-content">
+        <header class="header">
+            <div class="page-title">
+                <h1> Mon Profil</h1>
+            </div>
+        </header>
+
+        <div class="profile-container">
+            <div class="profile-card">
+                <div class="profile-info">
+                    <div class="profile-avatar-container">
+                        <img src="{% static 'images/default-avatar.png' %}" alt="Avatar" class="profile-avatar">
+
+                    </div>
+                    <div class="profile-text">
+                        <h2>{{ request.user.get_full_name }}</h2>
+                        <p>{{ request.user.email }}</p>
+                        <span class="profile-badge">
+                        <i class="fas fa-user-tie"></i> Professeur
+                    </span>
+                    </div>
+                </div>
+
+                <div class="profile-details">
+                    <div class="detail-group">
+                        <span class="detail-label"><i class="fas fa-phone"></i>Téléphone</span>
+                        <div class="detail-value">{{ request.user.telephone|default:"Non renseigné" }}</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <span class="detail-label"><i class="fas fa-birthday-cake"></i>Date de naissance</span>
+                        <div class="detail-value">{{ request.user.date_naissance|date:"d/m/Y"|default:"Non renseigné" }}</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <span class="detail-label"><i class="fas fa-map-marker-alt"></i>Adresse</span>
+                        <div class="detail-value">{{ request.user.adresse|default:"Non renseigné" }}</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <span class="detail-label"><i class="fas fa-graduation-cap"></i>Filière</span>
+                        <div class="detail-value">{{ request.user.get_filliere_display|default:"Non renseigné" }}</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <span class="detail-label"><i class="fas fa-calendar-check"></i>Date d'inscription</span>
+                        <div class="detail-value">{{ request.user.date_inscription|date:"d/m/Y" }}</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <span class="detail-label"><i class="fas fa-id-card"></i>Statut</span>
+                        <div class="detail-value">Actif <span class="badge bg-success ms-2">Vérifié</span></div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                        <a href="{% url 'etudiant:password_change' %}" class="btn-secondary">
+                            <i class="fas fa-lock"></i> Changer le mot de passe
+                        </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

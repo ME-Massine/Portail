@@ -42,3 +42,19 @@ class LectureMaterial(models.Model):
 
     class Meta:
         ordering = ['-upload_date']
+
+class Assignment(models.Model):
+    matiere = models.ForeignKey('core.Matiere', on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    due_date = models.DateField()
+    created_by = models.ForeignKey('core.Utilisateur', on_delete=models.SET_NULL, null=True, limit_choices_to={'role': 'professeur'})
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-due_date']
+        verbose_name = "Devoir"
+        verbose_name_plural = "Devoirs"
+
+    def __str__(self):
+        return f"{self.title} ({self.matiere})"

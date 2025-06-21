@@ -110,47 +110,62 @@
             </div>
         </header>
 
-        {% if devoirs %}
-            <div class="devoirs-list">
-                {% for devoir in devoirs %}
-                    <div class="devoir-card">
-                        <div class="devoir-header">
-                            <h3 class="devoir-title">{{ devoir.titre }}</h3>
-                            <span class="devoir-date">
-                                <i class="fas fa-calendar-alt me-1"></i>
-                                {{ devoir.date_remise|date:"d M Y" }}
-                            </span>
-                        </div>
+        <!-- Assignment Submission Form -->
+        <div class="card mb-4" style="max-width: 600px; margin: 0 auto;">
+            <div class="card-body">
+                <h4 class="mb-3">Soumettre un devoir</h4>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.assignment.label_tag }}
+                        {{ form.assignment }}
+                        {% if form.assignment.errors %}
+                            <div class="text-danger small">{{ form.assignment.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.file.label_tag }}
+                        {{ form.file }}
+                        {% if form.file.errors %}
+                            <div class="text-danger small">{{ form.file.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Soumettre</button>
+                </form>
+            </div>
+        </div>
 
-                        <p class="devoir-matiere"><strong>Matière:</strong> {{ devoir.matiere.nom }}</p>
-
-                        <p class="devoir-description">
-                            {{ devoir.description|default:"Pas de description." }}
-                        </p>
-
-                        <div class="devoir-footer">
-                            <span class="status-badge
-                                {% if devoir.statut == 'remis' %}status-remis
-                                {% elif devoir.statut == 'en_cours' %}status-en_cours
-                                {% else %}status-non_remis
-                                {% endif %}">
-                                {{ devoir.statut|capfirst }}
-                            </span>
-
-                            {% if devoir.fichier %}
-                                <a href="{{ devoir.fichier.url }}" target="_blank" class="btn btn-primary btn-sm">
+        <!-- Previous Submissions List -->
+        <div class="mt-5">
+            <h4 class="mb-3">Mes Soumissions</h4>
+            {% if submissions %}
+                <div class="devoirs-list">
+                    {% for sub in submissions %}
+                        <div class="devoir-card">
+                            <div class="devoir-header">
+                                <h3 class="devoir-title">{{ sub.assignment.title }}</h3>
+                                <span class="devoir-date">
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    Dû le {{ sub.assignment.due_date|date:"d M Y" }}
+                                </span>
+                            </div>
+                            <p class="devoir-matiere"><strong>Matière:</strong> {{ sub.assignment.matiere.nom }}</p>
+                            <p class="devoir-description">{{ sub.assignment.description|default:"Pas de description." }}</p>
+                            <div class="devoir-footer">
+                                <span class="status-badge status-remis">Soumis le {{ sub.submitted_at|date:"d M Y H:i" }}</span>
+                                <a href="{{ sub.file.url }}" target="_blank" class="btn btn-primary btn-sm">
                                     <i class="fas fa-download me-1"></i> Télécharger
                                 </a>
-                            {% endif %}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <i class="fas fa-info-circle"></i>
-                <p>Aucun devoir à afficher pour le moment.</p>
-            </div>
-        {% endif %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Aucune soumission trouvée.</p>
+                </div>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

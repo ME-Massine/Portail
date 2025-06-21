@@ -6,10 +6,10 @@ from core.models import Utilisateur, Matiere
 
 # Create your models here.
 class AssignmentSubmission(models.Model):
+    assignment = models.ForeignKey('prof.Assignment', on_delete=models.CASCADE, null=True, blank=True)
     inscription = models.ForeignKey('core.Inscription', on_delete=models.CASCADE)
     file = models.FileField(upload_to='submissions/%Y/%m/%d/')
     submitted_at = models.DateTimeField(auto_now_add=True)
-    assignment_title = models.CharField(max_length=200)
     is_late = models.BooleanField(default=False)
 
     class Meta:

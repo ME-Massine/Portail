@@ -2,7 +2,7 @@ from django.db.models import Avg
 from django.utils import timezone
 from core.models import Utilisateur, Matiere, EmploiDuTemps, Inscription, Message
 from etudiant.models import Absence, AssignmentSubmission
-from prof.models import Note
+from prof.models import Note, LectureMaterial, Assignment
 
 
 def get_student_dashboard_data(student):
@@ -39,18 +39,20 @@ def get_student_dashboard_data(student):
 
     # Get pending assignments (submissions not yet made)
     pending_assignments = []
-    for inscription in student.inscriptions.all():
-        # Get all assignment titles that exist in submissions for this course
-        submitted_titles = AssignmentSubmission.objects.filter(
-            inscription=inscription
-        ).values_list('assignment_title', flat=True)
-
-        # Get recent assignment titles that haven't been submitted
-        pending_assignments.extend([
-            {'title': title, 'matiere': inscription.matiere}
-            for title in get_recent_assignment_titles(inscription.matiere)
-            if title not in submitted_titles
-        ])
+    for inscription in student.inscriptions.select_related('matiere'):
+        assignments = Assignment.objects.filter(matiere=inscription.matiere)
+        for assignment in assignments:
+            has_submitted = AssignmentSubmission.objects.filter(
+                assignment=assignment,
+                inscription=inscription
+            ).exists()
+            if not has_submitted:
+                pending_assignments.append({
+                    'title': assignment.title,
+                    'matiere': inscription.matiere,
+                    'due_date': assignment.due_date,
+                    'description': assignment.description,
+                })
 
     # Calculate attendance stats
     total_classes = EmploiDuTemps.objects.filter(
@@ -77,14 +79,3 @@ def get_student_dashboard_data(student):
             lu=False
         ).count()
     }
-
-
-def get_recent_assignment_titles(matiere):
-    """Helper function to get recent assignment titles for a course"""
-    return [
-        'Projet Final',
-        'Examen Partiel',
-        'TP 1',
-        'TP 2',
-        'Rapport de Recherche'
-]
