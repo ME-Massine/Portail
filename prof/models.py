@@ -6,7 +6,18 @@ from core.models import Utilisateur, Matiere
 
 # Create your models here.
 class Note(models.Model):
-    inscription = models.ForeignKey('core.Inscription', on_delete=models.CASCADE)
+    TYPE_NOTE_CHOICES = [
+        ('exam', 'Examen'),
+        ('controle', 'Contrôle'),
+        ('discipline', 'Discipline'),
+    ]
+
+    inscription = models.ForeignKey(
+        'core.Inscription',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
     etudiant = models.ForeignKey(
         'core.Utilisateur',
         on_delete=models.CASCADE,
@@ -24,6 +35,12 @@ class Note(models.Model):
         related_name='notes_attribuees',
         limit_choices_to={'role': 'professeur'}
     )
+    type_note = models.CharField(
+        max_length=10,
+        choices=TYPE_NOTE_CHOICES,
+        default='exam',
+        verbose_name='Type de la note'
+    )
 
     class Meta:
         verbose_name = "Note"
@@ -32,6 +49,7 @@ class Note(models.Model):
 
     def __str__(self):
         return f"{self.valeur}/20 - {self.etudiant} ({self.matiere})"
+
 
 class LectureMaterial(models.Model):
     matiere = models.ForeignKey('core.Matiere', on_delete=models.CASCADE)

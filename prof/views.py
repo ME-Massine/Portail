@@ -5,9 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
-from core.models import EmploiDuTemps, Inscription, Matiere
+from core.models import EmploiDuTemps, Inscription, Matiere, Utilisateur
 from etudiant.models import AssignmentSubmission
 from prof.forms import LectureMaterialForm
+from prof.models import Note
 
 
 # Create your views here.
@@ -134,3 +135,75 @@ def emploi(request):
         'heures': heures
     }
     return render(request, 'prof/emploi.html', context)
+
+@login_required
+def notes(request):
+    etudiants = Utilisateur.objects.filter(role='etudiant').order_by('last_name', 'first_name')
+    matieres = Matiere.objects.all().order_by('nom')
+
+    if request.method == 'POST':
+        etudiant_id = request.POST.get('etudiant')
+        matiere_id = request.POST.get('matiere')
+        valeur = request.POST.get('valeur')
+        commentaire = request.POST.get('commentaire', '')
+        date_attribution = request.POST.get('date_attribution')
+        type_note = request.POST.get('type_note')
+
+        erreurs = []
+
+        # Validation simple
+        try:
+            valeur = float(valeur)
+            if not (0 <= valeur <= 20):
+                erreurs.append("La note doit être comprise entre 0 et 20.")
+        except (ValueError, TypeError):
+            erreurs.append("Valeur de note invalide.")
+
+        if not etudiant_id or not matiere_id or not type_note or not date_attribution:
+            erreurs.append("Tous les champs obligatoires doivent être remplis.")
+
+        # Récupérer objets liés
+        try:
+            etudiant = Utilisateur.objects.get(id=etudiant_id, role='etudiant')
+        except Utilisateur.DoesNotExist:
+            erreurs.append("Étudiant invalide.")
+
+        try:
+            matiere = Matiere.objects.get(id=matiere_id)
+        except Matiere.DoesNotExist:
+            erreurs.append("Matière invalide.")
+
+        if erreurs:
+            recent_notes = Note.objects.filter(attribue_par=request.user).order_by('-date_attribution')[:10]
+            context = {
+                'etudiants': etudiants,
+                'matieres': matieres,
+                'erreurs': erreurs,
+                'recent_notes': recent_notes,
+                'form_values': request.POST,
+            }
+            return render(request, 'prof/notation.html', context)
+
+        # Créer et sauvegarder la note (plus de matiere_enseignee)
+        note = Note.objects.create(
+            etudiant=etudiant,
+            matiere=matiere,
+            valeur=valeur,
+            commentaire=commentaire,
+            date_attribution=date_attribution,
+            attribue_par=request.user,
+            type_note=type_note
+        )
+
+        return redirect('prof:notes')
+
+    # GET: afficher formulaire et notes récentes
+    recent_notes = Note.objects.filter(attribue_par=request.user).order_by('-date_attribution')[:10]
+
+    context = {
+        'etudiants': etudiants,
+        'matieres': matieres,
+        'recent_notes': recent_notes,
+    }
+    return render(request, 'prof/notation.html', context)
+

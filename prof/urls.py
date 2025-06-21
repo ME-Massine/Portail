@@ -7,4 +7,5 @@ urlpatterns = [
     path('matiere/<int:matiere_id>/ajouter-materiel/', views.ajouter_materiel, name='ajouter_materiel'),
     path('settings/', views.settings, name='settings'),
     path('emploi/', views.emploi, name='emploi'),
+    path('notes/', views.notes, name='notes'),
 ]
