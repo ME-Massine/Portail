@@ -3,368 +3,371 @@
 {% load dashboard_tags %}
 
 {% block extra_css %}
-<style>
-    /* Root Variables */
-    :root {
-        --primary-color: #435fee;
-        --primary-hover: #274bdb;
-        --dark-color: #1e293b;
-        --light-bg: #f0f4ff;
-        --border-radius: 0.5rem;
-        --box-shadow: 0 4px 12px rgba(67, 97, 238, 0.1);
-    }
+    <style>
+        /* Root Variables */
+        :root {
+            --primary-color: #435fee;
+            --primary-hover: #274bdb;
+            --dark-color: #1e293b;
+            --light-bg: #f0f4ff;
+            --border-radius: 0.5rem;
+            --box-shadow: 0 4px 12px rgba(67, 97, 238, 0.1);
+        }
 
-    /* Main Header Styles */
-    .course-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-bottom: 2rem;
-        gap: 1rem;
-        padding: 1rem;
-        background: white;
-        border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
-    }
-
-    .course-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--dark-color);
-        margin: 0;
-    }
-
-    .search-box {
-        position: relative;
-        min-width: 300px;
-        flex-grow: 1;
-        max-width: 400px;
-    }
-
-    .search-box input {
-        width: 100%;
-        padding: 0.75rem 1rem 0.75rem 2.5rem;
-        border: 1px solid #e0e3e7;
-        border-radius: var(--border-radius);
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        color: var(--dark-color);
-    }
-
-    .search-box input::placeholder {
-        color: #94a3b8;
-    }
-
-    .search-box input:focus {
-        outline: none;
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
-    }
-
-    .search-box i {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #94a3b8;
-        font-size: 1.2rem;
-    }
-
-    /* Stats Grid */
-    .course-stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .stat-card {
-        background: white;
-        padding: 1.5rem;
-        border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
-        transition: transform 0.2s ease;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(67, 97, 238, 0.15);
-    }
-
-    .stat-card i {
-        font-size: 2.5rem;
-        color: var(--primary-color);
-        background: rgba(67, 97, 238, 0.12);
-        padding: 1.25rem;
-        border-radius: 50%;
-        flex-shrink: 0;
-    }
-
-    .stat-info h3 {
-        font-size: 2rem;
-        font-weight: 700;
-        margin: 0;
-        color: var(--dark-color);
-    }
-
-    .stat-info p {
-        color: #64748b;
-        margin: 0;
-        font-size: 1rem;
-    }
-
-    /* Course Grid */
-    .course-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 1.5rem;
-    }
-
-    /* Course Card */
-    .course-card {
-        background: var(--light-bg);
-        border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-    }
-
-    .course-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 30px rgba(67, 97, 238, 0.2);
-    }
-
-    /* Inner Card Header */
-    .course-card-header {
-        padding: 1.5rem 1.5rem 1rem;
-        border-bottom: 1px solid #dbe2ef;
-        background: white;
-    }
-
-    .course-title {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--dark-color);
-        margin-bottom: 0.25rem;
-    }
-
-    .course-code {
-        font-size: 1rem;
-        color: #64748b;
-        font-weight: 500;
-    }
-
-    /* Card Content */
-    .course-content {
-        padding: 1rem 1.5rem 1.5rem;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .course-instructor {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.95rem;
-        color: #475569;
-        font-weight: 600;
-    }
-
-    .course-instructor i {
-        color: var(--primary-color);
-        font-size: 1.1rem;
-    }
-
-    /* Stats inside card */
-    .course-stats {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-
-    .course-stat {
-        background: white;
-        text-align: center;
-        padding: 0.75rem 0;
-        border-radius: var(--border-radius);
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        font-weight: 600;
-        color: var(--dark-color);
-        transition: background-color 0.3s ease;
-    }
-
-    .course-stat h4 {
-        font-size: 1.4rem;
-        margin: 0;
-    }
-
-    .course-stat p {
-        font-size: 0.85rem;
-        color: #64748b;
-        margin: 0;
-        font-weight: 500;
-    }
-
-    .course-stat:hover {
-        background-color: var(--primary-color);
-        color: white;
-        cursor: default;
-    }
-
-    /* Action Buttons */
-    .course-actions {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
-        margin-top: auto; /* push to bottom */
-    }
-
-    .course-actions a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        padding: 0.75rem 0;
-        border-radius: var(--border-radius);
-        font-size: 1rem;
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        text-align: center;
-    }
-
-    .course-actions a.primary {
-        background-color: var(--primary-color);
-        color: white;
-        box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
-    }
-
-    .course-actions a.primary:hover {
-        background-color: var(--primary-hover);
-        box-shadow: 0 6px 14px rgba(39, 75, 219, 0.5);
-        transform: translateY(-2px);
-    }
-
-    .course-actions a.secondary {
-        background-color: white;
-        color: var(--primary-color);
-        border: 2px solid var(--primary-color);
-    }
-
-    .course-actions a.secondary:hover {
-        background-color: var(--primary-color);
-        color: white;
-        transform: translateY(-2px);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
+        /* Main Header Styles */
         .course-header {
-            flex-direction: column;
-            align-items: stretch;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .course-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin: 0;
         }
 
         .search-box {
+            position: relative;
+            min-width: 300px;
+            flex-grow: 1;
+            max-width: 400px;
+        }
+
+        .search-box input {
             width: 100%;
-            max-width: none;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #e0e3e7;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: var(--dark-color);
         }
 
+        .search-box input::placeholder {
+            color: #94a3b8;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 1.2rem;
+        }
+
+        /* Stats Grid */
         .course-stats-grid {
-            grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(67, 97, 238, 0.15);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            background: rgba(67, 97, 238, 0.12);
+            padding: 1.25rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .stat-info h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--dark-color);
+        }
+
+        .stat-info p {
+            color: #64748b;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* Course Grid */
         .course-grid {
-            grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
         }
 
-        .course-actions {
-            grid-template-columns: 1fr;
+        /* Course Card */
+        .course-card {
+            background: var(--light-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
-    }
-</style>
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(67, 97, 238, 0.2);
+        }
+
+        /* Inner Card Header */
+        .course-card-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid #dbe2ef;
+            background: white;
+        }
+
+        .course-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .course-code {
+            font-size: 1rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Card Content */
+        .course-content {
+            padding: 1rem 1.5rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .course-instructor {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .course-instructor i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        /* Stats inside card */
+        .course-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .course-stat {
+            background: white;
+            text-align: center;
+            padding: 0.75rem 0;
+            border-radius: var(--border-radius);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+            color: var(--dark-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .course-stat h4 {
+            font-size: 1.4rem;
+            margin: 0;
+        }
+
+        .course-stat p {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .course-stat:hover {
+            background-color: var(--primary-color);
+            color: white;
+            cursor: default;
+        }
+
+        /* Action Buttons */
+        .course-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: auto; /* push to bottom */
+        }
+
+        .course-actions a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .course-actions a.primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+        }
+
+        .course-actions a.primary:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 6px 14px rgba(39, 75, 219, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .course-actions a.secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .course-actions a.secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .course-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+                max-width: none;
+            }
+
+            .course-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<!-- Main Header -->
-<header class="course-header">
-    <h1>Mes Cours</h1>
-    <div class="search-box">
-        <i class="fas fa-search"></i>
-        <input type="text" id="course-search" placeholder="Rechercher un cours...">
-    </div>
-</header>
+    <!-- Main Header -->
+    <header class="course-header">
+        <h1>Mes Cours</h1>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="course-search" placeholder="Rechercher un cours...">
+        </div>
+        <div class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+        </div>
+    </header>
 
-<!-- Course Stats -->
-<div class="course-stats-grid">
-    <div class="stat-card">
-        <i class="fas fa-book"></i>
-        <div class="stat-info">
-            <h3>{{ total_courses }}</h3>
-            <p>Total des Cours</p>
-        </div>
-    </div>
-    <div class="stat-card">
-        <i class="fas fa-tasks"></i>
-        <div class="stat-info">
-            <h3>{{ assignments_due }}</h3>
-            <p>Devoirs à venir</p>
-        </div>
-    </div>
-    <div class="stat-card">
-        <i class="fas fa-user-graduate"></i>
-        <div class="stat-info">
-            <h3>{{ professors|length }}</h3>
-            <p>Professeurs Différents</p>
-        </div>
-    </div>
-</div>
-
-<!-- Courses -->
-<div class="course-grid">
-    {% if course_data %}
-        {% for course in course_data %}
-            <div class="course-card">
-                <div class="course-card-header">
-                    <div class="course-title">{{ course.matiere.nom }}</div>
-                    <div class="course-code">{{ course.matiere.code }}</div>
-                </div>
-                <div class="course-content">
-                    <div class="course-instructor">
-                        <i class="fas fa-user"></i>
-                        {% for prof in course.professeurs %}
-                            {{ prof.get_full_name }}{% if not forloop.last %}, {% endif %}
-                        {% empty %}
-                            Aucun professeur assigné.
-                        {% endfor %}
-                    </div>
-                    <div class="course-stats">
-                        <div class="course-stat">
-                            <h4>{{ course.materials_count }}</h4>
-                            <p>Matériaux</p>
-                        </div>
-                        <div class="course-stat">
-                            <h4>{{ course.submissions_count }}</h4>
-                            <p>Soumissions</p>
-                        </div>
-                    </div>
-                    <div class="course-actions">
-                        <a href="{% url 'etudiant:voir_materiaux' %}" class="primary">Voir Matériaux</a>
-                        <a href="" class="secondary">Détails</a>
-                    </div>
-                </div>
+    <!-- Course Stats -->
+    <div class="course-stats-grid">
+        <div class="stat-card">
+            <i class="fas fa-book"></i>
+            <div class="stat-info">
+                <h3>{{ total_courses }}</h3>
+                <p>Total des Cours</p>
             </div>
-        {% endfor %}
-    {% else %}
-        <p>Aucun cours trouvé.</p>
-    {% endif %}
-</div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-tasks"></i>
+            <div class="stat-info">
+                <h3>{{ assignments_due }}</h3>
+                <p>Devoirs à venir</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-user-graduate"></i>
+            <div class="stat-info">
+                <h3>{{ professors|length }}</h3>
+                <p>Professeurs Différents</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Courses -->
+    <div class="course-grid">
+        {% if course_data %}
+            {% for course in course_data %}
+                <div class="course-card">
+                    <div class="course-card-header">
+                        <div class="course-title">{{ course.matiere.nom }}</div>
+                        <div class="course-code">{{ course.matiere.code }}</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-instructor">
+                            <i class="fas fa-user"></i>
+                            {% for prof in course.professeurs %}
+                                {{ prof.get_full_name }}{% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                Aucun professeur assigné.
+                            {% endfor %}
+                        </div>
+                        <div class="course-stats">
+                            <div class="course-stat">
+                                <h4>{{ course.materials_count }}</h4>
+                                <p>Matériaux</p>
+                            </div>
+                            <div class="course-stat">
+                                <h4>{{ course.submissions_count }}</h4>
+                                <p>Soumissions</p>
+                            </div>
+                        </div>
+                        <div class="course-actions">
+                            <a href="{% url 'etudiant:voir_materiaux' %}" class="primary">Voir Matériaux</a>
+                            <a href="" class="secondary">Détails</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Aucun cours trouvé.</p>
+        {% endif %}
+    </div>
 
 {% endblock %}
