@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Add logout button and improve course and assignment UI&#10;&#10;Added a logout button to the course header for better UX. Removed &quot;Sunday&quot; from the weekday mapping. Improved styling and structure for course and assignment templates, including better responsive design, updated CSS classes, and enhanced layout formatting.">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/portail.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/portail.iml" afterDir="false" />
+    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Update project to differentiate sidebar menu and SDK version&#10;&#10;Updated the sidebar to display role-specific menu options for students and professors. Changed the project SDK version to Python 3.13 (FreelanceHub) in configuration files.">
+      <change afterPath="$PROJECT_DIR$/prof/templates/prof/emploi.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prof/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prof/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sidebar.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -215,7 +216,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750518944629</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Update project to differentiate sidebar menu and SDK version&#10;&#10;Updated the sidebar to display role-specific menu options for students and professors. Changed the project SDK version to Python 3.13 (FreelanceHub) in configuration files.">
+      <option name="closed" value="true" />
+      <created>1750531958776</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1750531958776</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,6 +261,8 @@
     <MESSAGE value="Add &quot;filliere&quot; field to Utilisateur and UI/UX enhancements&#10;&#10;Added a new &quot;filliere&quot; field to the Utilisateur model via migration. Improved student views, including new paths, a materials view, and updated dashboard/course templates with enhanced UI/UX features. Fixed minor logic and layout issues in templates and JavaScript." />
     <MESSAGE value="Refactor scheduling, add materials view, and improve UI&#10;&#10;Renamed schedule view and URLs, introduced materials view, and refined course and notes templates. Updated styles for better usability and added search functionality for materials and grades." />
     <MESSAGE value="Add logout button and improve course and assignment UI&#10;&#10;Added a logout button to the course header for better UX. Removed &quot;Sunday&quot; from the weekday mapping. Improved styling and structure for course and assignment templates, including better responsive design, updated CSS classes, and enhanced layout formatting." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add logout button and improve course and assignment UI&#10;&#10;Added a logout button to the course header for better UX. Removed &quot;Sunday&quot; from the weekday mapping. Improved styling and structure for course and assignment templates, including better responsive design, updated CSS classes, and enhanced layout formatting." />
+    <MESSAGE value="Add &quot;Mes Matières&quot; view and settings functionality&#10;&#10;Introduced the &quot;Mes Matières&quot; page for professors to manage their courses and materials. Added a settings page for user profile viewing and updates, enhancing user experience. Updated URLs, templates, views, and the sidebar for seamless integration of the new features." />
+    <MESSAGE value="Update project to differentiate sidebar menu and SDK version&#10;&#10;Updated the sidebar to display role-specific menu options for students and professors. Changed the project SDK version to Python 3.13 (FreelanceHub) in configuration files." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update project to differentiate sidebar menu and SDK version&#10;&#10;Updated the sidebar to display role-specific menu options for students and professors. Changed the project SDK version to Python 3.13 (FreelanceHub) in configuration files." />
   </component>
 </project>

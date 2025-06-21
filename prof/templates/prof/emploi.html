@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load dict_extras %}
+
+{% block extra_css %}
+<style>
+  /* Paste your timetable-specific CSS here */
+  :root {
+    --primary: #4361ee;
+    --secondary: #3f37c9;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --success: #4cc9f0;
+    --warning: #f8961e;
+    --danger: #ef233c;
+    --card-radius: 12px;
+  }
+
+  .timetable-container {
+    background: white;
+    border-radius: var(--card-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .timetable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .timetable th {
+    background-color: var(--primary);
+    color: white;
+    font-weight: 500;
+    padding: 1rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+  }
+
+  .timetable td {
+    border: 1px solid #e9ecef;
+    padding: 0.75rem;
+    text-align: center;
+    vertical-align: middle;
+    transition: all 0.2s ease;
+  }
+
+  .timetable td:hover {
+    background-color: rgba(67, 97, 238, 0.05);
+  }
+
+  .time-header {
+    background-color: #f8f9fc;
+    font-weight: 500;
+    color: var(--primary);
+  }
+
+  .course-slot {
+    background-color: white;
+    border-radius: 8px;
+    padding: 0.75rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .course-slot.has-course {
+    background-color: rgba(67, 97, 238, 0.08);
+    border-left: 4px solid var(--primary);
+  }
+
+  .course-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--dark);
+  }
+
+  .course-details {
+    font-size: 0.85rem;
+    color: #6c757d;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .empty-slot {
+    color: #adb5bd;
+    font-style: italic;
+  }
+
+  .badge-room {
+    background-color: rgba(76, 201, 240, 0.1);
+    color: #4cc9f0;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .badge-time {
+    background-color: rgba(248, 150, 30, 0.1);
+    color: #f8961e;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .timetable-container {
+      overflow-x: auto;
+    }
+
+    .timetable {
+      min-width: 700px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="header d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+    <h1 class="text-primary"><i class="fas fa-calendar-alt me-2"></i> Emploi du Temps</h1>
+
+  </div>
+
+  <div class="timetable-container">
+    <table class="timetable">
+      <thead>
+        <tr>
+          <th>Heure</th>
+          {% for jour in jours %}
+            <th>{{ jour }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for heure in heures %}
+          <tr>
+            <td class="time-header">{{ heure }}</td>
+            {% for jour in jours %}
+              {% with key=jour|add:","|add:heure %}
+                {% with slot=flat_timetable|dict_get:key %}
+                  <td>
+                    <div class="course-slot {% if slot %}has-course{% endif %}">
+                      {% if slot %}
+                        <div class="course-name">{{ slot.matiere.nom }}</div>
+                        <div class="course-details">
+                          <span class="badge-room">
+                            <i class="fas fa-door-open me-1"></i>{{ slot.salle }}
+                          </span>
+                          <span class="badge-time">
+                            <i class="fas fa-clock me-1"></i>{{ slot.heure_debut }} - {{ slot.heure_fin }}
+                          </span>
+                        </div>
+                      {% else %}
+                        <span class="empty-slot">Aucun cours</span>
+                      {% endif %}
+                    </div>
+                  </td>
+                {% endwith %}
+              {% endwith %}
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-info d-flex align-items-center gap-2">
+    <i class="fas fa-info-circle"></i>
+    Votre emploi du temps est mis à jour automatiquement. Consultez-le régulièrement.
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+
+  document.querySelectorAll('.course-slot.has-course').forEach(slot => {
+    slot.addEventListener('click', function() {
+      console.log('Course clicked:', this.querySelector('.course-name').textContent);
+    });
+  });
+
+
+</script>
+{% endblock %}

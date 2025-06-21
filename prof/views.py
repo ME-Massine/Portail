@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import timedelta, datetime
 
 from django.contrib.auth.decorators import login_required
@@ -12,8 +13,7 @@ from prof.forms import LectureMaterialForm
 # Create your views here.
 @login_required(login_url='login_view')
 def dashboard(request):
-
-    profInfo=request.user
+    profInfo = request.user
     today = timezone.now().date()
 
     weekday_map = {
@@ -27,7 +27,7 @@ def dashboard(request):
     }
     today_jour = weekday_map[today.weekday()]
 
-    cours= EmploiDuTemps.objects.filter(
+    cours = EmploiDuTemps.objects.filter(
         jour=today_jour,
         matiere__professeurs=profInfo
     )
@@ -51,13 +51,12 @@ def dashboard(request):
 
     nb_matieres = profInfo.matieres_enseignees.count()
 
-
-
     prof_courses = EmploiDuTemps.objects.filter(matiere__professeurs=profInfo)
 
     total_duration = timedelta()
     for course in prof_courses:
-        duration = datetime.combine(timezone.now(), course.heure_fin) - datetime.combine(timezone.now(),course.heure_debut)
+        duration = datetime.combine(timezone.now(), course.heure_fin) - datetime.combine(timezone.now(),
+                                                                                         course.heure_debut)
         total_duration += duration
 
     total_seconds = total_duration.total_seconds()
@@ -65,20 +64,19 @@ def dashboard(request):
     minutes = int((total_seconds % 3600) // 60)
     total_hours_formatted = f"{hours}h{minutes}min"
 
-    return render(request, 'prof/dashboard.html', {'profInfo':profInfo ,
-                                                   'nb_cours':nb_cours,
-                                                   'nb_etudiants':nb_etudiants,
-                                                   'nb_submissions':nb_submissions,
-                                                   'nb_matieres':nb_matieres,
-                                                   'total_hours_formatted':total_hours_formatted,
-                                                   'cours':cours})
+    return render(request, 'prof/dashboard.html', {'profInfo': profInfo,
+                                                   'nb_cours': nb_cours,
+                                                   'nb_etudiants': nb_etudiants,
+                                                   'nb_submissions': nb_submissions,
+                                                   'nb_matieres': nb_matieres,
+                                                   'total_hours_formatted': total_hours_formatted,
+                                                   'cours': cours})
 
 
 def matiere(request):
     matieres_enseignees = request.user.matieres_enseignees.all()
 
-    return render(request, 'prof/matiere.html', {'matieres_enseignees':matieres_enseignees})
-
+    return render(request, 'prof/matiere.html', {'matieres_enseignees': matieres_enseignees})
 
 
 @login_required
@@ -100,3 +98,39 @@ def ajouter_materiel(request, matiere_id):
 
 def settings(request):
     return render(request, 'prof/settings.html')
+
+
+def emploi(request):
+    user = request.user
+
+
+
+    # Récupérer les matières enseignées par ce professeur
+    matieres = user.matieres_enseignees.all()
+
+    # Récupérer les cours associés à ses matières
+    entries = EmploiDuTemps.objects.filter(matiere__in=matieres).select_related('matiere').order_by('jour',
+                                                                                                    'heure_debut')
+
+    # Organiser dans une structure à deux niveaux : [jour][heure]
+    timetable = defaultdict(dict)
+    for entry in entries:
+        heure_str = entry.heure_debut.strftime("%H:%M")
+        timetable[entry.jour][heure_str] = entry
+
+    # Aplatir les clés pour le template
+    flat_timetable = {}
+    for jour, slots in timetable.items():
+        for heure, slot in slots.items():
+            key = f"{jour},{heure}"
+            flat_timetable[key] = slot
+
+    jours = ['LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM']
+    heures = [f"{h:02d}:00" for h in range(8, 19)]
+
+    context = {
+        'flat_timetable': flat_timetable,
+        'jours': jours,
+        'heures': heures
+    }
+    return render(request, 'prof/emploi.html', context)
