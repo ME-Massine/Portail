@@ -138,8 +138,20 @@ def emploi(request):
 
 @login_required
 def notes(request):
-    etudiants = Utilisateur.objects.filter(role='etudiant').order_by('last_name', 'first_name')
-    matieres = Matiere.objects.all().order_by('nom')
+    # Only show matieres taught by this prof
+    matieres = request.user.matieres_enseignees.all().order_by('nom')
+
+    # For each matiere, get enrolled students
+    matiere_etudiants = {}
+    for matiere in matieres:
+        inscriptions = Inscription.objects.filter(matiere=matiere)
+        matiere_etudiants[matiere.id] = [
+            {
+                'id': insc.etudiant.id,
+                'name': f"{insc.etudiant.first_name} {insc.etudiant.last_name}"
+            }
+            for insc in inscriptions
+        ]
 
     if request.method == 'POST':
         etudiant_id = request.POST.get('etudiant')
@@ -176,8 +188,8 @@ def notes(request):
         if erreurs:
             recent_notes = Note.objects.filter(attribue_par=request.user).order_by('-date_attribution')[:10]
             context = {
-                'etudiants': etudiants,
                 'matieres': matieres,
+                'matiere_etudiants': matiere_etudiants,
                 'erreurs': erreurs,
                 'recent_notes': recent_notes,
                 'form_values': request.POST,
@@ -201,8 +213,8 @@ def notes(request):
     recent_notes = Note.objects.filter(attribue_par=request.user).order_by('-date_attribution')[:10]
 
     context = {
-        'etudiants': etudiants,
         'matieres': matieres,
+        'matiere_etudiants': matiere_etudiants,
         'recent_notes': recent_notes,
     }
     return render(request, 'prof/notation.html', context)

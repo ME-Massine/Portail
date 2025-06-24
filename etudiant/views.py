@@ -25,6 +25,7 @@ def dashboard(request):
     return render(request, 'etudiant/dashboard.html', context)
 
 
+@login_required(login_url='login_view')
 def emploi_du_temps(request):
     # Get all schedule entries ordered by day and start time
     entries = EmploiDuTemps.objects.select_related('matiere').all().order_by('jour', 'heure_debut')
@@ -110,10 +111,14 @@ def cours_view(request):
     return render(request, "etudiant/cours.html", context)
 
 
+@login_required(login_url='login_view')
 def notes_view(request):
     grades = Note.objects.filter(
         etudiant=request.user
     ).select_related('matiere').order_by('-date_attribution')
+
+    # Get all courses for the dropdown filter
+    matieres = Matiere.objects.filter(inscription__etudiant=request.user).distinct()
 
     # Calculate statistics
     average = grades.aggregate(avg=Avg('valeur'))['avg']
@@ -150,10 +155,12 @@ def notes_view(request):
         'dates': json.dumps(dates),
         'values': json.dumps(values),
         'distribution': json.dumps(distribution),
+        'matieres': matieres,
     }
     return render(request, "etudiant/notes.html", context)
 
 
+@login_required(login_url='login_view')
 def voir_materiaux(request):
     # Get all courses with their visible materials prefetched
     matieres = Matiere.objects.all().order_by('nom').prefetch_related(
@@ -176,6 +183,7 @@ def voir_materiaux(request):
     return render(request, 'etudiant/voir_materiaux.html', context)
 
 
+@login_required(login_url='login_view')
 def devoirs_view(request):
     form = None
     if request.method == 'POST':
@@ -199,11 +207,14 @@ def devoirs_view(request):
         form = AssignmentSubmissionForm(user=request.user)
 
     # Get all submissions by the student
-    submissions = AssignmentSubmission.objects.filter(inscription__etudiant=request.user).select_related('assignment', 'assignment__matiere').order_by('-submitted_at')
+    submissions = AssignmentSubmission.objects.filter(inscription__etudiant=request.user).select_related('assignment',
+                                                                                                         'assignment__matiere').order_by(
+        '-submitted_at')
 
     return render(request, 'etudiant/devoirs.html', {'form': form, 'submissions': submissions})
 
 
+@login_required(login_url='login_view')
 def settings(request):
     return render(request, 'etudiant/settings.html')
 

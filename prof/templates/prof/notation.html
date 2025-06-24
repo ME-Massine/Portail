@@ -95,9 +95,7 @@
                             <label for="etudiant" class="form-label">Étudiant</label>
                             <select class="form-control select-control" id="etudiant" name="etudiant" required>
                                 <option value="" selected disabled>Sélectionner un étudiant</option>
-                                {% for etudiant in etudiants %}
-                                    <option value="{{ etudiant.id }}">{{ etudiant.first_name }}</option>
-                                {% endfor %}
+                                <!-- Options will be filled by JS -->
                             </select>
                         </div>
 
@@ -165,6 +163,20 @@
                 e.preventDefault();
                 alert('Veuillez entrer une note valide entre 0 et 20');
                 document.getElementById('valeur').focus();
+            }
+        });
+
+        // Dynamic student dropdown based on selected course
+        const matiereEtudiants = {{ matiere_etudiants|safe }};
+        const matiereSelect = document.getElementById('matiere');
+        const etudiantSelect = document.getElementById('etudiant');
+        matiereSelect.addEventListener('change', function() {
+            const matiereId = this.value;
+            etudiantSelect.innerHTML = '<option value="">Sélectionner un étudiant</option>';
+            if (matiereEtudiants[matiereId]) {
+                matiereEtudiants[matiereId].forEach(function(etudiant) {
+                    etudiantSelect.innerHTML += `<option value="${etudiant.id}">${etudiant.name}</option>`;
+                });
             }
         });
 

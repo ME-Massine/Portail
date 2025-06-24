@@ -24,4 +24,4 @@ class AssignmentSubmissionForm(forms.ModelForm):
             submitted_assignment_ids = AssignmentSubmission.objects.filter(
                 inscription__etudiant=user
             ).values_list('assignment_id', flat=True)
-            self.fields['assignment'].queryset = assignments.exclude(id__in=submitted_assignment_ids) 
+            self.fields['assignment'].queryset = assignments.exclude(id__in=submitted_assignment_ids)

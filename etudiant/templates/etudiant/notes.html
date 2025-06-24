@@ -313,6 +313,15 @@
 
     <!-- Grades Table -->
     <div class="grades-table-container">
+        <div style="margin-bottom: 1rem;">
+            <label for="course-filter" style="font-weight:600;">Filtrer par matière :</label>
+            <select id="course-filter" style="margin-left:0.5rem; padding:0.4rem 1rem; border-radius:6px; border:1px solid #e2e8f0;">
+                <option value="">Toutes les matières</option>
+                {% for matiere in matieres %}
+                    <option value="{{ matiere.nom|escape }}">{{ matiere.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
         {% if grades %}
             <table class="grades-table">
                 <thead>
@@ -365,6 +374,15 @@
         const labels = {{ dates|default:"[]"|safe }};
         const values = {{ values|default:"[]"|safe }};
         const distributionData = {{ distribution|default:"[]"|safe }};
+
+        // Course filter
+        document.getElementById('course-filter').addEventListener('change', function () {
+            const selected = this.value.toLowerCase();
+            document.querySelectorAll('.grade-row').forEach(row => {
+                const subject = row.querySelector('.subject-name').textContent.toLowerCase();
+                row.style.display = (!selected || subject === selected) ? '' : 'none';
+            });
+        });
 
         // Search filter for subjects
         document.getElementById('grade-search').addEventListener('input', function () {
@@ -448,23 +466,6 @@
                             intersect: false
                         }
                     }
-                }
-            });
-        });
-
-        // Search functionality
-        document.getElementById('grade-search').addEventListener('input', function (e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('.grade-row');
-
-            rows.forEach(row => {
-                const subjectName = row.querySelector('.subject-name').textContent.toLowerCase();
-                const subjectCode = row.querySelector('.subject-code').textContent.toLowerCase();
-
-                if (subjectName.includes(searchTerm) || subjectCode.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
                 }
             });
         });
