@@ -2,6 +2,7 @@ from collections import defaultdict
 from datetime import timedelta, datetime
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
@@ -41,6 +42,11 @@ def dashboard(request):
         matiere__id__in=matiere
     ).values('etudiant').distinct().count()
 
+    etudiant_count = Utilisateur.objects.filter(
+        role='etudiant',
+        inscriptions__matiere__in=request.user.matieres_enseignees.all()
+    ).distinct().count()
+
     # Get inscriptions in these matieres
     prof_matieres = profInfo.matieres_enseignees.all()
 
@@ -74,7 +80,8 @@ def dashboard(request):
                                                    'nb_matieres': nb_matieres,
                                                    'total_hours_formatted': total_hours_formatted,
                                                    'cours': cours,
-                                                   'submissions':submissions})
+                                                   'submissions':submissions,
+                                                   'etudiant_count':etudiant_count})
 
 
 def matiere(request):

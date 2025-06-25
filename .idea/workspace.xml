@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Add emploi view and update sidebar/menu integration&#10;&#10;Introduced the &quot;emploi&quot; view and corresponding timetable HTML template to display teachers' schedules dynamically. Updated sidebar links, URLs, and views logic to support the new functionality. Improved code readability and formatting across relevant files.">
-      <change afterPath="$PROJECT_DIR$/prof/templates/prof/materiauxDeCours.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/portail.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/portail.iml" afterDir="false" />
+    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Add materials view and update sidebar/menu integration&#10;&#10;Introduced the &quot;voir_materiaux&quot; view and template for managing course materials. Updated the sidebar, URLs, and dashboard to reflect these changes. Enhanced views and templates to include searchable and filterable material lists, and ensured seamless integration with existing functionality.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prof/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prof/templates/prof/materiauxDeCours.html" beforeDir="false" afterPath="$PROJECT_DIR$/prof/templates/prof/materiauxDeCours.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prof/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sidebar.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,6 +135,7 @@
       <workItem from="1749033290266" duration="14931000" />
       <workItem from="1749305328345" duration="3607000" />
       <workItem from="1749422910076" duration="1397000" />
+      <workItem from="1750879705436" duration="2102000" />
     </task>
     <task id="LOCAL-00001" summary="setting app apps for each actor">
       <option name="closed" value="true" />
@@ -236,7 +233,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750539272982</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Add materials view and update sidebar/menu integration&#10;&#10;Introduced the &quot;voir_materiaux&quot; view and template for managing course materials. Updated the sidebar, URLs, and dashboard to reflect these changes. Enhanced views and templates to include searchable and filterable material lists, and ensured seamless integration with existing functionality.">
+      <option name="closed" value="true" />
+      <created>1750868470185</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1750868470185</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -276,6 +281,8 @@
     <MESSAGE value="Add &quot;Mes Matières&quot; view and settings functionality&#10;&#10;Introduced the &quot;Mes Matières&quot; page for professors to manage their courses and materials. Added a settings page for user profile viewing and updates, enhancing user experience. Updated URLs, templates, views, and the sidebar for seamless integration of the new features." />
     <MESSAGE value="Update project to differentiate sidebar menu and SDK version&#10;&#10;Updated the sidebar to display role-specific menu options for students and professors. Changed the project SDK version to Python 3.13 (FreelanceHub) in configuration files." />
     <MESSAGE value="Add emploi view and update sidebar/menu integration&#10;&#10;Introduced the &quot;emploi&quot; view and corresponding timetable HTML template to display teachers' schedules dynamically. Updated sidebar links, URLs, and views logic to support the new functionality. Improved code readability and formatting across relevant files." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add emploi view and update sidebar/menu integration&#10;&#10;Introduced the &quot;emploi&quot; view and corresponding timetable HTML template to display teachers' schedules dynamically. Updated sidebar links, URLs, and views logic to support the new functionality. Improved code readability and formatting across relevant files." />
+    <MESSAGE value="Add notes functionality with views, templates, and models&#10;&#10;Implemented a new feature to manage student grades, including a &quot;notes&quot; view, form handling, and a dedicated model with validation. Added a corresponding template for note submission and updated the sidebar for navigation integration. Improved the existing data model to incorporate note typing while ensuring compatibility with existing relations." />
+    <MESSAGE value="Add materials view and update sidebar/menu integration&#10;&#10;Introduced the &quot;voir_materiaux&quot; view and template for managing course materials. Updated the sidebar, URLs, and dashboard to reflect these changes. Enhanced views and templates to include searchable and filterable material lists, and ensured seamless integration with existing functionality." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add materials view and update sidebar/menu integration&#10;&#10;Introduced the &quot;voir_materiaux&quot; view and template for managing course materials. Updated the sidebar, URLs, and dashboard to reflect these changes. Enhanced views and templates to include searchable and filterable material lists, and ensured seamless integration with existing functionality." />
   </component>
 </project>
