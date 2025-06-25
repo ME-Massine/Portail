@@ -4,11 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Add materials view and update sidebar/menu integration&#10;&#10;Introduced the &quot;voir_materiaux&quot; view and template for managing course materials. Updated the sidebar, URLs, and dashboard to reflect these changes. Enhanced views and templates to include searchable and filterable material lists, and ensured seamless integration with existing functionality.">
+    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Improve UI/UX and add dynamic filtering for notes and courses&#10;&#10;Enhanced templates by adding dynamic filters for courses and notes to improve usability. Updated sidebar links and refined the sidebar's display logic. Applied @login_required across key views and optimized data handling for student selection in the grading interface.">
+      <change afterPath="$PROJECT_DIR$/school_admin/templates/school_admin/add_absence.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/school_admin/templates/school_admin/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/school_admin/templates/school_admin/modals/add_absence.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/school_admin/templates/school_admin/modals/add_course.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/school_admin/templates/school_admin/modals/add_user.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/school_admin/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prof/templates/prof/materiauxDeCours.html" beforeDir="false" afterPath="$PROJECT_DIR$/prof/templates/prof/materiauxDeCours.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prof/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/settings.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/settings.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portail/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/portail/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portail/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/portail/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/school_admin/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/school_admin/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,12 +46,12 @@
     &quot;assignee&quot;: &quot;ME-Massine&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ME-Massine/Portail.git&quot;,
-    &quot;accountId&quot;: &quot;61dbb79a-2d14-49cc-bf63-61f659208117&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ME-Massine/Portail.git",
+    "accountId": "bba76402-05a7-4df5-b10e-14d74a08cd0c"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -81,6 +92,7 @@
       <recent name="C:\Users\Administrateur\PycharmProjects\portail\static\images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrateur\PycharmProjects\portail\school_admin\templates\school_admin" />
       <recent name="C:\Users\Administrateur\PycharmProjects\portail\static\images" />
     </key>
   </component>
@@ -95,7 +107,7 @@
         <env name="DJANGO_SETTINGS_MODULE" value="portail.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.13 (FreelanceHub)" />
+      <option name="SDK_NAME" value="Python 3.12 (portail)" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -135,7 +147,7 @@
       <workItem from="1749033290266" duration="14931000" />
       <workItem from="1749305328345" duration="3607000" />
       <workItem from="1749422910076" duration="1397000" />
-      <workItem from="1750879705436" duration="2102000" />
+      <workItem from="1750806353468" duration="7842000" />
     </task>
     <task id="LOCAL-00001" summary="setting app apps for each actor">
       <option name="closed" value="true" />
@@ -217,31 +229,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750518944629</updated>
     </task>
-    <task id="LOCAL-00011" summary="Update project to differentiate sidebar menu and SDK version&#10;&#10;Updated the sidebar to display role-specific menu options for students and professors. Changed the project SDK version to Python 3.13 (FreelanceHub) in configuration files.">
+    <task id="LOCAL-00011" summary="Improve UI/UX and add dynamic filtering for notes and courses&#10;&#10;Enhanced templates by adding dynamic filters for courses and notes to improve usability. Updated sidebar links and refined the sidebar's display logic. Applied @login_required across key views and optimized data handling for student selection in the grading interface.">
       <option name="closed" value="true" />
-      <created>1750531958776</created>
+      <created>1750808018315</created>
       <option name="number" value="00011" />
       <option name="presentableId" value="LOCAL-00011" />
       <option name="project" value="LOCAL" />
-      <updated>1750531958776</updated>
+      <updated>1750808018315</updated>
     </task>
-    <task id="LOCAL-00012" summary="Add emploi view and update sidebar/menu integration&#10;&#10;Introduced the &quot;emploi&quot; view and corresponding timetable HTML template to display teachers' schedules dynamically. Updated sidebar links, URLs, and views logic to support the new functionality. Improved code readability and formatting across relevant files.">
-      <option name="closed" value="true" />
-      <created>1750539272982</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1750539272982</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Add materials view and update sidebar/menu integration&#10;&#10;Introduced the &quot;voir_materiaux&quot; view and template for managing course materials. Updated the sidebar, URLs, and dashboard to reflect these changes. Enhanced views and templates to include searchable and filterable material lists, and ensured seamless integration with existing functionality.">
-      <option name="closed" value="true" />
-      <created>1750868470185</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1750868470185</updated>
-    </task>
-    <option name="localTasksCounter" value="14" />
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,11 +274,7 @@
     <MESSAGE value="Add &quot;filliere&quot; field to Utilisateur and UI/UX enhancements&#10;&#10;Added a new &quot;filliere&quot; field to the Utilisateur model via migration. Improved student views, including new paths, a materials view, and updated dashboard/course templates with enhanced UI/UX features. Fixed minor logic and layout issues in templates and JavaScript." />
     <MESSAGE value="Refactor scheduling, add materials view, and improve UI&#10;&#10;Renamed schedule view and URLs, introduced materials view, and refined course and notes templates. Updated styles for better usability and added search functionality for materials and grades." />
     <MESSAGE value="Add logout button and improve course and assignment UI&#10;&#10;Added a logout button to the course header for better UX. Removed &quot;Sunday&quot; from the weekday mapping. Improved styling and structure for course and assignment templates, including better responsive design, updated CSS classes, and enhanced layout formatting." />
-    <MESSAGE value="Add &quot;Mes Matières&quot; view and settings functionality&#10;&#10;Introduced the &quot;Mes Matières&quot; page for professors to manage their courses and materials. Added a settings page for user profile viewing and updates, enhancing user experience. Updated URLs, templates, views, and the sidebar for seamless integration of the new features." />
-    <MESSAGE value="Update project to differentiate sidebar menu and SDK version&#10;&#10;Updated the sidebar to display role-specific menu options for students and professors. Changed the project SDK version to Python 3.13 (FreelanceHub) in configuration files." />
-    <MESSAGE value="Add emploi view and update sidebar/menu integration&#10;&#10;Introduced the &quot;emploi&quot; view and corresponding timetable HTML template to display teachers' schedules dynamically. Updated sidebar links, URLs, and views logic to support the new functionality. Improved code readability and formatting across relevant files." />
-    <MESSAGE value="Add notes functionality with views, templates, and models&#10;&#10;Implemented a new feature to manage student grades, including a &quot;notes&quot; view, form handling, and a dedicated model with validation. Added a corresponding template for note submission and updated the sidebar for navigation integration. Improved the existing data model to incorporate note typing while ensuring compatibility with existing relations." />
-    <MESSAGE value="Add materials view and update sidebar/menu integration&#10;&#10;Introduced the &quot;voir_materiaux&quot; view and template for managing course materials. Updated the sidebar, URLs, and dashboard to reflect these changes. Enhanced views and templates to include searchable and filterable material lists, and ensured seamless integration with existing functionality." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add materials view and update sidebar/menu integration&#10;&#10;Introduced the &quot;voir_materiaux&quot; view and template for managing course materials. Updated the sidebar, URLs, and dashboard to reflect these changes. Enhanced views and templates to include searchable and filterable material lists, and ensured seamless integration with existing functionality." />
+    <MESSAGE value="Improve UI/UX and add dynamic filtering for notes and courses&#10;&#10;Enhanced templates by adding dynamic filters for courses and notes to improve usability. Updated sidebar links and refined the sidebar's display logic. Applied @login_required across key views and optimized data handling for student selection in the grading interface." />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve UI/UX and add dynamic filtering for notes and courses&#10;&#10;Enhanced templates by adding dynamic filters for courses and notes to improve usability. Updated sidebar links and refined the sidebar's display logic. Applied @login_required across key views and optimized data handling for student selection in the grading interface." />
   </component>
 </project>

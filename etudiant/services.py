@@ -12,9 +12,9 @@ def get_student_dashboard_data(student):
     ).distinct()
 
     # Calculate average grade
-    average_grade = Note.objects.filter(
+    nb_Absence = Absence.objects.filter(
         etudiant=student
-    ).aggregate(avg_grade=Avg('valeur'))['avg_grade'] or 0
+    ).count()
 
     # Get current weekday in your format (3-letter uppercase)
     today = timezone.now()
@@ -66,7 +66,7 @@ def get_student_dashboard_data(student):
         'recent_grades': Note.objects.filter(
             etudiant=student
         ).select_related('matiere').order_by('-date_attribution')[:5],
-        'average_grade': average_grade,
+        'nb_Absence': nb_Absence,
         'todays_classes': todays_classes,
         'pending_assignments': pending_assignments,
         'attendance_stats': {
