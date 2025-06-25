@@ -11,6 +11,7 @@ urlpatterns = [
 
     path('professeur/', include(('prof.urls', 'prof'), namespace='prof')),
     path('etudiant/', include(('etudiant.urls', 'etudiant'), namespace='etudiant')),
+    path('etudiant/', include(('school_admin.urls', 'school_admin'), namespace='school_admin')),
     path('', views.login_view, name='login_view'),
 ]
 

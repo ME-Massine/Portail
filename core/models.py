@@ -5,7 +5,7 @@ from django.db import models
 # Create your models here.
 class Utilisateur(AbstractUser):
     ROLE_CHOICES = (
-        ('school_admin', 'Administrateur'),
+        ('administrateur', 'Administrateur'),
         ('professeur', 'Professeur'),
         ('etudiant', 'Étudiant'),
     )

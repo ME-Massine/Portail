@@ -15,6 +15,7 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+                print(user.role)
 
                 if user.role is not None:
                     if user.role == 'professeur':

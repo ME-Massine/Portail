@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid py-4">
+        <!-- Header with Dark Mode Toggle -->
+        <div class="d-flex justify-content-between align-items-center mb-4 animate-fade">
+            <div>
+                <h1 class="h2 mb-0 text-gradient">Admin Dashboard</h1>
+                <p class="text-muted mb-0">Manage your institution's data and analytics</p>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                <label class="form-check-label" for="darkModeToggle">
+                    <i class="fas fa-moon"></i>
+                </label>
+            </div>
+        </div>
+
+        <!-- Stats Cards Row -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3 animate-fade" style="animation-delay: 0.1s">
+                <div class="card gradient-card-primary rounded-4 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-white-50 mb-2">Total Students</h6>
+                                <h2 class="mb-0">{{ total_students }}</h2>
+                                <small class="text-white-50">+5.2% from last month</small>
+                            </div>
+                            <i class="fas fa-users fa-2x text-white-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 animate-fade" style="animation-delay: 0.2s">
+                <div class="card gradient-card-primary rounded-4 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-white-50 mb-2">Professors</h6>
+                                <h2 class="mb-0">{{ total_professors }}</h2>
+                                <small class="text-white-50">+2 new this week</small>
+                            </div>
+                            <i class="fas fa-chalkboard-teacher fa-2x text-white-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 animate-fade" style="animation-delay: 0.3s">
+                <div class="card gradient-card-primary rounded-4 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-white-50 mb-2">Courses</h6>
+                                <h2 class="mb-0">{{ total_courses }}</h2>
+                                <small class="text-white-50">12 active this semester</small>
+                            </div>
+                            <i class="fas fa-book-open fa-2x text-white-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 animate-fade" style="animation-delay: 0.4s">
+                <div class="card gradient-card-primary rounded-4 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-white-50 mb-2">Absences</h6>
+                                <h2 class="mb-0">{{ total_absences }}</h2>
+                                <small class="text-white-50">3 unresolved</small>
+                            </div>
+                            <i class="fas fa-calendar-times fa-2x text-white-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-6 animate-fade" style="animation-delay: 0.2s">
+                <div class="card glass-card border-0 h-100">
+                    <div class="card-header bg-transparent">
+                        <h5 class="mb-0">Enrollment Trends</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="enrollmentChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 animate-fade" style="animation-delay: 0.3s">
+                <div class="card glass-card border-0 h-100">
+                    <div class="card-header bg-transparent">
+                        <h5 class="mb-0">Grade Distribution</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="gradesChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mb-4 animate-fade" style="animation-delay: 0.4s">
+            <div class="col-12">
+                <div class="card glass-card border-0">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Quick Actions</h5>
+                        <div class="d-flex flex-wrap gap-3">
+                            <button class="btn btn-lg btn-primary rounded-pill px-4" data-bs-toggle="modal"
+                                    data-bs-target="#addUserModal">
+                                <i class="fas fa-user-plus me-2"></i>Add User
+                            </button>
+                            <button class="btn btn-lg btn-primary rounded-pill px-4" data-bs-toggle="modal"
+                                    data-bs-target="#addCourseModal">
+                                <i class="fas fa-book me-2"></i>Add Course
+                            </button>
+                            <button class="btn btn-lg btn-primary rounded-pill px-4" data-bs-toggle="modal"
+                                    data-bs-target="#addAbsenceModal">
+                                <i class="fas fa-calendar-times me-2"></i>Record Absence
+                            </button>
+                            <a href="#" class="btn btn-lg btn-outline-primary rounded-pill px-4">
+                                <i class="fas fa-file-export me-2"></i>Generate Report
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity and Users -->
+        <div class="row g-4">
+            <div class="col-lg-8 animate-fade" style="animation-delay: 0.5s">
+                <div class="card glass-card border-0 h-100">
+                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Recent Activity</h5>
+                        <a href="#" class="btn btn-sm btn-primary rounded-pill">View All</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-admin table-hover mb-0">
+                                <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                    <th>Time</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for activity in recent_activities %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{% static 'images/default-avatar.png' %}"
+                                                     class="rounded-circle me-2" width="30" height="30">
+                                                {{ activity.user.get_full_name }}
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-primary">{{ activity.user.get_role_display }}</span>
+                                        </td>
+                                        <td>{{ activity.action }}</td>
+                                        <td>{{ activity.timestamp|timesince }} ago</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 animate-fade" style="animation-delay: 0.6s">
+                <div class="card glass-card border-0 h-100">
+                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">New Users</h5>
+                        <a href="#" class="btn btn-sm btn-primary rounded-pill">View All</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush">
+                            {% for user in recent_users %}
+                                <div class="list-group-item border-0 px-0">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{% static 'images/default-avatar.png' %}" class="rounded-circle me-3"
+                                             width="40" height="40">
+                                        <div>
+                                            <h6 class="mb-0">{{ user.get_full_name }}</h6>
+                                            <small class="text-muted">{{ user.get_role_display }}</small>
+                                        </div>
+                                        <span class="badge bg-primary ms-auto">{{ user.date_joined|date:"M d" }}</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" data-bs-toggle="modal" data-bs-target="#quickActionModal">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Modals -->
+    {% include "school_admin/modals/add_user.html" %}
+    {% include "school_admin/modals/add_course.html" %}
+    {% include "school_admin/modals/add_absence.html" %}
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', darkModeToggle.checked);
+        });
+
+        // Check for saved preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            darkModeToggle.checked = true;
+            document.body.classList.add('dark-mode');
+        }
+
+        // Enrollment Chart
+        const enrollmentCtx = document.getElementById('enrollmentChart').getContext('2d');
+        new Chart(enrollmentCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Students',
+                    data: [120, 150, 180, 200, 220, 250],
+                    borderColor: '#4361ee',
+                    backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {display: false}
+                }
+            }
+        });
+
+        // Grades Chart
+        const gradesCtx = document.getElementById('gradesChart').getContext('2d');
+        new Chart(gradesCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['A (90-100)', 'B (80-89)', 'C (70-79)', 'D (60-69)', 'F (<60)'],
+                datasets: [{
+                    data: [25, 30, 20, 15, 10],
+                    backgroundColor: [
+                        '#4361ee',
+                        '#4cc9f0',
+                        '#3f37c9',
+                        '#f8961e',
+                        '#ef233c'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

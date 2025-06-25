@@ -5,15 +5,11 @@
     <meta charset="UTF-8">
     <meta name="theme-color" content="#4361ee">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Portail</title>
+    <title>Portail Admin</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
-
-    <!-- Favicon -->
-    <meta name="description" content="Portail - Educational Platform for Students and Teachers">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -25,6 +21,7 @@
     <style>
         :root {
             --primary-color: #4361ee;
+            --primary-light: #4cc9f0;
             --secondary-color: #3f37c9;
             --success-color: #4cc9f0;
             --warning-color: #f8961e;
@@ -32,7 +29,8 @@
             --light-color: #f8f9fa;
             --dark-color: #2c3e50;
             --border-radius: 10px;
-            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --glass-blur: 12px;
         }
 
         body {
@@ -42,6 +40,13 @@
             margin: 0;
             padding: 0;
             display: flex;
+            transition: all 0.3s ease;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: #121212;
+            color: #f8f9fa;
         }
 
         main {
@@ -52,6 +57,10 @@
             width: calc(100% - 280px);
             min-height: 100vh;
             background-color: #f5f7ff;
+        }
+
+        body.dark-mode main {
+            background-color: #121212;
         }
 
         .main-content {
@@ -67,26 +76,104 @@
             }
         }
 
-        .card {
-            border: none;
-            border-radius: var(--border-radius);
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: var(--box-shadow);
-            background: white;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-2px);
+        body.dark-mode .glass-card {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
+        /* Gradient Cards */
+        .gradient-card-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(67, 97, 238, 0.3);
+            border: none;
         }
 
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
+        .gradient-card-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(67, 97, 238, 0.4);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(67, 97, 238, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            background: var(--secondary-color);
+        }
+
+        /* Custom Table */
+        .table-admin {
+            --bs-table-bg: transparent;
+            --bs-table-striped-bg: rgba(67, 97, 238, 0.05);
+            --bs-table-hover-bg: rgba(67, 97, 238, 0.1);
+            margin-bottom: 0;
+        }
+
+        body.dark-mode .table-admin {
+            --bs-table-striped-bg: rgba(67, 97, 238, 0.1);
+            --bs-table-hover-bg: rgba(67, 97, 238, 0.2);
+            color: #f8f9fa;
+        }
+
+        .table-admin th {
+            border-bottom: 2px solid var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.1);
+            font-weight: 600;
+        }
+
+        body.dark-mode .table-admin th {
+            background-color: rgba(67, 97, 238, 0.2);
+        }
+
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Custom Buttons */
+        .btn-rounded {
+            border-radius: 50px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.5s ease forwards;
         }
     </style>
 
@@ -97,7 +184,7 @@
     {% include 'sidebar.html' %}
 {% endblock %}
 
-<main>
+<main class="{% block main_class %}with-sidebar{% endblock %}">
     <div class="main-content">
         {% block content %}{% endblock %}
     </div>

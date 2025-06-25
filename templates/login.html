@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block nav %}
-{% endblock %}
+{% block nav %}{% endblock %}
+{% block main_class %}no-sidebar{% endblock %}
 
 {% block content %}
     <style>
@@ -26,6 +26,19 @@
             color: #333;
         }
 
+        main {
+            margin-left: 0 !important;
+            width: 100% !important;
+            padding: 0 !important;
+            background: none;
+        }
+
+        .main-content {
+            margin: 0;
+            padding: 0;
+            max-width: 100%;
+        }
+        
         /* Login Container */
         .login-container {
             display: flex;

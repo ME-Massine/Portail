@@ -1,0 +1,45 @@
+<div class="modal fade" id="addAbsenceModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-card">
+      <div class="modal-header border-0">
+        <h5 class="modal-title">Record Absence</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post" action="{% url 'school_admin:add_absence' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Student</label>
+            <select name="student" class="form-select" required>
+              <option value="">Select Student</option>
+              {% for student in students %}
+              <option value="{{ student.id }}">{{ student.get_full_name }} ({{ student.filière.name }})</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" name="date" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Course</label>
+            <select name="course" class="form-select">
+              <option value="">Select Course (optional)</option>
+              {% for course in courses %}
+              <option value="{{ course.id }}">{{ course.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Reason</label>
+            <textarea name="reason" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary rounded-pill">Record Absence</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
