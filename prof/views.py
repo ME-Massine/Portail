@@ -8,7 +8,7 @@ from django.utils import timezone
 from core.models import EmploiDuTemps, Inscription, Matiere, Utilisateur
 from etudiant.models import AssignmentSubmission
 from prof.forms import LectureMaterialForm
-from prof.models import Note
+from prof.models import Note, LectureMaterial
 
 
 # Create your views here.
@@ -50,6 +50,8 @@ def dashboard(request):
     # Count all submissions related to those inscriptions
     nb_submissions = AssignmentSubmission.objects.filter(inscription__in=inscriptions).count()
 
+    submissions=AssignmentSubmission.objects.filter(inscription__in=inscriptions)
+
     nb_matieres = profInfo.matieres_enseignees.count()
 
     prof_courses = EmploiDuTemps.objects.filter(matiere__professeurs=profInfo)
@@ -71,7 +73,8 @@ def dashboard(request):
                                                    'nb_submissions': nb_submissions,
                                                    'nb_matieres': nb_matieres,
                                                    'total_hours_formatted': total_hours_formatted,
-                                                   'cours': cours})
+                                                   'cours': cours,
+                                                   'submissions':submissions})
 
 
 def matiere(request):
@@ -219,3 +222,26 @@ def notes(request):
     }
     return render(request, 'prof/notation.html', context)
 
+
+def voir_materiaux(request):
+    search_query = request.GET.get('search', '')
+    matiere_id = request.GET.get('matiere', '')
+
+    lecture_materials = LectureMaterial.objects.filter(is_visible=True)
+
+    if search_query:
+        lecture_materials = lecture_materials.filter(
+            Q(title__icontains=search_query)
+        )
+
+    if matiere_id:
+        lecture_materials = lecture_materials.filter(matiere_id=matiere_id)
+
+    matieres = Matiere.objects.all()
+
+    context = {
+        'lecture_materials': lecture_materials,
+        'matieres': matieres,
+    }
+
+    return render(request, 'prof/materiauxDeCours.html', context)

@@ -542,7 +542,8 @@
         <!-- Welcome Banner -->
         <div class="welcome-banner">
             <h2>Bienvenue, Dr. {{ profInfo.last_name }}</h2>
-            <p>Vous avez {{ nb_cours }} cours aujourd'hui avec {{ nb_etudiants }} étudiants. {{ nb_submissions }} travaux à corriger sont en attente.</p>
+            <p>Vous avez {{ nb_cours }} cours aujourd'hui avec {{ nb_etudiants }} étudiants. {{ nb_submissions }}
+                travaux à corriger sont en attente.</p>
         </div>
 
         <!-- Stats Cards -->
@@ -580,7 +581,7 @@
                 <div class="panel">
                     <div class="panel-header">
                         <h3>Vos Cours Aujourd'hui</h3>
-                        <a href="#">Voir l'Emploi du Temps</a>
+                        <a href="{% url 'prof:emploi' %}">Voir l'Emploi du Temps</a>
                     </div>
                     <div class="panel-body">
                         {% for cr in cours %}
@@ -593,7 +594,7 @@
                                     </div>
                                     <div class="class-room">
                                         <i class="fas fa-map-marker-alt"></i>
-                                        {{ cr.salle}}
+                                        {{ cr.salle }}
                                     </div>
                                 </li>
                             </ul>
@@ -608,33 +609,20 @@
                         <h3>Travaux Récemment Soumis</h3>
                         <a href="#">Voir Tous</a>
                     </div>
+
                     <div class="panel-body">
-                        <div class="student-list">
-                            <div class="student-item">
-                                <div class="student-avatar">JD</div>
-                                <div class="student-info">
-                                    <h4>Jean Dupont</h4>
-                                    <p>Projet Algorithmes - Soumis le 15/12</p>
+                        {% for submission in submissions %}
+                            <div class="student-list">
+                                <div class="student-item">
+                                    <div class="student-avatar">test</div>
+                                    <div class="student-info">
+                                        <h4>Jean Dupont</h4>
+                                        <p>Projet Algorithmes - Soumis le 15/12</p>
+                                    </div>
+                                    <div class="student-grade">À noter</div>
                                 </div>
-                                <div class="student-grade">À noter</div>
                             </div>
-                            <div class="student-item">
-                                <div class="student-avatar">MS</div>
-                                <div class="student-info">
-                                    <h4>Marie Simon</h4>
-                                    <p>TP Base de Données - Soumis le 14/12</p>
-                                </div>
-                                <div class="student-grade">16/20</div>
-                            </div>
-                            <div class="student-item">
-                                <div class="student-avatar">PA</div>
-                                <div class="student-info">
-                                    <h4>Pierre André</h4>
-                                    <p>Rapport Systèmes - Soumis le 13/12</p>
-                                </div>
-                                <div class="student-grade">À noter</div>
-                            </div>
-                        </div>
+                        {% endfor %}
                         <div class="grading-controls">
                             <button class="grading-btn primary">
                                 <i class="fas fa-check-circle"></i> Noter en Lot

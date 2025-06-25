@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Matériaux de Lecture{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Matériaux de Lecture</h2>
+            
+            <!-- Search and Filter Section -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <select class="form-select" name="matiere">
+                                <option value="">Toutes les matières</option>
+                                {% for matiere in matieres %}
+                                    <option value="{{ matiere.id }}" {% if request.GET.matiere == matiere.id|stringformat:"s" %}selected{% endif %}>{{ matiere.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary">Rechercher</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Materials List -->
+            <div class="row">
+                {% for lecture_material in lecture_materials %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ lecture_material.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ lecture_material.matiere.nom }}</h6>
+                            <p class="text-muted">
+                                <small>
+                                    {% if lecture_material.matiere.professeurs.all %}
+                                        Professeurs :
+                                        {% for prof in lecture_material.matiere.professeurs.all %}
+                                            {{ prof.first_name }} {{ prof.last_name }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </small>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Ajouté le {{ lecture_material.upload_date|date:"d/m/Y" }}</small>
+                                {% if lecture_material.file %}
+                                    <a href="{{ lecture_material.file.url }}" class="btn btn-primary" download>
+                                        <i class="fas fa-download"></i> Télécharger
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info" role="alert">
+                        Aucun matériel de lecture disponible pour le moment.
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
