@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Add password change and success templates&#10;&#10;Implemented `password_change.html` and `password_change_done.html` for a complete password update workflow. Included styled templates, form handling, and responsive behavior to improve user experience.">
-      <change beforePath="$PROJECT_DIR$/prof/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/views.py" afterDir="false" />
+    <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="    Fix missing comma in context dictionary in prof/views.py&#10;&#10;    Added a missing comma in the context dictionary to ensure proper key-value mapping. This resolves potential errors or incorrect rendering in the related view.">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/portail.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/portail.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/cours.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/cours.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/settings.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/settings.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sidebar.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +43,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/ME-Massine/Portail.git&quot;,
-    &quot;accountId&quot;: &quot;61dbb79a-2d14-49cc-bf63-61f659208117&quot;
+    &quot;accountId&quot;: &quot;bba76402-05a7-4df5-b10e-14d74a08cd0c&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -50,30 +57,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Django Server.portail.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/Users/Administrateur/PycharmProjects/portail/static/images",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.inline.completion",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Django Server.portail.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrateur/PycharmProjects/portail/static/images&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.inline.completion&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Administrateur\PycharmProjects\portail\static\images" />
@@ -134,8 +141,6 @@
       <workItem from="1749305328345" duration="3607000" />
       <workItem from="1749422910076" duration="1397000" />
       <workItem from="1750806353468" duration="7842000" />
-      <workItem from="1750904232278" duration="87000" />
-      <workItem from="1750934069864" duration="1364000" />
     </task>
     <task id="LOCAL-00001" summary="setting app apps for each actor">
       <option name="closed" value="true" />
@@ -241,23 +246,7 @@
       <option name="project" value="LOCAL" />
       <updated>1750900824593</updated>
     </task>
-    <task id="LOCAL-00014" summary="Update SDK and localize login page to French&#10;&#10;Upgraded the project environment to Python 3.13 and updated related settings in `.idea` configuration files. Localized text in `login.html` to French, improving accessibility for French-speaking users.">
-      <option name="closed" value="true" />
-      <created>1750903906126</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1750903906126</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Add password change and success templates&#10;&#10;Implemented `password_change.html` and `password_change_done.html` for a complete password update workflow. Included styled templates, form handling, and responsive behavior to improve user experience.">
-      <option name="closed" value="true" />
-      <created>1750935388145</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1750935388145</updated>
-    </task>
-    <option name="localTasksCounter" value="16" />
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,8 +287,6 @@
     <MESSAGE value="Add admin dashboard and enhance UI/UX features  &#10;&#10;Introduced a dynamic admin dashboard with user, course, and absence management. Enhanced UI/UX across templates, including dark mode, glassmorphism effects, and improved responsiveness. Integrated new features like quick actions, stats cards, and interactive charts." />
     <MESSAGE value="Update dashboard to replace average grade with absence count&#10;&#10;Replaced the display of average grade with the count of absences for students in both the backend and frontend. Updated templates and services to reflect the new metric, ensuring consistent functionality and accurate data presentation." />
     <MESSAGE value="    Fix missing comma in context dictionary in prof/views.py&#10;&#10;    Added a missing comma in the context dictionary to ensure proper key-value mapping. This resolves potential errors or incorrect rendering in the related view." />
-    <MESSAGE value="Update SDK and localize login page to French&#10;&#10;Upgraded the project environment to Python 3.13 and updated related settings in `.idea` configuration files. Localized text in `login.html` to French, improving accessibility for French-speaking users." />
-    <MESSAGE value="Add password change and success templates&#10;&#10;Implemented `password_change.html` and `password_change_done.html` for a complete password update workflow. Included styled templates, form handling, and responsive behavior to improve user experience." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add password change and success templates&#10;&#10;Implemented `password_change.html` and `password_change_done.html` for a complete password update workflow. Included styled templates, form handling, and responsive behavior to improve user experience." />
+    <option name="LAST_COMMIT_MESSAGE" value="    Fix missing comma in context dictionary in prof/views.py&#10;&#10;    Added a missing comma in the context dictionary to ensure proper key-value mapping. This resolves potential errors or incorrect rendering in the related view." />
   </component>
 </project>

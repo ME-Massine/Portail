@@ -287,12 +287,12 @@
                     <i class="fas fa-tasks"></i> Notation
                 </a>
             </li>
-            <li class="menu-item {% if request.resolver_match.url_name == 'notes' %}active{% endif %}">
+            <li class="menu-item {% if request.resolver_match.url_name == 'devoir' %}active{% endif %}">
                 <a href="{% url 'prof:devoir' %}">
                     <i class="fa-solid fa-book"></i> Devoir
                 </a>
             </li>
-            <li class="menu-item">
+            <li class="menu-item {% if request.resolver_match.url_name == 'messages' %}active{% endif %}">
                 <a href="{% url 'prof:messages' %}">
                     <i class="fas fa-comments"></i> Messagerie
                 </a>
@@ -338,7 +338,7 @@
                     <i class="fas fa-chart-bar"></i> Notes
                 </a>
             </li>
-            <li class="menu-item">
+            <li class="menu-item {% if request.resolver_match.url_name == 'messages' %}active{% endif %}">
                 <a href="{% url 'etudiant:messages' %}">
                     <i class="fas fa-comments"></i> Messages
                 </a>
