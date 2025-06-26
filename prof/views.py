@@ -2,8 +2,11 @@ from collections import defaultdict
 from datetime import timedelta, datetime
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.db import models
 
@@ -113,8 +116,9 @@ def ajouter_materiel(request, matiere_id):
     return render(request, 'prof/ajouter_materiel.html', {'form': form, 'matiere': matiere})
 
 
+@login_required(login_url='login_view')
 def settings(request):
-    return render(request, 'prof/settings.html')
+    return render(request, 'etudiant/settings.html')
 
 
 def emploi(request):
@@ -362,3 +366,9 @@ def devoir(request):
         'form': form,
         'assignments': assignments,
     })
+
+
+class CustomPasswordChangeView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'etudiant/password_change.html'
+    success_url = reverse_lazy('etudiant:password_change_done')  # Note the namespace
+    success_message = "Votre mot de passe a été changé avec succès"
