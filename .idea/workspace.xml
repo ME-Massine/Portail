@@ -5,21 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="Improve UI/UX and add dynamic filtering for notes and courses&#10;&#10;Enhanced templates by adding dynamic filters for courses and notes to improve usability. Updated sidebar links and refined the sidebar's display logic. Applied @login_required across key views and optimized data handling for student selection in the grading interface.">
-      <change afterPath="$PROJECT_DIR$/school_admin/templates/school_admin/add_absence.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/school_admin/templates/school_admin/dashboard.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/school_admin/templates/school_admin/modals/add_absence.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/school_admin/templates/school_admin/modals/add_course.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/school_admin/templates/school_admin/modals/add_user.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/school_admin/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/prof/templates/prof/devoir.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etudiant/templates/etudiant/settings.html" beforeDir="false" afterPath="$PROJECT_DIR$/etudiant/templates/etudiant/settings.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portail/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/portail/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portail/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/portail/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/school_admin/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/school_admin/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prof/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prof/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prof/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prof/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sidebar.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,12 +38,12 @@
     &quot;assignee&quot;: &quot;ME-Massine&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ME-Massine/Portail.git",
-    "accountId": "bba76402-05a7-4df5-b10e-14d74a08cd0c"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ME-Massine/Portail.git&quot;,
+    &quot;accountId&quot;: &quot;bba76402-05a7-4df5-b10e-14d74a08cd0c&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -107,7 +99,6 @@
         <env name="DJANGO_SETTINGS_MODULE" value="portail.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12 (portail)" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />

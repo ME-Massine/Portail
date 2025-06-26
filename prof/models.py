@@ -67,6 +67,7 @@ class Assignment(models.Model):
     description = models.TextField(blank=True)
     due_date = models.DateField()
     created_by = models.ForeignKey('core.Utilisateur', on_delete=models.SET_NULL, null=True, limit_choices_to={'role': 'professeur'})
+    file = models.FileField(upload_to='assignments/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

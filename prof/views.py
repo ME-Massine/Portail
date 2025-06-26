@@ -8,8 +8,8 @@ from django.utils import timezone
 
 from core.models import EmploiDuTemps, Inscription, Matiere, Utilisateur
 from etudiant.models import AssignmentSubmission
-from prof.forms import LectureMaterialForm
-from prof.models import Note, LectureMaterial
+from prof.forms import LectureMaterialForm, AssignmentCreateForm
+from prof.models import Note, LectureMaterial, Assignment
 
 
 # Create your views here.
@@ -56,7 +56,7 @@ def dashboard(request):
     # Count all submissions related to those inscriptions
     nb_submissions = AssignmentSubmission.objects.filter(inscription__in=inscriptions).count()
 
-    submissions=AssignmentSubmission.objects.filter(inscription__in=inscriptions)
+    submissions = AssignmentSubmission.objects.filter(inscription__in=inscriptions)
 
     nb_matieres = profInfo.matieres_enseignees.count()
 
@@ -80,8 +80,8 @@ def dashboard(request):
                                                    'nb_matieres': nb_matieres,
                                                    'total_hours_formatted': total_hours_formatted,
                                                    'cours': cours,
-                                                   'submissions':submissions,
-                                                   'etudiant_count':etudiant_count})
+                                                   'submissions': submissions,
+                                                   'etudiant_count': etudiant_count})
 
 
 def matiere(request):
@@ -114,8 +114,6 @@ def settings(request):
 def emploi(request):
     user = request.user
 
-
-
     # Récupérer les matières enseignées par ce professeur
     matieres = user.matieres_enseignees.all()
 
@@ -145,6 +143,7 @@ def emploi(request):
         'heures': heures
     }
     return render(request, 'prof/emploi.html', context)
+
 
 @login_required
 def notes(request):
@@ -252,3 +251,29 @@ def voir_materiaux(request):
     }
 
     return render(request, 'prof/materiauxDeCours.html', context)
+
+
+def devoir(request):
+    user = request.user
+
+    # Only professors are allowed
+    if user.role != 'professeur':
+        return redirect('unauthorized')  # Optionally render a 403 page
+
+    if request.method == 'POST':
+        form = AssignmentCreateForm(request.POST, request.FILES, user=user)
+        if form.is_valid():
+            assignment = form.save(commit=False)
+            assignment.created_by = user
+            assignment.save()
+            return redirect('prof:devoir')  # reload the page
+    else:
+        form = AssignmentCreateForm(user=user)
+
+    # Retrieve all assignments created by the current professor
+    assignments = Assignment.objects.filter(created_by=user)
+
+    return render(request, 'prof/devoir.html', {
+        'form': form,
+        'assignments': assignments,
+    })

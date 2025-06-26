@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <style>
+        .devoir-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .devoir-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .devoir-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .devoir-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        .devoir-date {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .devoir-matiere {
+            color: var(--dark-color);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .devoir-description {
+            color: rgba(0, 0, 0, 0.7);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .empty-state i {
+            font-size: 2rem;
+            color: rgba(0, 0, 0, 0.2);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: rgba(0, 0, 0, 0.5);
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <!-- Page Header -->
+    <header class="header mb-4">
+        <div class="page-title">
+            <h1><i class="fas fa-tasks me-2"></i> Mes Devoirs</h1>
+        </div>
+    </header>
+
+    <!-- Add Assignment Form -->
+    <div class="card mb-5" style="max-width: 600px; margin: 0 auto;">
+        <div class="card-body">
+            <h4 class="mb-3">Ajouter un devoir</h4>
+            <form method="post" enctype="multipart/form-data"> <!-- ⬅️ added enctype -->
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.matiere.label_tag }}
+                    {{ form.matiere }}
+                    {% if form.matiere.errors %}
+                        <div class="text-danger small">{{ form.matiere.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.title.label_tag }}
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div class="text-danger small">{{ form.title.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="text-danger small">{{ form.description.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.due_date.label_tag }}
+                    {{ form.due_date }}
+                    {% if form.due_date.errors %}
+                        <div class="text-danger small">{{ form.due_date.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.file.label_tag }}
+                    {{ form.file }}
+                    {% if form.file.errors %}
+                        <div class="text-danger small">{{ form.file.errors }}</div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">Créer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- List of Assignments -->
+    <div class="mt-5">
+        <h4 class="mb-3">Devoirs créés</h4>
+        {% if assignments %}
+            <div class="devoirs-list">
+                {% for dev in assignments %}
+                    <div class="devoir-card">
+                        <div class="devoir-header">
+                            <h3 class="devoir-title">{{ dev.title }}</h3>
+                            <span class="devoir-date">
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                Dû le {{ dev.due_date|date:"d M Y" }}
+                            </span>
+                        </div>
+                        <p class="devoir-matiere"><strong>Matière:</strong> {{ dev.matiere.nom }}</p>
+                        <p class="devoir-description">{{ dev.description|default:"Pas de description." }}</p>
+                        {% if dev.file %}
+                            <a href="{{ dev.file.url }}" class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="fas fa-download me-1"></i> Télécharger le fichier
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-info-circle"></i>
+                <p>Aucun devoir ajouté.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
