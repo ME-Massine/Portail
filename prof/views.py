@@ -2,14 +2,15 @@ from collections import defaultdict
 from datetime import timedelta, datetime
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.db import models
 
 from core.models import EmploiDuTemps, Inscription, Matiere, Utilisateur, Message
 from etudiant.models import AssignmentSubmission
-from prof.forms import LectureMaterialForm
-from prof.models import Note, LectureMaterial
+from prof.forms import LectureMaterialForm, AssignmentCreateForm
+from prof.models import Note, LectureMaterial, Assignment
 
 
 # Create your views here.
@@ -42,6 +43,11 @@ def dashboard(request):
         matiere__id__in=matiere
     ).values('etudiant').distinct().count()
 
+    etudiant_count = Utilisateur.objects.filter(
+        role='etudiant',
+        inscriptions__matiere__in=request.user.matieres_enseignees.all()
+    ).distinct().count()
+
     # Get inscriptions in these matieres
     prof_matieres = profInfo.matieres_enseignees.all()
 
@@ -51,7 +57,7 @@ def dashboard(request):
     # Count all submissions related to those inscriptions
     nb_submissions = AssignmentSubmission.objects.filter(inscription__in=inscriptions).count()
 
-    submissions=AssignmentSubmission.objects.filter(inscription__in=inscriptions)
+    submissions = AssignmentSubmission.objects.filter(inscription__in=inscriptions)
 
     nb_matieres = profInfo.matieres_enseignees.count()
 
@@ -80,6 +86,8 @@ def dashboard(request):
                                                        destinataire=profInfo,
                                                        lu=False
                                                    ).count()})
+                                                   'submissions': submissions,
+                                                   'etudiant_count': etudiant_count})
 
 
 def matiere(request):
@@ -143,6 +151,7 @@ def emploi(request):
         'heures': heures
     }
     return render(request, 'prof/emploi.html', context)
+
 
 @login_required
 def notes(request):
@@ -255,14 +264,14 @@ def voir_materiaux(request):
 @login_required
 def messages_view(request):
     """Show list of students enrolled in the professor's courses"""
-    
+
     # Get all students enrolled in courses taught by this professor
     professor_courses = request.user.matieres_enseignees.all()
     students = Utilisateur.objects.filter(
         role='etudiant',
         inscriptions__matiere__in=professor_courses
     ).distinct()
-    
+
     # Get unread message count for each student
     student_data = []
     for student in students:
@@ -271,59 +280,85 @@ def messages_view(request):
             destinataire=request.user,
             lu=False
         ).count()
-        
+
         # Get last message with this student
         last_message = Message.objects.filter(
             (models.Q(expediteur=student, destinataire=request.user) |
              models.Q(expediteur=request.user, destinataire=student))
         ).order_by('-date_envoi').first()
-        
+
         # Get courses this student is enrolled in that the professor teaches
         student_courses = student.inscriptions.filter(
             matiere__in=professor_courses
         ).values_list('matiere__nom', flat=True)
-        
+
         student_data.append({
             'student': student,
             'unread_count': unread_count,
             'last_message': last_message,
             'courses': list(student_courses),
         })
-    
+
     context = {
         'student_data': student_data,
     }
-    
+
     return render(request, 'prof/messages.html', context)
 
 
 @login_required
 def chat_with_student(request, student_id):
     """Show chat interface with a specific student"""
-    
+
     student = get_object_or_404(Utilisateur, id=student_id, role='etudiant')
-    
+
     # Verify the student is enrolled in one of the professor's courses
     professor_courses = request.user.matieres_enseignees.all()
     if not student.inscriptions.filter(matiere__in=professor_courses).exists():
         return redirect('prof:messages')
-    
+
     # Get all messages between this professor and student
     messages = Message.objects.filter(
         (models.Q(expediteur=request.user, destinataire=student) |
          models.Q(expediteur=student, destinataire=request.user))
     ).order_by('date_envoi')
-    
+
     # Mark messages from student as read
     Message.objects.filter(
         expediteur=student,
         destinataire=request.user,
         lu=False
     ).update(lu=True)
-    
+
     context = {
         'student': student,
         'messages': messages,
     }
-    
+
     return render(request, 'prof/chat.html', context)
+
+
+def devoir(request):
+    user = request.user
+
+    # Only professors are allowed
+    if user.role != 'professeur':
+        return redirect('unauthorized')  # Optionally render a 403 page
+
+    if request.method == 'POST':
+        form = AssignmentCreateForm(request.POST, request.FILES, user=user)
+        if form.is_valid():
+            assignment = form.save(commit=False)
+            assignment.created_by = user
+            assignment.save()
+            return redirect('prof:devoir')  # reload the page
+    else:
+        form = AssignmentCreateForm(user=user)
+
+    # Retrieve all assignments created by the current professor
+    assignments = Assignment.objects.filter(created_by=user)
+
+    return render(request, 'prof/devoir.html', {
+        'form': form,
+        'assignments': assignments,
+    })

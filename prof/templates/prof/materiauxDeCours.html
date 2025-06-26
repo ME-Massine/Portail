@@ -14,6 +14,9 @@
                 <div class="card-body">
                     <form method="get" class="row g-3">
                         <div class="col-md-4">
+                            <input type="text" class="form-control" name="search" placeholder="Rechercher..." value="{{ request.GET.search }}">
+                        </div>
+                        <div class="col-md-4">
                             <select class="form-select" name="matiere">
                                 <option value="">Toutes les matières</option>
                                 {% for matiere in matieres %}

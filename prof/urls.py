@@ -9,6 +9,7 @@ urlpatterns = [
     path('emploi/', views.emploi, name='emploi'),
     path('notes/', views.notes, name='notes'),
     path('materiaux/',views.voir_materiaux,name='voir_materiaux'),
+    path('devoir/',views.devoir,name='devoir'),
     path('messages/', views.messages_view, name='messages'),
     path('messages/<int:student_id>/', views.chat_with_student, name='chat_with_student'),
 ]
