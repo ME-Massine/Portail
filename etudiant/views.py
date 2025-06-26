@@ -6,13 +6,13 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Avg, Count
 from django.db.models.functions import TruncMonth
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
 import json
 
 from .models import AssignmentSubmission
-from core.models import Matiere, Inscription, EmploiDuTemps
+from core.models import Matiere, Inscription, EmploiDuTemps, Message, Utilisateur
 from prof.models import Note, LectureMaterial
 from .services import get_student_dashboard_data
 from .forms import AssignmentSubmissionForm
@@ -217,6 +217,80 @@ def devoirs_view(request):
 @login_required(login_url='login_view')
 def settings(request):
     return render(request, 'etudiant/settings.html')
+
+
+@login_required(login_url='login_view')
+def messages_view(request):
+    """Show list of professors that teach the student's courses"""
+    from django.db import models
+    
+    # Get all professors that teach courses the student is enrolled in
+    student_courses = Inscription.objects.filter(etudiant=request.user).values_list('matiere_id', flat=True)
+    professors = Utilisateur.objects.filter(
+        role='professeur',
+        matieres_enseignees__id__in=student_courses
+    ).distinct()
+    
+    # Get unread message count for each professor
+    professor_data = []
+    for professor in professors:
+        unread_count = Message.objects.filter(
+            expediteur=professor,
+            destinataire=request.user,
+            lu=False
+        ).count()
+        
+        # Get last message with this professor
+        last_message = Message.objects.filter(
+            (models.Q(expediteur=professor, destinataire=request.user) |
+             models.Q(expediteur=request.user, destinataire=professor))
+        ).order_by('-date_envoi').first()
+        
+        professor_data.append({
+            'professor': professor,
+            'unread_count': unread_count,
+            'last_message': last_message,
+        })
+    
+    context = {
+        'professor_data': professor_data,
+    }
+    
+    return render(request, 'etudiant/messages.html', context)
+
+
+@login_required(login_url='login_view')
+def chat_with_professor(request, professor_id):
+    """Show chat interface with a specific professor"""
+    from django.db import models
+    from django.shortcuts import get_object_or_404
+    
+    professor = get_object_or_404(Utilisateur, id=professor_id, role='professeur')
+    
+    # Verify the professor teaches one of the student's courses
+    student_courses = request.user.inscriptions.values_list('matiere_id', flat=True)
+    if not professor.matieres_enseignees.filter(id__in=student_courses).exists():
+        return redirect('etudiant:messages')
+    
+    # Get all messages between this student and professor
+    messages = Message.objects.filter(
+        (models.Q(expediteur=request.user, destinataire=professor) |
+         models.Q(expediteur=professor, destinataire=request.user))
+    ).order_by('date_envoi')
+    
+    # Mark messages from professor as read
+    Message.objects.filter(
+        expediteur=professor,
+        destinataire=request.user,
+        lu=False
+    ).update(lu=True)
+    
+    context = {
+        'professor': professor,
+        'messages': messages,
+    }
+    
+    return render(request, 'etudiant/chat.html', context)
 
 
 class CustomPasswordChangeView(SuccessMessageMixin, PasswordChangeView):

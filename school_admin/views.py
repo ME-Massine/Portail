@@ -15,8 +15,13 @@ class AdminDashboardView(TemplateView):
         context.update({
             "total_students": Utilisateur.objects.filter(role="etudiant").count(),
             "total_professors": Utilisateur.objects.filter(role="professeur").count(),
+            "total_courses": Matiere.objects.count(),
+            "total_absences": Absence.objects.count(),
             "recent_users": Utilisateur.objects.order_by("-date_joined")[:5],
             "professors": Utilisateur.objects.filter(role="professeur"),  # For course modal
+            "filières": Utilisateur.FILLIERE_CHOICES,  # Add filière choices for the modal
+            "students": Utilisateur.objects.filter(role="etudiant"),  # For absence modal
+            "courses": Matiere.objects.all(),  # For absence modal
         })
         return context
 
@@ -26,15 +31,21 @@ def add_user(request):
         User = get_user_model()
         email = request.POST.get('email')
         role = request.POST.get('role')
-        full_name = request.POST.get('full_name')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        filliere = request.POST.get('filière', '')
 
-        # Create user (simplified example)
+        # Generate a username from the email (before the @)
+        username = email.split('@')[0]
+
         user = Utilisateur.objects.create_user(
+            username=username,
             email=email,
             role=role,
-            first_name=full_name.split()[0],
-            last_name=full_name.split()[-1],
-            password="defaultpassword"  # Force password reset later
+            first_name=first_name,
+            last_name=last_name,
+            password="defaultpassword",
+            filliere=filliere
         )
         return redirect('school_admin:dashboard')
     return render(request, 'school_admin/dashboard.html')
@@ -45,14 +56,17 @@ def add_user(request):
 def add_course(request):
     if request.method == 'POST':
         code = request.POST.get('code')
-        name = request.POST.get('name')
+        nom = request.POST.get('name')
+        coefficient = request.POST.get('coefficient', 1)
         professor_id = request.POST.get('professor')
 
-        Matiere.objects.create(
+        matiere = Matiere.objects.create(
             code=code,
-            name=name,
-            professeur_id=professor_id
+            nom=nom,
+            coefficient=coefficient
         )
+        if professor_id:
+            matiere.professeurs.add(professor_id)
         return redirect('school_admin:dashboard')
     return render(request, 'school_admin/dashboard.html')
 
@@ -64,12 +78,19 @@ def add_absence(request):
         student_id = request.POST.get('student')
         date = request.POST.get('date')
         reason = request.POST.get('reason')
+        course_id = request.POST.get('course')
+        justifiee = bool(request.POST.get('justifiee'))
 
-        Absence.objects.create(
-            etudiant_id=student_id,
-            date=date,
-            raison=reason
-        )
+        absence_kwargs = {
+            'etudiant_id': student_id,
+            'date': date,
+            'commentaire': reason,
+            'justifiee': justifiee
+        }
+        if course_id:
+            absence_kwargs['matiere_id'] = course_id
+
+        Absence.objects.create(**absence_kwargs)
         return redirect('school_admin:dashboard')
 
     students = Utilisateur.objects.filter(role='ETUDIANT')

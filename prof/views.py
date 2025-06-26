@@ -4,8 +4,9 @@ from datetime import timedelta, datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from django.db import models
 
-from core.models import EmploiDuTemps, Inscription, Matiere, Utilisateur
+from core.models import EmploiDuTemps, Inscription, Matiere, Utilisateur, Message
 from etudiant.models import AssignmentSubmission
 from prof.forms import LectureMaterialForm
 from prof.models import Note, LectureMaterial
@@ -74,7 +75,11 @@ def dashboard(request):
                                                    'nb_matieres': nb_matieres,
                                                    'total_hours_formatted': total_hours_formatted,
                                                    'cours': cours,
-                                                   'submissions':submissions})
+                                                   'submissions':submissions,
+                                                   'unread_messages': Message.objects.filter(
+                                                       destinataire=profInfo,
+                                                       lu=False
+                                                   ).count()})
 
 
 def matiere(request):
@@ -245,3 +250,80 @@ def voir_materiaux(request):
     }
 
     return render(request, 'prof/materiauxDeCours.html', context)
+
+
+@login_required
+def messages_view(request):
+    """Show list of students enrolled in the professor's courses"""
+    
+    # Get all students enrolled in courses taught by this professor
+    professor_courses = request.user.matieres_enseignees.all()
+    students = Utilisateur.objects.filter(
+        role='etudiant',
+        inscriptions__matiere__in=professor_courses
+    ).distinct()
+    
+    # Get unread message count for each student
+    student_data = []
+    for student in students:
+        unread_count = Message.objects.filter(
+            expediteur=student,
+            destinataire=request.user,
+            lu=False
+        ).count()
+        
+        # Get last message with this student
+        last_message = Message.objects.filter(
+            (models.Q(expediteur=student, destinataire=request.user) |
+             models.Q(expediteur=request.user, destinataire=student))
+        ).order_by('-date_envoi').first()
+        
+        # Get courses this student is enrolled in that the professor teaches
+        student_courses = student.inscriptions.filter(
+            matiere__in=professor_courses
+        ).values_list('matiere__nom', flat=True)
+        
+        student_data.append({
+            'student': student,
+            'unread_count': unread_count,
+            'last_message': last_message,
+            'courses': list(student_courses),
+        })
+    
+    context = {
+        'student_data': student_data,
+    }
+    
+    return render(request, 'prof/messages.html', context)
+
+
+@login_required
+def chat_with_student(request, student_id):
+    """Show chat interface with a specific student"""
+    
+    student = get_object_or_404(Utilisateur, id=student_id, role='etudiant')
+    
+    # Verify the student is enrolled in one of the professor's courses
+    professor_courses = request.user.matieres_enseignees.all()
+    if not student.inscriptions.filter(matiere__in=professor_courses).exists():
+        return redirect('prof:messages')
+    
+    # Get all messages between this professor and student
+    messages = Message.objects.filter(
+        (models.Q(expediteur=request.user, destinataire=student) |
+         models.Q(expediteur=student, destinataire=request.user))
+    ).order_by('date_envoi')
+    
+    # Mark messages from student as read
+    Message.objects.filter(
+        expediteur=student,
+        destinataire=request.user,
+        lu=False
+    ).update(lu=True)
+    
+    context = {
+        'student': student,
+        'messages': messages,
+    }
+    
+    return render(request, 'prof/chat.html', context)

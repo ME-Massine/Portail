@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #4361ee;
+        --secondary: #3f37c9;
+        --accent: #f72585;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --success: #4cc9f0;
+        --warning: #f8961e;
+        --danger: #ef233c;
+        --card-radius: 12px;
+        --transition: all 0.3s ease;
+    }
+
+    .messages-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .messages-header {
+        background: white;
+        border-radius: var(--card-radius);
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+
+    .messages-header h1 {
+        color: var(--primary);
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+
+    .messages-header p {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .professor-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .professor-card {
+        background: white;
+        border-radius: var(--card-radius);
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: var(--transition);
+        cursor: pointer;
+        border-left: 4px solid transparent;
+    }
+
+    .professor-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border-left-color: var(--primary);
+    }
+
+    .professor-card.unread {
+        border-left-color: var(--accent);
+        background: linear-gradient(135deg, rgba(247, 37, 133, 0.05), rgba(67, 97, 238, 0.05));
+    }
+
+    .professor-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .professor-details {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .professor-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    .professor-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 5px;
+    }
+
+    .professor-role {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .message-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .unread-badge {
+        background: var(--accent);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .last-message {
+        font-size: 14px;
+        color: #666;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+    }
+
+    .last-message-time {
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: var(--card-radius);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .empty-state i {
+        font-size: 60px;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .empty-state p {
+        color: #999;
+    }
+
+    @media (max-width: 768px) {
+        .messages-container {
+            padding: 15px;
+        }
+
+        .professor-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .message-status {
+            align-self: flex-end;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="messages-container">
+    <div class="messages-header">
+        <h1><i class="fas fa-comments me-2"></i>Messages</h1>
+        <p>Communiquez avec vos professeurs</p>
+    </div>
+
+    {% if professor_data %}
+        <div class="professor-list">
+            {% for data in professor_data %}
+                <div class="professor-card {% if data.unread_count > 0 %}unread{% endif %}" 
+                     onclick="window.location.href='{% url 'etudiant:chat_with_professor' data.professor.id %}'">
+                    <div class="professor-info">
+                        <div class="professor-details">
+                            <div class="professor-avatar">
+                                {{ data.professor.first_name|first }}{{ data.professor.last_name|first }}
+                            </div>
+                            <div>
+                                <div class="professor-name">
+                                    {{ data.professor.first_name }} {{ data.professor.last_name }}
+                                </div>
+                                <div class="professor-role">
+                                    Professeur en {{ data.professor.filliere }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-status">
+                            {% if data.unread_count > 0 %}
+                                <span class="unread-badge">{{ data.unread_count }}</span>
+                            {% endif %}
+                            <i class="fas fa-chevron-right" style="color: #ccc;"></i>
+                        </div>
+                    </div>
+                    
+                    {% if data.last_message %}
+                        <div class="last-message">
+                            <strong>
+                                {% if data.last_message.expediteur == request.user %}
+                                    Vous:
+                                {% else %}
+                                    {{ data.last_message.expediteur.first_name }}:
+                                {% endif %}
+                            </strong>
+                            {{ data.last_message.contenu|truncatechars:50 }}
+                            <div class="last-message-time">
+                                {{ data.last_message.date_envoi|date:"d/m/Y H:i" }}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="last-message">
+                            <em style="color: #999;">Aucun message échangé</em>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-comments"></i>
+            <h3>Aucun professeur disponible</h3>
+            <p>Vous n'êtes inscrit à aucun cours pour le moment.</p>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    // Add click animation
+    document.querySelectorAll('.professor-card').forEach(card => {
+        card.addEventListener('click', function() {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+    });
+</script>
+{% endblock %} 

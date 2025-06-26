@@ -35,8 +35,8 @@
             <label class="form-label">Filière (if student)</label>
             <select name="filière" class="form-select">
               <option value="">Select Filière</option>
-              {% for filière in filières %}
-              <option value="{{ filière.id }}">{{ filière.name }}</option>
+              {% for value, label in filières %}
+              <option value="{{ value }}">{{ label }}</option>
               {% endfor %}
             </select>
           </div>

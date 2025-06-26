@@ -12,6 +12,8 @@ urlpatterns = [
     path('devoirs/', views.devoirs_view, name='devoirs'),
     path('materiaux/', views.voir_materiaux, name='voir_materiaux'),
     path('settings/', views.settings, name='settings'),
+    path('messages/', views.messages_view, name='messages'),
+    path('messages/<int:professor_id>/', views.chat_with_professor, name='chat_with_professor'),
     path('password-change/',
          CustomPasswordChangeView.as_view(),
          name='password_change'),

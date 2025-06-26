@@ -26,13 +26,22 @@
             <select name="course" class="form-select">
               <option value="">Select Course (optional)</option>
               {% for course in courses %}
-              <option value="{{ course.id }}">{{ course.name }}</option>
+              <option value="{{ course.id }}">{{ course.nom }}</option>
               {% endfor %}
             </select>
           </div>
           <div class="mb-3">
             <label class="form-label">Reason</label>
             <textarea name="reason" class="form-control" rows="2"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Justifiée ?</label>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="justifiee" id="justifiee">
+              <label class="form-check-label" for="justifiee">
+                Oui
+              </label>
+            </div>
           </div>
         </div>
         <div class="modal-footer border-0">

@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #4361ee;
+        --secondary: #3f37c9;
+        --accent: #f72585;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --success: #4cc9f0;
+        --warning: #f8961e;
+        --danger: #ef233c;
+        --card-radius: 12px;
+        --transition: all 0.3s ease;
+    }
+
+    .messages-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .messages-header {
+        background: white;
+        border-radius: var(--card-radius);
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+
+    .messages-header h1 {
+        color: var(--primary);
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+
+    .messages-header p {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .student-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .student-card {
+        background: white;
+        border-radius: var(--card-radius);
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: var(--transition);
+        cursor: pointer;
+        border-left: 4px solid transparent;
+    }
+
+    .student-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border-left-color: var(--primary);
+    }
+
+    .student-card.unread {
+        border-left-color: var(--accent);
+        background: linear-gradient(135deg, rgba(247, 37, 133, 0.05), rgba(67, 97, 238, 0.05));
+    }
+
+    .student-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .student-details {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .student-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #f72585);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    .student-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 5px;
+    }
+
+    .student-info-text {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .message-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .unread-badge {
+        background: var(--accent);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .last-message {
+        font-size: 14px;
+        color: #666;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+    }
+
+    .last-message-time {
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+    }
+
+    .courses-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .course-badge {
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: var(--card-radius);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .empty-state i {
+        font-size: 60px;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .empty-state p {
+        color: #999;
+    }
+
+    @media (max-width: 768px) {
+        .messages-container {
+            padding: 15px;
+        }
+
+        .student-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .message-status {
+            align-self: flex-end;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="messages-container">
+    <div class="messages-header">
+        <h1><i class="fas fa-comments me-2"></i>Messagerie</h1>
+        <p>Communiquez avec vos étudiants</p>
+    </div>
+
+    {% if student_data %}
+        <div class="student-list">
+            {% for data in student_data %}
+                <div class="student-card {% if data.unread_count > 0 %}unread{% endif %}" 
+                     onclick="window.location.href='{% url 'prof:chat_with_student' data.student.id %}'">
+                    <div class="student-info">
+                        <div class="student-details">
+                            <div class="student-avatar">
+                                {{ data.student.first_name|first }}{{ data.student.last_name|first }}
+                            </div>
+                            <div>
+                                <div class="student-name">
+                                    {{ data.student.first_name }} {{ data.student.last_name }}
+                                </div>
+                                <div class="student-info-text">
+                                    Étudiant en {{ data.student.filliere }}
+                                </div>
+                                <div class="courses-list">
+                                    {% for course in data.courses %}
+                                        <span class="course-badge">{{ course }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-status">
+                            {% if data.unread_count > 0 %}
+                                <span class="unread-badge">{{ data.unread_count }}</span>
+                            {% endif %}
+                            <i class="fas fa-chevron-right" style="color: #ccc;"></i>
+                        </div>
+                    </div>
+                    
+                    {% if data.last_message %}
+                        <div class="last-message">
+                            <strong>
+                                {% if data.last_message.expediteur == request.user %}
+                                    Vous:
+                                {% else %}
+                                    {{ data.last_message.expediteur.first_name }}:
+                                {% endif %}
+                            </strong>
+                            {{ data.last_message.contenu|truncatechars:50 }}
+                            <div class="last-message-time">
+                                {{ data.last_message.date_envoi|date:"d/m/Y H:i" }}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="last-message">
+                            <em style="color: #999;">Aucun message échangé</em>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-comments"></i>
+            <h3>Aucun étudiant disponible</h3>
+            <p>Vous n'avez pas d'étudiants inscrits à vos cours pour le moment.</p>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    // Add click animation
+    document.querySelectorAll('.student-card').forEach(card => {
+        card.addEventListener('click', function() {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+    });
+</script>
+{% endblock %} 
