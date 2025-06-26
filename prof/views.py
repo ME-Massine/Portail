@@ -118,7 +118,7 @@ def ajouter_materiel(request, matiere_id):
 
 @login_required(login_url='login_view')
 def settings(request):
-    return render(request, 'etudiant/settings.html')
+    return render(request, 'prof/settings.html')
 
 
 def emploi(request):
@@ -369,6 +369,6 @@ def devoir(request):
 
 
 class CustomPasswordChangeView(SuccessMessageMixin, PasswordChangeView):
-    template_name = 'etudiant/password_change.html'
-    success_url = reverse_lazy('etudiant:password_change_done')  # Note the namespace
+    template_name = 'prof/password_change.html'
+    success_url = reverse_lazy('prof:devoir')  # Note the namespace
     success_message = "Votre mot de passe a été changé avec succès"
