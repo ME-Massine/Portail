@@ -85,7 +85,7 @@ def dashboard(request):
                                                    'unread_messages': Message.objects.filter(
                                                        destinataire=profInfo,
                                                        lu=False
-                                                   ).count()})
+                                                   ).count(),
                                                    'submissions': submissions,
                                                    'etudiant_count': etudiant_count})
 
