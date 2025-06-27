@@ -611,26 +611,52 @@
                     </div>
 
                     <div class="panel-body">
-                        {% for submission in submissions %}
-                            <div class="student-list">
-                                <div class="student-item">
-                                    <div class="student-avatar">test</div>
-                                    <div class="student-info">
-                                        <h4>Jean Dupont</h4>
-                                        <p>Projet Algorithmes - Soumis le 15/12</p>
+                        {% if submissions %}
+                            {% for submission in submissions %}
+                                <div class="student-list">
+                                    <div class="student-item">
+                                        <div class="student-avatar">
+                                            {{ submission.inscription.etudiant.first_name|first }}{{ submission.inscription.etudiant.last_name|first }}
+                                        </div>
+                                        <div class="student-info">
+                                            <h4>{{ submission.inscription.etudiant.get_full_name }}</h4>
+                                            <p>{{ submission.assignment.title }} - Soumis le {{ submission.submitted_at|date:"d/m/Y H:i" }}</p>
+                                        </div>
+                                        <div class="student-grade">
+                                            {% if submission.file %}
+                                                <a href="{{ submission.file.url }}" class="btn btn-outline-primary btn-sm" target="_blank">
+                                                    <i class="fas fa-download me-1"></i> Télécharger
+                                                </a>
+                                            {% else %}
+                                                À noter
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                    <div class="student-grade">À noter</div>
                                 </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-info-circle"></i>
+                                <p>Aucun devoir récemment soumis.</p>
                             </div>
-                        {% endfor %}
-                        <div class="grading-controls">
-                            <button class="grading-btn primary">
-                                <i class="fas fa-check-circle"></i> Noter en Lot
-                            </button>
-                            <button class="grading-btn secondary">
-                                <i class="fas fa-download"></i> Télécharger Tous
-                            </button>
-                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- Right Column -->
+            <div class="right-column">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>Statistiques Rapides</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul style="list-style:none;padding:0;margin:0;">
+                            <li style="margin-bottom:1.2em;"><i class="fas fa-chalkboard-teacher text-secondary me-2"></i> <strong>Cours enseignés aujourd'hui :</strong> {{ nb_cours|default:'--' }}</li>
+                            <li style="margin-bottom:1.2em;"><i class="fas fa-tasks text-primary me-2"></i> <strong>Devoirs créés :</strong> {{ total_assignments|default:'--' }}</li>
+                            <li style="margin-bottom:1.2em;"><i class="fas fa-book text-success me-2"></i> <strong>Matériaux uploadés :</strong> {{ total_materials|default:'--' }}</li>
+                            <li style="margin-bottom:1.2em;"><i class="fas fa-users text-warning me-2"></i> <strong>Étudiants inscrits à vos cours :</strong> {{ etudiant_count|default:'--' }}</li>
+                            <li><i class="fas fa-inbox text-info me-2"></i> <strong>Messages reçus :</strong> {{ total_messages|default:'--' }}</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -675,13 +701,6 @@
                 if (grade && !isNaN(grade)) {
                     this.querySelector('.student-grade').textContent = `${grade}/20`;
                 }
-            });
-        });
-
-        // Batch grading button
-        document.querySelectorAll('.grading-btn.primary').forEach(btn => {
-            btn.addEventListener('click', function () {
-                alert('Mode notation en lot activé. Sélectionnez plusieurs travaux à noter.');
             });
         });
     </script>

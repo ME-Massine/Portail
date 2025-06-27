@@ -77,6 +77,11 @@ def dashboard(request):
     minutes = int((total_seconds % 3600) // 60)
     total_hours_formatted = f"{hours}h{minutes}min"
 
+    # Add statistics for right column
+    total_assignments = Assignment.objects.filter(created_by=profInfo).count()
+    total_materials = LectureMaterial.objects.filter(matiere__professeurs=profInfo).count()
+    total_messages = Message.objects.filter(destinataire=profInfo).count()
+
     return render(request, 'prof/dashboard.html', {'profInfo': profInfo,
                                                    'nb_cours': nb_cours,
                                                    'nb_etudiants': nb_etudiants,
@@ -90,7 +95,11 @@ def dashboard(request):
                                                        lu=False
                                                    ).count(),
                                                    'submissions': submissions,
-                                                   'etudiant_count': etudiant_count})
+                                                   'etudiant_count': etudiant_count,
+                                                   'total_assignments': total_assignments,
+                                                   'total_materials': total_materials,
+                                                   'total_messages': total_messages,
+                                                   })
 
 
 def matiere(request):

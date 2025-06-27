@@ -12,12 +12,18 @@ class AdminDashboardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        request = self.request
+        role = request.GET.get('role')
+        recent_users_qs = Utilisateur.objects.all()
+        if role in ['etudiant', 'professeur', 'administrateur']:
+            recent_users_qs = recent_users_qs.filter(role=role)
+        recent_users = recent_users_qs.order_by('-date_joined')[:10]
         context.update({
             "total_students": Utilisateur.objects.filter(role="etudiant").count(),
             "total_professors": Utilisateur.objects.filter(role="professeur").count(),
             "total_courses": Matiere.objects.count(),
             "total_absences": Absence.objects.count(),
-            "recent_users": Utilisateur.objects.order_by("-date_joined")[:5],
+            "recent_users": recent_users,
             "professors": Utilisateur.objects.filter(role="professeur"),  # For course modal
             "filières": Utilisateur.FILLIERE_CHOICES,  # Add filière choices for the modal
             "students": Utilisateur.objects.filter(role="etudiant"),  # For absence modal

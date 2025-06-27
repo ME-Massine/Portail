@@ -129,59 +129,16 @@
 
         <!-- Recent Activity and Users -->
         <div class="row g-4">
-            <div class="col-lg-8 animate-fade" style="animation-delay: 0.5s">
+            <div class="col-lg-12 animate-fade" style="animation-delay: 0.6s">
                 <div class="card glass-card border-0 h-100">
                     <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Activité récente</h5>
-                        <a href="#" class="btn btn-sm btn-primary rounded-pill">Tout voir</a>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-admin table-hover mb-0">
-                                <thead>
-                                <tr>
-                                    <th>Utilisateur</th>
-                                    <th>Role</th>
-                                    <th>Action</th>
-                                    <th>Temps</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for activity in recent_activities %}
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="{% static 'images/default-avatar.png' %}"
-                                                     class="rounded-circle me-2" width="30" height="30">
-                                                {{ activity.user.get_full_name }}
-                                            </div>
-                                        </td>
-                                        <td><span class="badge bg-primary">{{ activity.user.get_role_display }}</span>
-                                        </td>
-                                        <td>{{ activity.action }}</td>
-                                        <td>{{ activity.timestamp|timesince }} ago</td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 animate-fade" style="animation-delay: 0.6s">
-                <div class="card glass-card border-0 h-100">
-                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">New Users</h5>
-                        <a href="#" class="btn btn-sm btn-primary rounded-pill">View All</a>
+                        <h5 class="mb-0">Nouveaux Utilisateurs</h5>
                     </div>
                     <div class="card-body">
                         <div class="list-group list-group-flush">
                             {% for user in recent_users %}
                                 <div class="list-group-item border-0 px-0">
                                     <div class="d-flex align-items-center">
-                                        <img src="{% static 'images/default-avatar.png' %}" class="rounded-circle me-3"
-                                             width="40" height="40">
                                         <div>
                                             <h6 class="mb-0">{{ user.get_full_name }}</h6>
                                             <small class="text-muted">{{ user.get_role_display }}</small>
@@ -196,11 +153,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Floating Action Button -->
-    <button class="fab" data-bs-toggle="modal" data-bs-target="#quickActionModal">
-        <i class="fas fa-plus"></i>
-    </button>
 
     <!-- Modals -->
     {% include "school_admin/modals/add_user.html" %}
@@ -255,7 +207,7 @@
         new Chart(gradesCtx, {
             type: 'doughnut',
             data: {
-                labels: ['A (90-100)', 'B (80-89)', 'C (70-79)', 'D (60-69)', 'F (<60)'],
+                labels: ['A (16-20)', 'B (12-15.9)', 'C (8-11.9)', 'D (4-7.9)', 'F (0-3.9)'],
                 datasets: [{
                     data: [25, 30, 20, 15, 10],
                     backgroundColor: [

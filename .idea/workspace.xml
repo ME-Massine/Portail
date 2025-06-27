@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f314442c-9fd6-497a-913d-409c9aa07b3e" name="Changes" comment="    Fix missing comma in context dictionary in prof/views.py&#10;&#10;    Added a missing comma in the context dictionary to ensure proper key-value mapping. This resolves potential errors or incorrect rendering in the related view.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/prof/templates/prof/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prof/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prof/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/school_admin/templates/school_admin/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/school_admin/templates/school_admin/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/school_admin/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/school_admin/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
